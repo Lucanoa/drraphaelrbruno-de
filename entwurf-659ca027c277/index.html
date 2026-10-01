@@ -10,7 +10,7 @@
      Umgesetzt aus dem Claude-Design-Artboard "Landingpage Dr Bruno.dc.html".
      Offen: Impressumsdaten, Datenschutztext, Podcast-Links, Instagram-Clips,
      Schriften selbst hosten. Die beiden Formulare sind fertig; es
-     fehlen nur noch die zwei ZIEL-Adressen in LISTEN (siehe unten). -->
+     fehlen nur noch die ZIEL-Adressen in ZIELE (siehe unten). -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -264,9 +264,20 @@
           <p style="margin:0">Präventive Kardiologie und Innere Medizin.</p>
           <p style="margin:0">Privatpraxis in Düsseldorf.</p>
           <p style="margin:0">Für Menschen, die früh wissen wollen, was läuft.</p>
-          <p style="margin:0">Kontakt über <a href="https://kardio.pro" style="border-bottom:1px solid #14171A">kardio.pro</a></p>
         </div>
-        <a href="https://kardio.pro" class="knopf" style="align-self:flex-start">Termin in der Praxis <span>→</span></a>
+        <div id="kt-block" style="display:flex;flex-direction:column;gap:14px">
+          <form id="kt-form" style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:520px">
+            <input type="text" name="name" required autocomplete="name" placeholder="Ihr Name" aria-label="Name" style="font-family:inherit;font-size:16px;padding:17px 20px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A;width:100%;box-sizing:border-box">
+            <input type="email" name="email" required autocomplete="email" placeholder="Ihre E-Mail-Adresse" aria-label="E-Mail-Adresse" style="font-family:inherit;font-size:16px;padding:17px 20px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A;width:100%;box-sizing:border-box">
+            <textarea name="nachricht" required rows="4" placeholder="Worum geht es?" aria-label="Nachricht" style="font-family:inherit;font-size:16px;padding:17px 20px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A;width:100%;box-sizing:border-box;line-height:1.6;resize:vertical"></textarea>
+            <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+            <button type="submit" class="navknopf" style="align-self:flex-start;cursor:pointer;font-family:inherit;padding:17px 28px">Nachricht senden</button>
+          </form>
+          <p style="margin:0;font-size:13px;line-height:1.6;color:#5A5F64;max-width:520px">Bitte keine Befunde, Beschwerden oder Medikamente in das Nachrichtenfeld. Für medizinische Anliegen und Termine wenden Sie sich bitte direkt an die <a href="https://kardio.pro" style="color:#5A5F64;border-bottom:1px solid #5A5F64">Praxis</a>. Hinweise zur Verarbeitung in der <a href="#" data-modal="datenschutz" style="color:#5A5F64;border-bottom:1px solid #5A5F64">Datenschutzerklärung</a>.</p>
+        </div>
+        <p id="kt-danke" hidden class="serif" style="margin:0;font-size:24px;line-height:1.4;max-width:520px">Danke für Ihre Nachricht. Sie wird gelesen, und Sie bekommen Antwort.</p>
+        <p id="kt-fehler" hidden style="margin:0;font-size:16px;line-height:1.6;max-width:520px;color:#8A2B20"></p>
+        <iframe id="kt-rahmen" name="kt-rahmen" title="Übermittlung" style="display:none" aria-hidden="true"></iframe>
       </div>
     </div>
   </div>
@@ -317,7 +328,7 @@
   }, { passive: true });
 
   /* ================================================================
-     Newsletter und Buch-Warteliste.
+     Newsletter, Buch-Warteliste und Kontaktformular.
 
      EINZIGE STELLE, DIE NOCH GEFÜLLT WERDEN MUSS: die beiden ZIEL-
      Adressen unten. Sie stehen im Konto des Newsletter-Anbieters
@@ -337,21 +348,30 @@
      Wichtig: beim Anbieter die doppelte Bestätigung (Double Opt-In)
      einschalten. Der Dankestext unten sagt genau das zu.
 
-     Solange ZIEL leer ist, sagt das Formular ehrlich, dass die
-     Anmeldung noch nicht eingerichtet ist — es zeigt kein "Danke"
-     für etwas, das nie verschickt wurde.
+     Das Kontaktformular gehört NICHT zu Brevo. Brevo legt Kontakte in
+     Marketinglisten an, und ein Anliegen ist keine Newsletter-Anmeldung.
+     Dafür ein Formular-Dienst für statische Seiten:
+
+         Formspree     https://formspree.io/f/<id>
+         Web3Forms     https://api.web3forms.com/submit
+                       dazu access_key unter ZUSATZ eintragen
+
+     Solange ZIEL leer ist, sagt das Formular ehrlich, dass es noch
+     nicht eingerichtet ist — es zeigt kein "Danke" für etwas, das nie
+     verschickt wurde.
      ================================================================ */
-  var LISTEN = {
+  var ZIELE = {
     newsletter: { ziel: '', feld: 'fields[email]' },
-    buch:       { ziel: '', feld: 'fields[email]' }
+    buch:       { ziel: '', feld: 'fields[email]' },
+    kontakt:    { ziel: '', zusatz: {} }
   };
 
   /* Das Formular wird in einen unsichtbaren Rahmen geschickt. Dadurch
      bleibt der Besucher auf der Seite, es braucht keine CORS-Freigabe
      beim Anbieter, und wir wissen sicher, dass die Anmeldung wirklich
      rausgegangen ist, bevor wir uns bedanken. */
-  function anmeldung(o) {
-    var liste  = LISTEN[o.liste],
+  function absenden(o) {
+    var liste  = ZIELE[o.liste],
         form   = document.getElementById(o.form),
         block  = document.getElementById(o.block),
         danke  = document.getElementById(o.danke),
@@ -367,7 +387,14 @@
       form.action = liste.ziel;
       form.method = 'post';
       form.target = rahmen.name;
-      feld.name   = liste.feld;
+      /* Nur die Anmeldeformulare müssen sich beim Feldnamen nach dem
+         Anbieter richten. Das Kontaktformular behält seine eigenen. */
+      if (liste.feld && feld) feld.name = liste.feld;
+      Object.keys(liste.zusatz || {}).forEach(function (k) {
+        var h = document.createElement('input');
+        h.type = 'hidden'; h.name = k; h.value = liste.zusatz[k];
+        form.appendChild(h);
+      });
     }
 
     function umschalten(ziel, text) {
@@ -390,7 +417,7 @@
       if (topf && topf.value) { e.preventDefault(); umschalten(danke); return; }
       if (!liste.ziel) {
         e.preventDefault();
-        zurueck('Die Anmeldung ist noch nicht eingerichtet. Bitte schreiben Sie uns kurz, dann tragen wir Sie von Hand ein.');
+        zurueck(o.unfertig);
         return;
       }
       if (laeuft) { e.preventDefault(); return; }
@@ -422,10 +449,17 @@
     var f = wlBlock.querySelector('input[type=email]'); if (f) f.focus();
   });
 
-  anmeldung({ liste: 'buch', form: 'wl-form', block: 'wl-block',
-              danke: 'wl-danke', fehler: 'wl-fehler', rahmen: 'wl-rahmen' });
-  anmeldung({ liste: 'newsletter', form: 'nl-form', block: 'nl-block',
-              danke: 'nl-danke', fehler: 'nl-fehler', rahmen: 'nl-rahmen' });
+  var NOCHNICHT = 'Das ist hier noch nicht eingerichtet. Bitte wenden Sie sich so lange direkt an die Praxis.';
+
+  absenden({ liste: 'buch', form: 'wl-form', block: 'wl-block',
+             danke: 'wl-danke', fehler: 'wl-fehler', rahmen: 'wl-rahmen',
+             unfertig: NOCHNICHT });
+  absenden({ liste: 'newsletter', form: 'nl-form', block: 'nl-block',
+             danke: 'nl-danke', fehler: 'nl-fehler', rahmen: 'nl-rahmen',
+             unfertig: NOCHNICHT });
+  absenden({ liste: 'kontakt', form: 'kt-form', block: 'kt-block',
+             danke: 'kt-danke', fehler: 'kt-fehler', rahmen: 'kt-rahmen',
+             unfertig: NOCHNICHT });
 
   /* Impressum und Datenschutz als Overlay. Die eckigen Klammern sind
      Platzhalter und müssen vor dem Livegang ersetzt werden. */
