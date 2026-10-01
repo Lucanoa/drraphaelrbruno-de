@@ -84,8 +84,7 @@
     --chart-fs:15px;
   }
   @media (max-width:759px){
-    :root{--nav-links:none;
-          --hero-hoehe:0;--hero-textbreite:100%;--hero-polster:76px 24px 84px;
+    :root{--hero-hoehe:0;--hero-textbreite:100%;--hero-polster:76px 24px 84px;
           --pod-hoehe:0;--pod-polster:8px 24px 40px;--chart-fs:28px}
   }
 
@@ -128,20 +127,67 @@
   .buch-danke{margin:0;max-width:520px;font-size:22px;font-weight:500;line-height:1.4;color:#123540}
   .buch-fehler{margin:0;max-width:520px;font-size:15px;font-weight:500;line-height:1.6;color:#7A2016}
 
-  .bekannt-fenster{overflow:hidden;
-    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 10%,#000 90%,transparent 100%);
-    mask-image:linear-gradient(90deg,transparent 0,#000 10%,#000 90%,transparent 100%)}
-  .bekannt-bahn{display:flex;width:max-content;animation:bekannt-lauf 60s linear infinite}
+  /* Die weichen Kanten lagen frueher auf einer Maske. Zusammen mit der
+     laufenden Bahn hat das auf dem Handy geruckelt und die Logos
+     zeitweise ganz verschwinden lassen: Der Browser muss dafuer in
+     jedem Bild die ganze Flaeche neu zusammensetzen. Zwei kleine
+     Verlaeufe darueber kosten nichts. */
+  .bekannt-fenster{position:relative;overflow:hidden}
+  .bekannt-fenster::before,.bekannt-fenster::after{content:"";position:absolute;top:0;bottom:0;
+    width:clamp(32px,10%,120px);z-index:1;pointer-events:none}
+  .bekannt-fenster::before{left:0;background:linear-gradient(90deg,#FAF9F7,rgba(250,249,247,0))}
+  .bekannt-fenster::after{right:0;background:linear-gradient(270deg,#FAF9F7,rgba(250,249,247,0))}
+  .bekannt-bahn{display:flex;width:max-content;will-change:transform;
+    transform:translate3d(0,0,0);backface-visibility:hidden;
+    animation:bekannt-lauf 60s linear infinite}
   .bekannt-satz{display:flex;align-items:center;gap:clamp(48px,6vw,88px);
                 padding-right:clamp(48px,6vw,88px)}
   .bekannt-satz img{width:auto;flex:0 0 auto;opacity:.72;display:block}
-  @keyframes bekannt-lauf{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes bekannt-lauf{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
   @media (prefers-reduced-motion:reduce){.bekannt-bahn{animation:none}}
 
   /* Platzhalter für die vier Instagram-Clips, bis die Dateien da sind. */
   .platz{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
          border:1px dashed #C9C5BE;border-radius:14px;background:#F2F0EC;color:#8A8E93;
          font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+
+  /* ================= nur auf schmalen Schirmen ================= */
+  @media (max-width:759px){
+    /* Navigation: die Verweise bekommen eine eigene Zeile, die sich
+       seitlich schieben laesst. Vorher waren sie ganz ausgeblendet,
+       weil in einer Zeile kein Platz ist. */
+    header > div{flex-wrap:wrap;row-gap:10px}
+    header nav{order:3!important;flex:1 0 100%!important;height:auto!important;
+      overflow-x:auto!important;overflow-y:hidden;justify-content:flex-start!important;
+      column-gap:22px!important;padding-bottom:2px;
+      scrollbar-width:none;-ms-overflow-style:none}
+    header nav::-webkit-scrollbar{display:none}
+
+    /* Diagramm: bei voller Breite waere es nur gut hundert Pixel hoch.
+       Lieber in Lesegroesse und seitlich schiebbar. */
+    .dg-kasten{overflow-x:auto;scrollbar-width:none}
+    .dg-kasten::-webkit-scrollbar{display:none}
+    .dg-kasten svg[data-chart-root]{width:760px!important;max-width:none;flex:0 0 auto}
+
+    /* Stimmen laufen hier nicht von selbst, sondern werden gewischt. */
+    #stimmen-fenster{height:auto!important;overflow-x:auto!important;overflow-y:hidden;
+      -webkit-mask-image:none!important;mask-image:none!important;
+      scroll-snap-type:x mandatory;scrollbar-width:none;
+      margin-inline:calc(clamp(20px,5vw,64px) * -1);
+      padding-inline:clamp(20px,5vw,64px)}
+    #stimmen-fenster::-webkit-scrollbar{display:none}
+    [data-track="reviews"]{flex-direction:row!important;transform:none!important;
+      align-items:stretch;gap:14px}
+    [data-track="reviews"] > div{flex:0 0 80vw;min-width:0;scroll-snap-align:center}
+    /* Die Liste liegt doppelt vor, damit das Laufband nahtlos umbricht.
+       Beim Wischen waere die zweite Haelfte nur eine Wiederholung. */
+    [data-track="reviews"] > div:nth-child(n+8){display:none!important}
+
+    /* Newsletter: Feld und Schaltflaeche in eine Zeile. */
+    #nl-form{flex-wrap:nowrap!important;gap:8px!important}
+    #nl-form input[type=email]{flex:1 1 auto!important;min-width:0;padding:16px 18px!important}
+    #nl-form button[type=submit]{padding:16px 18px!important;letter-spacing:.04em!important}
+  }
 
   input:focus-visible,textarea:focus-visible,select:focus-visible,
   button:focus-visible,a:focus-visible{outline:2px solid #123540;outline-offset:2px}
@@ -237,7 +283,7 @@
         <p style="margin:0">Prävention setzt in dieser Zeit an. Sie verschiebt den Abfall nach hinten und macht ihn kürzer.</p>
       </div>
     </div>
-    <div style="background:#FFFFFF;border:1px solid #E3E0DA;border-radius:24px;padding:clamp(20px,4vw,56px) clamp(16px,4vw,56px) clamp(20px,3vw,40px);display:flex;flex-direction:column;gap:20px">
+    <div class="dg-kasten" style="background:#FFFFFF;border:1px solid #E3E0DA;border-radius:24px;padding:clamp(20px,4vw,56px) clamp(16px,4vw,56px) clamp(20px,3vw,40px);display:flex;flex-direction:column;gap:20px">
       <svg data-chart-root="1" viewBox="0 0 1000 410" style="width:100%;height:auto;display:block;font-family:'Inter',sans-serif;overflow:visible" role="img" aria-label="Mit Prävention bleibt die Gesundheit länger hoch und die Lebensspanne ist länger.">
           <defs><linearGradient id="gapGrad" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#B9D3B0"></stop><stop offset="0.55" stop-color="#7FB8C0"></stop><stop offset="1" stop-color="#A9CBE6"></stop></linearGradient></defs>
           <line x1="80" x2="960" y1="360" y2="360" stroke="#D9D5CE" stroke-width="1"></line>
@@ -339,7 +385,7 @@
   <div style="position:relative;max-width:1240px;margin:0 auto;min-height:var(--pod-hoehe);display:flex;align-items:center">
     <div style="max-width:520px;padding:var(--pod-polster);display:flex;flex-direction:column;justify-content:center;gap:24px;position:relative;z-index:1">
       <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#A3A7AB;font-weight:600">Podcast „Second Opinion“</div>
-      <h2 style="margin:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(38px,4.8vw,68px);line-height:1.05;letter-spacing:-.035em;max-width:520px">Jeden Mittwoch Ihre Zweitmeinung auf die Ohren.</h2>
+      <h2 style="margin:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(34px,4.05vw,56px);line-height:1.08;letter-spacing:-.035em;max-width:520px">Jeden Mittwoch Ihre Zweitmeinung auf die Ohren.</h2>
       <p style="margin:0;font-size:16px;line-height:1.7;color:#C9CCCF;max-width:440px">Dr. Bruno ist wöchentlich Gast im Podcast Second Opinion.</p>
       <div style="display:flex;gap:28px;flex-wrap:wrap;font-size:14px;font-weight:500;letter-spacing:.03em">
         <a href="https://open.spotify.com/show/033fkNLmr1WDIqct9d7LZF" target="_blank" rel="noopener" style="color:#FAF9F7;border-bottom:1px solid #FAF9F7;padding-bottom:4px" data-h="h6">Spotify →</a>
@@ -760,14 +806,20 @@ var DATENSCHUTZ = [
     }
 
     var ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    /* Auf schmalen Schirmen wird gewischt statt gelaufen, sonst
+       kaempfen Skript und Finger um dieselbe Achse. */
+    var schmal = window.matchMedia('(max-width:759px)');
     var zuletzt = performance.now(), weg = 0;
     (function takt(jetzt) {
       var dt = Math.min(jetzt - zuletzt, 64); zuletzt = jetzt;
-      if (bahn && !ruhig) {
+      if (bahn && !ruhig && !schmal.matches) {
         var halb = bahn.scrollHeight / 2 + 10;
         weg += dt * 0.03;
         if (halb > 10 && weg >= halb) weg -= halb;
         bahn.style.transform = 'translateY(' + (-weg) + 'px)';
+      } else if (bahn && schmal.matches && bahn.style.transform) {
+        bahn.style.transform = '';
+        weg = 0;
       }
       diagrammSchritt();
       requestAnimationFrame(takt);
