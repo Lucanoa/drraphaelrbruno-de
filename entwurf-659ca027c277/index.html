@@ -330,22 +330,33 @@
   /* ================================================================
      Newsletter, Buch-Warteliste und Kontaktformular.
 
-     EINZIGE STELLE, DIE NOCH GEFÜLLT WERDEN MUSS: die beiden ZIEL-
-     Adressen unten. Sie stehen im Konto des Newsletter-Anbieters
-     beim jeweiligen Formular ("Embed" / "HTML-Code"), im action-
-     Attribut. FELD ist der Name, unter dem der Anbieter die
-     E-Mail-Adresse erwartet — je nach Anbieter:
+     Newsletter und Warteliste laufen über Brevo, das Kontaktformular
+     über Formspree. Zu jedem Ziel gehören:
 
-         MailerLite   fields[email]
-         beehiiv      email
-         Kit          email_address
-         Mailchimp    EMAIL
+         ART     wie gesendet wird, siehe unten
+         ZIEL    die Adresse des Formulars beim Anbieter
+         FELD    Name, unter dem die E-Mail-Adresse erwartet wird
+         KOEDER  Name des unsichtbaren Lockfelds gegen Bots
+         ZUSATZ  versteckte Felder, die mitgeschickt werden
 
-     Beide Listen gehören in dasselbe Konto, aber in zwei getrennte
-     Formulare, damit die Buch-Leute später gezielt angeschrieben
-     werden können.
+     ART bestimmt, wie gesendet wird:
 
-     Wichtig: beim Anbieter die doppelte Bestätigung (Double Opt-In)
+       'json'    Die Antwort wird gelesen, Erfolg und Fehler sind
+                 echt. Für Brevo nachgemessen: der Dienst erlaubt
+                 den Zugriff und antwortet mit
+                 {"success":…,"errors":…}. Scheitert die Anmeldung,
+                 sagen wir das — und zeigen Brevos eigenen Grund.
+
+       'rahmen'  Das Formular geht in einen unsichtbaren Rahmen.
+                 Nötig, wenn der Anbieter den Zugriff auf die
+                 Antwort nicht erlaubt. Dann wissen wir nur, DASS
+                 gesendet wurde, nicht ob es angenommen wurde.
+
+     NOCH OFFEN: die Warteliste braucht ein EIGENES Brevo-Formular.
+     Die Newsletter-Adresse dort einzutragen würde beide Gruppen in
+     dieselbe Liste werfen, und genau das wollen wir nicht.
+
+     Wichtig: bei Brevo die doppelte Bestätigung (Double Opt-In)
      einschalten. Der Dankestext unten sagt genau das zu.
 
      Das Kontaktformular gehört NICHT zu Brevo. Brevo legt Kontakte in
@@ -364,10 +375,17 @@
      nicht eingerichtet ist — es zeigt kein "Danke" für etwas, das nie
      verschickt wurde.
      ================================================================ */
+  function brevo(ziel) {
+    return { art: 'json', ziel: ziel, feld: 'EMAIL',
+             koeder: 'email_address_check',
+             zusatz: { locale: 'de', html_type: 'simple' } };
+  }
+
   var ZIELE = {
-    newsletter: { ziel: '', feld: 'fields[email]' },
-    buch:       { ziel: '', feld: 'fields[email]' },
-    kontakt:    { ziel: '',   /* https://formspree.io/f/<id> */
+    newsletter: brevo('https://dac06a52.sibforms.com/serve/MUIFAFd3-kmN_gpO6Lf8g7uDPIZVtnF4tpkGLRsjfdKW0ByrufbM1m30_3PdBaWA6W5XMW1JlZJ3sT9gkzFuo-1UfQ3WgtwWEqvt6TyylZuEtGjsAGFxrLd_MQ-03FS58VzumPSbgN8DCK8JZhFVS7A8qrtrPWLHqLFd3IL95ea20x_mjrQBk_h_awnZZ_-zDMhVuRW9Ml7en9cY3w=='),
+    buch:       brevo(''),
+    kontakt:    { art: 'rahmen', ziel: '',   /* https://formspree.io/f/<id> */
+                  koeder: '_gotcha',
                   zusatz: { _subject: 'Neue Nachricht über drraphaelrbruno.de' } }
   };
 
@@ -392,23 +410,25 @@
         fehler = document.getElementById(o.fehler),
         rahmen = document.getElementById(o.rahmen),
         feld   = form.querySelector('input[type=email]'),
-        topf   = form.querySelector('input[name=website], input[name=_gotcha]'),
+        topf   = form.querySelector('input[name=website], input[name=_gotcha], input[name=email_address_check]'),
         knopf  = form.querySelector('button[type=submit]'),
         beschriftung = knopf.textContent,
         laeuft = false, uhr = null;
 
-    if (fertig(liste)) {
+    /* Feld- und Ködernamen richten sich nach dem Anbieter, die
+       versteckten Zusatzfelder kommen als echte Eingabefelder dazu,
+       damit sie auf beiden Wegen mitgehen. */
+    if (liste.feld && feld) feld.name = liste.feld;
+    if (liste.koeder && topf) topf.name = liste.koeder;
+    Object.keys(liste.zusatz || {}).forEach(function (k) {
+      var h = document.createElement('input');
+      h.type = 'hidden'; h.name = k; h.value = liste.zusatz[k];
+      form.appendChild(h);
+    });
+    if (fertig(liste) && liste.art === 'rahmen') {
       form.action = liste.ziel;
       form.method = 'post';
       form.target = rahmen.name;
-      /* Nur die Anmeldeformulare müssen sich beim Feldnamen nach dem
-         Anbieter richten. Das Kontaktformular behält seine eigenen. */
-      if (liste.feld && feld) feld.name = liste.feld;
-      Object.keys(liste.zusatz || {}).forEach(function (k) {
-        var h = document.createElement('input');
-        h.type = 'hidden'; h.name = k; h.value = liste.zusatz[k];
-        form.appendChild(h);
-      });
     }
 
     function umschalten(ziel, text) {
@@ -427,28 +447,53 @@
       fehler.hidden = false;
     }
 
+    var MISSLUNGEN = 'Das hat gerade nicht geklappt. Bitte versuchen Sie es noch einmal.';
+
     form.addEventListener('submit', function (e) {
+      /* Ein ausgefülltes Lockfeld heißt: kein Mensch. Wir senden nichts
+         und zeigen trotzdem den Dank, damit der Bot nichts lernt. */
       if (topf && topf.value) { e.preventDefault(); umschalten(danke); return; }
-      if (!fertig(liste)) {
-        e.preventDefault();
-        zurueck(o.unfertig);
-        return;
-      }
+      if (!fertig(liste)) { e.preventDefault(); zurueck(o.unfertig); return; }
       if (laeuft) { e.preventDefault(); return; }
+
       laeuft = true;
       fehler.hidden = true;
       knopf.disabled = true;
       knopf.textContent = 'Wird gesendet …';
-      uhr = setTimeout(function () {
-        if (laeuft) zurueck('Das hat gerade nicht geklappt. Bitte versuchen Sie es noch einmal.');
-      }, 12000);
-      /* kein preventDefault: der Browser schickt das Formular jetzt
-         wirklich ab, Ziel ist der unsichtbare Rahmen. */
+
+      if (liste.art !== 'json') {
+        /* Rahmenweg: kein preventDefault, der Browser schickt das
+           Formular jetzt wirklich ab. Die Uhr fängt den Fall ab, dass
+           nie eine Antwort kommt. */
+        uhr = setTimeout(function () { if (laeuft) zurueck(MISSLUNGEN); }, 12000);
+        return;
+      }
+
+      /* JSON-Weg: wir lesen die Antwort und wissen damit wirklich, ob
+         die Anmeldung angenommen wurde. */
+      e.preventDefault();
+      fetch(liste.ziel, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (d) {
+          if (d && d.success === false) {
+            var grund = d.errors && d.errors[liste.feld];
+            throw new Error(grund || MISSLUNGEN);
+          }
+          laeuft = false;
+          umschalten(danke);
+        })
+        .catch(function (err) {
+          zurueck((err && err.message) || MISSLUNGEN);
+        });
     });
 
     /* Der erste load gilt dem leeren Rahmen beim Seitenaufbau, deshalb
        die Abfrage auf laeuft. */
-    rahmen.addEventListener('load', function () {
+    if (rahmen) rahmen.addEventListener('load', function () {
       if (!laeuft) return;
       laeuft = false;
       clearTimeout(uhr);
