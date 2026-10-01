@@ -4,17 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Dr. med. Raphael R. Bruno</title>
+<title>PD Dr. med. Raphael R. Bruno</title>
+<meta name="description" content="Prävention, verständlich gemacht. Podcast, Buch und Praxis von PD Dr. med. Raphael R. Bruno.">
 
 <!-- ENTWURF. Nicht verlinken, nicht indexieren.
-     Umgesetzt aus dem Claude-Design-Artboard "Landingpage Dr Bruno.dc.html".
-     Offen: Impressumsdaten, Datenschutztext, Podcast-Links, Instagram-Clips,
-     Schriften selbst hosten. Die beiden Formulare sind fertig; es
-     fehlen nur noch die ZIEL-Adressen in ZIELE (siehe unten). -->
+     Umgesetzt aus dem Claude-Design-Artboard "Landingpage Dr Bruno v2.dc.html".
+
+     Offen vor dem Livegang:
+       - Instagram-Clips (vier Platzhalter im Abschnitt Instagram)
+       - Inter selbst hosten, damit keine Verbindung zu Google entsteht
+       - Bildnachweise im Impressum bestätigen
+       - Zieladresse der Buch-Warteliste (eigenes Brevo-Formular)
+       - Zieladresse des Kontaktformulars (Formspree)
+       - Passwortsperre entfernen, noindex entfernen -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300&amp;family=Libre+Franklin:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
 
 <!-- Sperre vor dem ersten Anstrich: ohne sie blitzt die Seite kurz auf,
      bevor das Tor da ist. Wird nach der richtigen Eingabe entfernt. -->
@@ -22,573 +28,945 @@
 
 <style>
   html{scroll-behavior:smooth;scroll-padding-top:110px}
-  body{margin:0;background:#FAF9F7;color:#14171A;-webkit-font-smoothing:antialiased;
-       font-family:'Libre Franklin',system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}
+  body{margin:0;font-family:'Inter',system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+       background:#FAF9F7;color:#14171A;-webkit-font-smoothing:antialiased}
   a{color:#14171A;text-decoration:none}
   a:hover{color:#5A5F64}
-  ::selection{background:#14171A;color:#FAF9F7}
-  .serif{font-family:'Newsreader',Georgia,'Times New Roman',serif;font-weight:300}
-  .knopf{display:inline-flex;gap:14px;align-items:center;font-size:14px;font-weight:500;
-         letter-spacing:.03em;padding:16px 26px;border:1px solid #14171A;border-radius:6px;
-         background:#14171A;color:#FAF9F7;cursor:pointer;transition:background .2s,color .2s}
-  .knopf:hover{background:#FAF9F7;color:#14171A}
-  .navknopf{font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
-            padding:13px 22px;border-radius:6px;background:#14171A;color:#FAF9F7;
-            border:1px solid #14171A;white-space:nowrap;transition:background .2s,color .2s}
-  .navknopf:hover{background:#FFFFFF;color:#14171A}
-  .navlink{white-space:nowrap}
+  ::selection{background:#123540;color:#FAF9F7}
   [hidden]{display:none!important}
+
+  /* Die Maße, die im Entwurf aus dem Zustand kamen, kommen hier aus
+     dem Stylesheet. Dadurch sitzt das Layout schon beim ersten
+     Anstrich richtig, statt nach dem ersten Skriptlauf zu springen.
+     Grenzen wie im Entwurf: schmal unter 760, breit über 1100. */
+  :root{
+    --nav-schub:translateY(0);
+    --nav-schatten:none;
+    --nav-links:flex;
+    --hero-richtung:row;
+    --hero-achse:center;
+    --hero-hoehe:clamp(600px,56vw,800px);
+    --hero-textbreite:min(620px,52%);
+    --hero-polster:clamp(40px,7vw,112px) clamp(28px,6vw,96px);
+    --pod-hoehe:clamp(480px,44vw,720px);
+    --pod-polster:clamp(56px,8vw,120px) clamp(20px,5vw,64px);
+    --buch-position:absolute;
+    --buch-labelbreite:19%;
+    --buch-polster:0;
+    --buch-umbruch:nowrap;
+    --chart-fs:15px;
+  }
+  @media (max-width:1100px){
+    :root{--buch-position:static;--buch-labelbreite:auto;
+          --buch-polster:32px 3.2% 0;--buch-umbruch:normal}
+  }
+  @media (max-width:759px){
+    :root{--nav-links:none;--hero-richtung:column;--hero-achse:stretch;
+          --hero-hoehe:0;--hero-textbreite:100%;--hero-polster:4px 24px 36px;
+          --pod-hoehe:0;--pod-polster:8px 24px 40px;--chart-fs:28px}
+  }
+
+  /* display:contents, damit die Umschalt-Hüllen das Layout der
+     Abschnitte nicht verändern. */
+  .nur-breit{display:contents}
+  .nur-schmal{display:none}
+  .nur-breit-i{display:inline}
+  .nur-schmal-i{display:none}
+  .nur-schmal-svg{display:none}
+  @media (max-width:759px){
+    .nur-breit{display:none}
+    .nur-schmal{display:contents}
+    .nur-breit-i{display:none}
+    .nur-schmal-i{display:inline}
+    .nur-breit-svg{display:none}
+    .nur-schmal-svg{display:inline}
+  }
+  .dg{font-size:var(--chart-fs)}
+
+  /* Platzhalter für die vier Instagram-Clips, bis die Dateien da sind. */
+  .platz{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+         border:1px dashed #C9C5BE;border-radius:14px;background:#F2F0EC;color:#8A8E93;
+         font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+
+  input:focus-visible,textarea:focus-visible,select:focus-visible,
+  button:focus-visible,a:focus-visible{outline:2px solid #123540;outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  /* Instagram im Zwei-Klick-Verfahren: bis zum Klick nur eine eigene
+     Karte, keine Anfrage an Meta. */
+  .reel{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+        justify-content:center;gap:10px;border:1px solid #E3E0DA;border-radius:14px;
+        background:#F2F0EC;color:#14171A;cursor:pointer;font-family:inherit;
+        transition:background .2s,border-color .2s}
+  .reel:hover{background:#FFFFFF;border-color:#123540}
+  .reel-knopf{display:flex;align-items:center;justify-content:center;width:52px;height:52px;
+              border-radius:999px;background:#123540;color:#FFFFFF;font-size:17px;padding-left:3px}
+  .reel-zeile{font-size:14px;font-weight:600;letter-spacing:-.01em}
+  .reel-fuss{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#7A7E83}
+[data-h="h0"]:hover{background:#FFFFFF;color:#14171A}
+[data-h="h1"]:hover{background:#E3E0DA;color:#0B0D0F}
+[data-h="h2"]:hover{color:#C9CCCF}
+[data-h="h3"]:hover{color:#FFFFFF}
+[data-h="h4"]:hover{color:#FFFFFF}
+[data-h="h5"]:hover{color:#5A5F64;border-color:#5A5F64}
+[data-h="h6"]:hover{color:#A3A7AB;border-color:#A3A7AB}
+[data-h="h7"]:hover{color:#A3A7AB;border-color:#A3A7AB}
+[data-h="h8"]:hover{background:#0B0D0F}
+[data-h="h9"]:hover{background:#FAF9F7;color:#14171A}
+[data-h="h10"]:hover{background:#0B0D0F}
+[data-h="h11"]:hover{background:#123540;color:#FAF9F7}
 </style>
 </head>
 <body>
 
-<!-- Entwurfs-Tor. KEIN echter Schutz: das Passwort steht im Quelltext, und
+<!-- Entwurfs-Tor. KEIN echter Schutz: das Passwort steht im Quelltext und
      das Repo ist öffentlich. Es hält nur zufällige Besucher ab. -->
-<div id="tor" style="position:fixed;inset:0;z-index:999;background:#FAF9F7;display:grid;place-items:center;padding:24px">
+<div id="tor" style="position:fixed;inset:0;z-index:999;background:#FAF9F7;display:flex;align-items:center;justify-content:center;padding:24px">
   <form id="tor-form" style="display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center;max-width:22rem">
-    <div class="serif" style="font-size:26px;line-height:1.2">Entwurf</div>
-    <p style="margin:0;font-size:14px;line-height:1.6;color:#5A5F64">Diese Seite ist noch nicht öffentlich.</p>
-    <input id="tor-feld" type="password" autocomplete="off" aria-label="Passwort"
-           style="font-family:inherit;font-size:16px;padding:14px 16px;border:1px solid #D9D5CE;border-radius:6px;background:#FFF;color:#14171A;width:100%;box-sizing:border-box;text-align:center">
-    <button type="submit" class="navknopf" style="cursor:pointer;font-family:inherit">Öffnen</button>
-    <p id="tor-fehler" hidden style="margin:0;font-size:13px;color:#A33">Stimmt nicht.</p>
+    <div style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5A5F64">Entwurf</div>
+    <p style="margin:0;font-size:17px;line-height:1.6;color:#3A3F44">Diese Seite ist noch nicht öffentlich.</p>
+    <input id="tor-feld" type="password" autocomplete="off" aria-label="Passwort" autofocus
+           style="font-family:inherit;font-size:16px;padding:15px 18px;border:1px solid #D9D5CE;border-radius:999px;background:#FFFFFF;color:#14171A;text-align:center;width:100%;box-sizing:border-box">
+    <button type="submit" style="font-family:inherit;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:15px 26px;border:1px solid #14171A;border-radius:999px;background:#123540;color:#FAF9F7;cursor:pointer">Ansehen</button>
+    <p id="tor-fehler" hidden style="margin:0;font-size:15px;color:#7A2016">Das stimmt nicht.</p>
   </form>
 </div>
 
-<script>
-(function () {
-  var WORT = '1000', SCHL = 'bruno-entwurf-frei';
-  var tor = document.getElementById('tor'), sperre = document.getElementById('sperre');
-  function auf() {
-    if (sperre && sperre.parentNode) sperre.parentNode.removeChild(sperre);
-    if (tor && tor.parentNode) tor.parentNode.removeChild(tor);
-  }
-  try { if (sessionStorage.getItem(SCHL) === '1') { auf(); return; } } catch (e) {}
-  document.getElementById('tor-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (document.getElementById('tor-feld').value === WORT) {
-      try { sessionStorage.setItem(SCHL, '1'); } catch (e) {}
-      auf();
-    } else {
-      document.getElementById('tor-fehler').hidden = false;
-      document.getElementById('tor-feld').value = '';
-      document.getElementById('tor-feld').focus();
-    }
-  });
-  document.getElementById('tor-feld').focus();
-})();
-</script>
 
-<header id="kopf" style="position:fixed;top:0;left:0;right:0;z-index:50;padding:16px clamp(12px,2.5vw,32px);pointer-events:none;transition:transform .45s cubic-bezier(.2,.7,.2,1)">
-  <div id="kopfkasten" style="pointer-events:auto;max-width:1400px;margin:0 auto;background:#FFFFFF;border:1px solid #E3E0DA;border-radius:14px;padding:14px clamp(18px,3vw,40px);display:flex;align-items:center;gap:clamp(16px,3vw,40px);transition:box-shadow .3s">
-    <a href="#top" class="serif" style="flex:0 0 auto;font-size:clamp(20px,2vw,28px);letter-spacing:.005em;white-space:nowrap">Dr. Raphael R. Bruno</a>
-    <nav style="flex:1 1 0;min-width:0;display:flex;flex-wrap:wrap;justify-content:flex-end;column-gap:clamp(18px,2.4vw,34px);height:20px;overflow:hidden;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;line-height:20px">
-      <a href="#problem" class="navlink">Das Problem</a>
-      <a href="#arzt" class="navlink">Der Arzt</a>
-      <a href="#plan" class="navlink">Der Plan</a>
-      <a href="#podcast" class="navlink">Podcast</a>
-      <a href="https://www.instagram.com/doktorbruno/" target="_blank" rel="noopener" class="navlink">Instagram ↗</a>
+<header style="position:fixed;top:0;left:0;right:0;z-index:50;padding:16px clamp(12px,2.5vw,32px);pointer-events:none;transition:transform .45s cubic-bezier(.2,.7,.2,1);transform:var(--nav-schub)">
+  <div style="pointer-events:auto;max-width:1400px;margin:0 auto;background:#FFFFFF;border:1px solid #E3E0DA;border-radius:14px;box-shadow:var(--nav-schatten);padding:12px clamp(14px,3vw,40px) 12px clamp(18px,3vw,40px);display:flex;align-items:center;justify-content:space-between;gap:clamp(12px,3vw,40px);transition:box-shadow .3s">
+    <a href="#top" style="flex:0 0 auto;font-family:'Inter',sans-serif;font-weight:500;font-size:clamp(17px,2vw,28px);letter-spacing:.005em;white-space:nowrap">Dr. Raphael R. Bruno</a>
+    <nav style="flex:1 1 0;min-width:0;display:var(--nav-links);flex-wrap:wrap;justify-content:flex-end;column-gap:clamp(18px,2.4vw,34px);height:20px;overflow:hidden;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;line-height:20px">
+      <a href="#podcast" style="white-space:nowrap">Podcast</a>
+      <a href="#buch" style="white-space:nowrap">Buch</a>
+      <a href="#ueber" style="white-space:nowrap">Über Dr. Bruno</a>
+      <a href="https://www.instagram.com/doktorbruno/" target="_blank" rel="noopener" style="white-space:nowrap">Instagram ↗</a>
     </nav>
-    <a href="#kontakt" class="navknopf" style="flex:0 0 auto">Termin vereinbaren</a>
+    <a href="#kontakt" style="flex:0 0 auto;white-space:nowrap;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:13px 22px;border-radius:999px;background:#123540;color:#FAF9F7;border:1px solid #14171A" data-h="h0" id="nav-cta"><span class="nur-breit-i">Kontakt aufnehmen</span><span class="nur-schmal-i">Kontakt</span></a>
   </div>
 </header>
 <div id="top" style="height:clamp(84px,9vw,110px)"></div>
 
-<section style="max-width:1240px;margin:0 auto;padding:clamp(40px,8vw,112px) clamp(20px,5vw,64px) clamp(64px,9vw,128px);display:flex;flex-wrap:wrap;gap:clamp(40px,6vw,96px);align-items:flex-end">
-  <div style="flex:1 1 480px;min-width:0;display:flex;flex-direction:column;gap:48px">
-    <h1 class="serif" style="margin:0;font-size:clamp(38px,5vw,72px);line-height:1.08;letter-spacing:-.015em;text-wrap:pretty">Die meisten erfahren zu spät, dass etwas läuft. Ich finde es früh und sage Ihnen, was Sie dafür nicht kaufen müssen.</h1>
-    <div style="display:flex;flex-direction:column;gap:28px">
-      <p style="margin:0;font-size:14px;letter-spacing:.03em;color:#5A5F64">Facharzt für Innere Medizin und Kardiologie · Düsseldorf</p>
-      <a href="#kontakt" class="knopf" style="align-self:flex-start">Termin vereinbaren <span>→</span></a>
+<section data-screen-label="01 Hero" style="padding:clamp(8px,1.5vw,16px) clamp(12px,2.5vw,32px) 0">
+  <div style="max-width:1400px;margin:0 auto;background:#0B0D0F;color:#FFFFFF;border-radius:24px;overflow:hidden;position:relative;display:flex;flex-direction:var(--hero-richtung);align-items:var(--hero-achse);min-height:var(--hero-hoehe)">
+    <div class="nur-breit">
+      <img src="assets/podcast.webp" alt="Dr. Raphael R. Bruno im Podcast-Studio" style="position:absolute;top:0;bottom:0;right:-14%;left:auto;width:max(114%,1250px);height:100%;object-fit:cover;object-position:100% 30%;display:block">
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,13,15,.94) 0%,rgba(11,13,15,.85) 30%,rgba(11,13,15,.65) 50%,rgba(11,13,15,.25) 66%,rgba(11,13,15,0) 80%),linear-gradient(0deg,rgba(11,13,15,.55) 0%,rgba(11,13,15,0) 35%);pointer-events:none"></div>
     </div>
-  </div>
-  <div style="flex:0 1 460px;min-width:260px;aspect-ratio:1/1;overflow:hidden;background:#ECEAE6">
-    <img src="assets/portrait.webp" alt="Dr. Raphael R. Bruno" style="width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block">
-  </div>
-</section>
-
-<section id="problem" style="border-top:1px solid #E3E0DA">
-  <div style="max-width:1240px;margin:0 auto;padding:clamp(72px,10vw,144px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:40px clamp(40px,6vw,96px)">
-    <div style="flex:3 1 520px;min-width:0;display:flex;flex-direction:column;gap:clamp(48px,6vw,72px)">
-      <h2 class="serif" style="margin:0;font-size:clamp(36px,4.4vw,62px);line-height:1.08;letter-spacing:-.015em;max-width:820px;text-wrap:pretty">Zwanzig Jahre, in denen man nichts merkt.</h2>
-      <div style="display:flex;flex-direction:column;gap:24px;max-width:680px;font-size:18px;line-height:1.7;text-wrap:pretty">
-        <p style="margin:0">Herz-Kreislauf-Erkrankungen, Typ-2-Diabetes, Krebs und Demenz entscheiden über die meisten Jahre, die man verliert. Alle vier beginnen etwa zwei Jahrzehnte vor der Diagnose.</p>
-        <p style="margin:0">In dieser Zeit merkt man nichts. Kein Schmerz, kein Symptom, oft ein unauffälliger Check-up.</p>
-        <p style="margin:0">Und die üblichen Risikoscores finden die meisten, bei denen bereits etwas läuft, nicht.</p>
+    <div class="nur-schmal">
+      <div style="position:relative;height:min(108vw,460px);overflow:hidden">
+        <img src="assets/podcast.webp" alt="Dr. Raphael R. Bruno im Podcast-Studio" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:76% 25%;display:block">
+        <div style="position:absolute;inset:0;background:linear-gradient(0deg,#0B0D0F 0%,rgba(11,13,15,.6) 22%,rgba(11,13,15,0) 50%);pointer-events:none"></div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px 28px">
-        <div style="border-top:1px solid oklch(0.6 0.1 25);padding-top:18px;display:flex;flex-direction:column;gap:10px"><div style="font-size:13px;font-weight:500;letter-spacing:.04em">Herz und Gefäße</div><p style="margin:0;font-size:14px;line-height:1.6;color:#5A5F64">Ablagerungen in der Gefäßwand, lange bevor ein Infarkt oder Schlaganfall passiert.</p></div>
-        <div style="border-top:1px solid oklch(0.6 0.1 85);padding-top:18px;display:flex;flex-direction:column;gap:10px"><div style="font-size:13px;font-weight:500;letter-spacing:.04em">Stoffwechsel</div><p style="margin:0;font-size:14px;line-height:1.6;color:#5A5F64">Insulinresistenz, Jahre bevor der Nüchternblutzucker auffällig wird.</p></div>
-        <div style="border-top:1px solid oklch(0.6 0.1 160);padding-top:18px;display:flex;flex-direction:column;gap:10px"><div style="font-size:13px;font-weight:500;letter-spacing:.04em">Krebs</div><p style="margin:0;font-size:14px;line-height:1.6;color:#5A5F64">Viele Formen verlaufen lange ohne Beschwerden und sind früh besser behandelbar.</p></div>
-        <div style="border-top:1px solid oklch(0.6 0.1 260);padding-top:18px;display:flex;flex-direction:column;gap:10px"><div style="font-size:13px;font-weight:500;letter-spacing:.04em">Gehirn</div><p style="margin:0;font-size:14px;line-height:1.6;color:#5A5F64">Veränderungen, die lange vor den ersten Gedächtnislücken beginnen.</p></div>
+    </div>
+    <div style="flex:0 1 auto;width:var(--hero-textbreite);min-width:0;padding:var(--hero-polster);display:flex;flex-direction:column;justify-content:center;gap:clamp(28px,3vw,40px);position:relative;z-index:1">
+      <h1 style="margin:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(42px,5.4vw,84px);line-height:1.02;letter-spacing:-.035em;text-wrap:balance">Prävention, verständlich gemacht.</h1>
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:520px">
+        <p style="margin:0;font-size:clamp(17px,1.4vw,20px);line-height:1.6;color:#E3E5E7;text-wrap:pretty">Was die Forschung über ein langes, gesundes Leben weiß und was davon im Alltag wirklich zählt.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px">
+        <a href="#kontakt" style="display:flex;gap:14px;align-items:center;font-size:15px;font-weight:600;padding:18px 30px;border-radius:999px;background:#FFFFFF;color:#0B0D0F" data-h="h1">Kontakt aufnehmen <span>→</span></a>
+        <a href="#newsletter" style="font-size:15px;font-weight:600;color:#FFFFFF;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:3px" data-h="h2">Newsletter abonnieren</a>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 22px;padding-top:clamp(8px,1.5vw,20px);border-top:1px solid rgba(255,255,255,.14);font-size:13px;color:#A3A7AB">
+        <a href="https://www.instagram.com/doktorbruno/" target="_blank" rel="noopener" style="color:#C9CCCF" data-h="h3">Instagram ↗</a>
+        <a href="https://www.youtube.com/@DocRRBruno" target="_blank" rel="noopener" style="color:#C9CCCF" data-h="h4">YouTube ↗</a>
       </div>
     </div>
   </div>
 </section>
 
-<section id="arzt" style="border-top:1px solid #E3E0DA">
+<section id="problem" data-screen-label="Problem">
+  <div style="max-width:1240px;margin:0 auto;padding:clamp(80px,11vw,160px) clamp(20px,5vw,64px);display:flex;flex-direction:column;gap:clamp(48px,6vw,80px)">
+    <div style="display:flex;flex-wrap:wrap;gap:32px clamp(40px,6vw,96px);align-items:flex-end">
+      <h2 style="flex:1.2 1 440px;min-width:0;margin:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(38px,4.8vw,68px);line-height:1.02;letter-spacing:-.035em;text-wrap:balance">Länger leben ist das eine. Länger gesund leben das andere.</h2>
+      <div style="flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:18px;font-size:17px;line-height:1.7;color:#3A3F44;text-wrap:pretty">
+        <p style="margin:0">Herz-Kreislauf-Erkrankungen, Typ-2-Diabetes, Krebs und Demenz entscheiden über die meisten Jahre, die man verliert. Alle vier beginnen etwa zwei Jahrzehnte vor der Diagnose, meist ohne Symptome.</p>
+        <p style="margin:0">Prävention setzt in dieser Zeit an. Sie verschiebt den Abfall nach hinten und macht ihn kürzer.</p>
+      </div>
+    </div>
+    <div style="background:#FFFFFF;border:1px solid #E3E0DA;border-radius:24px;padding:clamp(20px,4vw,56px) clamp(16px,4vw,56px) clamp(20px,3vw,40px);display:flex;flex-direction:column;gap:20px">
+      <svg data-chart-root="1" viewBox="0 0 1000 410" style="width:100%;height:auto;display:block;font-family:'Inter',sans-serif;overflow:visible" role="img" aria-label="Mit Prävention bleibt die Gesundheit länger hoch und die Lebensspanne ist länger.">
+          <defs><linearGradient id="gapGrad" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#B9D3B0"></stop><stop offset="0.55" stop-color="#7FB8C0"></stop><stop offset="1" stop-color="#A9CBE6"></stop></linearGradient></defs>
+          <line x1="80" x2="960" y1="360" y2="360" stroke="#D9D5CE" stroke-width="1"></line>
+          <path data-chart="area" d="M80.0,43.2 C121.9,44.8 258.1,49.1 331.4,52.8 C404.8,56.5 467.6,60.3 520.0,65.6 C572.4,70.9 610.1,76.3 645.7,84.8 C681.3,93.3 710.7,102.9 733.7,116.8 C756.8,130.7 770.4,144.5 784.0,168.0 C797.6,191.5 807.0,225.6 815.4,257.6 C823.8,289.6 831.1,342.9 834.3,360.0 L670.9,360.0 C668.8,354.7 666.7,342.9 658.3,328.0 C649.9,313.1 637.3,290.7 620.6,270.4 C603.8,250.1 580.8,226.7 557.7,206.4 C534.7,186.1 509.5,166.4 482.3,148.8 C455.0,131.2 429.9,114.7 394.3,100.8 C358.7,86.9 321.0,74.7 268.6,65.6 C216.2,56.5 111.4,49.6 80.0,46.4 Z" fill="url(#gapGrad)" fill-opacity="0.55" style="opacity:0;transition:none"></path>
+          <path data-chart="w" d="M80.0,46.4 C111.4,49.6 216.2,56.5 268.6,65.6 C321.0,74.7 358.7,86.9 394.3,100.8 C429.9,114.7 455.0,131.2 482.3,148.8 C509.5,166.4 534.7,186.1 557.7,206.4 C580.8,226.7 603.8,250.1 620.6,270.4 C637.3,290.7 649.9,313.1 658.3,328.0 C666.7,342.9 668.8,354.7 670.9,360.0" pathLength="1" fill="none" stroke="#A7B4B8" stroke-width="2" stroke-linecap="round" style="stroke-dasharray:1;stroke-dashoffset:1"></path>
+          <path data-chart="p" d="M80.0,43.2 C121.9,44.8 258.1,49.1 331.4,52.8 C404.8,56.5 467.6,60.3 520.0,65.6 C572.4,70.9 610.1,76.3 645.7,84.8 C681.3,93.3 710.7,102.9 733.7,116.8 C756.8,130.7 770.4,144.5 784.0,168.0 C797.6,191.5 807.0,225.6 815.4,257.6 C823.8,289.6 831.1,342.9 834.3,360.0" pathLength="1" fill="none" stroke="#123540" stroke-width="3" stroke-linecap="round" style="stroke-dasharray:1;stroke-dashoffset:1"></path>
+          <circle data-chart="dw" cx="670.9" cy="360.0" r="5" fill="#A7B4B8" style="opacity:0;transition:none"></circle>
+          <circle data-chart="dp" cx="834.3" cy="360.0" r="6" fill="#123540" style="opacity:0;transition:none"></circle>
+          <g data-chart="labels" style="opacity:0;transition:none">
+            <text x="716.1" y="200" text-anchor="middle" class="dg" font-weight="600" fill="#14171A">Gewonnene</text>
+            <text x="716.1" y="220" text-anchor="middle" class="dg nur-breit-svg" font-weight="600" fill="#14171A">gesunde Jahre</text><text x="716.1" y="234" text-anchor="middle" class="dg nur-schmal-svg" font-weight="600" fill="#14171A">gesunde Jahre</text>
+            <text x="432.0" y="45.599999999999966" class="dg" font-weight="600" fill="#123540">Mit Prävention</text>
+            <text x="205.7" y="116.8" class="dg" font-weight="500" fill="#8A8E93">Ohne Prävention</text>
+          </g>
+          <text x="205.7" y="392" text-anchor="middle" class="dg" fill="#9A9EA3">40</text><text x="457.1" y="392" text-anchor="middle" class="dg" fill="#9A9EA3">60</text><text x="708.6" y="392" text-anchor="middle" class="dg" fill="#9A9EA3">80</text><text x="960.0" y="392" text-anchor="middle" class="dg" fill="#9A9EA3">100</text>
+          <text x="960" y="392" text-anchor="end" class="dg" fill="#9A9EA3" dx="0" dy="0" style="display:none">Alter</text>
+          <text x="80" y="392" class="dg" fill="#9A9EA3">Alter</text>
+        </svg>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:28px clamp(24px,4vw,56px)">
+      <div style="border-top:2px solid #A7B4B8;padding-top:18px;display:flex;flex-direction:column;gap:10px"><div style="font-size:17px;font-weight:600;letter-spacing:-.035em">Lebensspanne</div><p style="margin:0;font-size:15px;line-height:1.65;color:#5A5F64;text-wrap:pretty">Wie viele Jahre Sie leben.</p></div>
+      <div style="border-top:3px solid #123540;padding-top:18px;display:flex;flex-direction:column;gap:10px"><div style="font-size:17px;font-weight:600;letter-spacing:-.035em">Gesundheitsspanne</div><p style="margin:0;font-size:15px;line-height:1.65;color:#5A5F64;text-wrap:pretty">Wie viele dieser Jahre Sie gesund, beweglich und geistig klar verbringen.</p></div>
+      <div style="border-top:3px solid #7FB8C0;padding-top:18px;display:flex;flex-direction:column;gap:10px"><div style="font-size:17px;font-weight:600;letter-spacing:-.035em">Die Lücke</div><p style="margin:0;font-size:15px;line-height:1.65;color:#5A5F64;text-wrap:pretty">In Deutschland liegt sie im Schnitt bei mehr als elf Jahren. Genau hier setzt Prävention an.</p></div>
+    </div>
+    <p style="margin:0;font-size:12px;line-height:1.6;color:#7A7E83">Quelle: <a href="https://data.who.int/countries/276" target="_blank" rel="noopener" style="color:#7A7E83;text-decoration:underline;text-underline-offset:3px">WHO, Global Health Estimates 2019</a>. Lebenserwartung in Deutschland 81,0 Jahre, gesunde Lebenserwartung 69,4 Jahre.</p>
+  </div>
+  </div>
+</section>
+
+<section id="arzt" data-screen-label="03 Der Arzt" style="border-top:1px solid #E3E0DA">
   <div style="max-width:1240px;margin:0 auto;padding:clamp(72px,10vw,144px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:40px clamp(40px,6vw,96px)">
     <div style="flex:3 1 520px;min-width:0;display:flex;flex-wrap:wrap;gap:40px clamp(32px,5vw,72px);align-items:flex-start">
-      <div style="flex:1 1 280px;min-width:0;aspect-ratio:4/5;overflow:hidden;border-radius:6px;background:#ECEAE6">
-        <img src="assets/anzug.png" alt="Dr. Raphael R. Bruno" style="width:100%;height:100%;object-fit:cover;object-position:45% 20%;display:block">
+      <div style="flex:1 1 280px;min-width:0;aspect-ratio:4/5;overflow:hidden;border-radius:20px;background:#ECEAE6">
+        <img src="assets/anzug.webp" alt="Dr. Raphael R. Bruno" style="width:100%;height:100%;object-fit:cover;object-position:45% 20%;display:block">
       </div>
       <div style="flex:1.4 1 360px;min-width:0;display:flex;flex-direction:column;gap:40px">
-        <blockquote class="serif" style="margin:0;font-style:italic;font-size:clamp(28px,3vw,42px);line-height:1.2;letter-spacing:-.01em;max-width:880px;text-wrap:pretty">„Ich habe gesehen, wie es ausgeht, und ich habe die Laborzettel gesehen, die es Jahre vorher gesagt hätten."</blockquote>
-        <div style="display:flex;flex-direction:column;gap:20px;max-width:560px;font-size:16px;line-height:1.7">
-          <p style="margin:0">Vor der Prävention war ich auf der Intensivstation und im Notarztdienst. Dort kommen die Menschen an, bei denen es zwanzig Jahre lang unbemerkt lief.</p>
-          <p style="margin:0">Der Wechsel in die Prävention war deshalb kein Karriereschritt, sondern die Konsequenz. Ich habe drei Kinder, lange im Schichtdienst gearbeitet, und abends stehe ich genauso vor dem Kühlschrank wie Sie.</p>
-        </div>
+      <blockquote style="margin:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(28px,3vw,42px);line-height:1.2;letter-spacing:-.035em;max-width:880px;text-wrap:pretty">„Auf der Intensivstation sieht man, wie Krankheiten enden. Deshalb weiß ich, worauf man Jahre vorher achten muss.“</blockquote>
+      <div style="display:flex;flex-direction:column;gap:20px;max-width:560px;font-size:16px;line-height:1.7">
+        <p style="margin:0">Über viele Jahre war ich als Oberarzt in der Kardiologie sowie in der Notfall- und Intensivmedizin tätig. Diese Erfahrung bestimmt heute, welche Untersuchungen ich empfehle und wie ich Befunde einordne.</p>
+        <p style="margin:0">Dieses Wissen teile ich jede Woche im Podcast, auf Instagram und auf YouTube. Verständlich, ohne Panikmache und immer mit Blick auf die Studienlage.</p>
+      </div>
+      <a href="#ueber" style="align-self:flex-start;font-size:15px;font-weight:600;color:#123540;border-bottom:1px solid #123540;padding-bottom:3px" data-h="h5">Mehr über Dr. Bruno</a>
       </div>
     </div>
   </div>
 </section>
 
-<section id="plan" style="background:#14171A;color:#FAF9F7">
-  <div style="max-width:1240px;margin:0 auto;padding:clamp(80px,11vw,160px) clamp(20px,5vw,64px)">
+<section id="plan" data-screen-label="04 Der Plan" style="padding:0 clamp(12px,2.5vw,32px)">
+  <div style="max-width:1400px;margin:0 auto;background:#123540;color:#FFFFFF;border-radius:24px;padding:clamp(56px,8vw,120px) clamp(28px,6vw,96px)">
     <div style="display:flex;flex-direction:column">
-      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px clamp(24px,5vw,80px);padding:clamp(28px,4vw,48px) 0;border-top:1px solid oklch(0.6 0.1 25)">
-        <div class="serif" style="flex:0 0 clamp(60px,9vw,140px);font-size:clamp(64px,9vw,140px);line-height:.85">1</div>
-        <div class="serif" style="flex:1 1 420px;min-width:0;font-size:clamp(30px,4.2vw,60px);line-height:1.1;letter-spacing:-.01em;text-wrap:pretty">Miss, was du selbst messen kannst.</div>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px clamp(24px,5vw,80px);padding:clamp(28px,4vw,48px) 0;border-top:1px solid #B9D3B0">
+        <div style="flex:0 0 clamp(60px,9vw,140px);font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(64px,9vw,140px);line-height:.85;color:#FAF9F7;letter-spacing:-.035em">1</div>
+        <div style="flex:1 1 420px;min-width:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(30px,4.2vw,60px);line-height:1.1;letter-spacing:-.035em;text-wrap:pretty">Das ganze System verstehen.</div>
       </div>
-      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px clamp(24px,5vw,80px);padding:clamp(28px,4vw,48px) 0;border-top:1px solid oklch(0.6 0.1 85)">
-        <div class="serif" style="flex:0 0 clamp(60px,9vw,140px);font-size:clamp(64px,9vw,140px);line-height:.85">2</div>
-        <div class="serif" style="flex:1 1 420px;min-width:0;font-size:clamp(30px,4.2vw,60px);line-height:1.1;letter-spacing:-.01em;text-wrap:pretty">Lass messen, was still verläuft.</div>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px clamp(24px,5vw,80px);padding:clamp(28px,4vw,48px) 0;border-top:1px solid #7FB8C0">
+        <div style="flex:0 0 clamp(60px,9vw,140px);font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(64px,9vw,140px);line-height:.85;color:#FAF9F7;letter-spacing:-.035em">2</div>
+        <div style="flex:1 1 420px;min-width:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(30px,4.2vw,60px);line-height:1.1;letter-spacing:-.035em;text-wrap:pretty">Früh messen, was still verläuft.</div>
       </div>
-      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px clamp(24px,5vw,80px);padding:clamp(28px,4vw,48px) 0;border-top:1px solid oklch(0.6 0.1 160);border-bottom:1px solid oklch(0.6 0.1 260)">
-        <div class="serif" style="flex:0 0 clamp(60px,9vw,140px);font-size:clamp(64px,9vw,140px);line-height:.85">3</div>
-        <div class="serif" style="flex:1 1 420px;min-width:0;font-size:clamp(30px,4.2vw,60px);line-height:1.1;letter-spacing:-.01em;text-wrap:pretty">Nimm den größten Hebel zuerst und lass den Rest.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div style="max-width:1240px;margin:0 auto;padding:clamp(72px,10vw,144px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:40px clamp(40px,6vw,96px)">
-    <div style="flex:3 1 520px;min-width:0;display:flex;flex-direction:column">
-      <p class="serif" style="margin:0;padding:28px 0;border-top:1px solid #14171A;font-size:clamp(28px,3.2vw,44px);line-height:1.15">Ich verkaufe keine Präparate.</p>
-      <p class="serif" style="margin:0;padding:28px 0;border-top:1px solid #E3E0DA;font-size:clamp(28px,3.2vw,44px);line-height:1.15">Ich sage Ihnen, was Sie weglassen können.</p>
-      <p class="serif" style="margin:0;padding:28px 0;border-top:1px solid #E3E0DA;border-bottom:1px solid #E3E0DA;font-size:clamp(28px,3.2vw,44px);line-height:1.15">Ich sage Ihnen, was ich nicht weiß.</p>
-      <div style="margin-top:40px;display:flex;flex-wrap:wrap;gap:12px 32px;max-width:720px">
-        <div style="flex:0 0 auto;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding-top:4px">Offenlegung</div>
-        <p style="margin:0;flex:1 1 320px;font-size:16px;line-height:1.7">Ich betreibe in Düsseldorf eine Privatpraxis für genau diese Medizin und verdiene daran.</p>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px clamp(24px,5vw,80px);padding:clamp(28px,4vw,48px) 0;border-top:1px solid #A9CBE6;border-bottom:1px solid #A9CBE6">
+        <div style="flex:0 0 clamp(60px,9vw,140px);font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(64px,9vw,140px);line-height:.85;color:#FAF9F7;letter-spacing:-.035em">3</div>
+        <div style="flex:1 1 420px;min-width:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(30px,4.2vw,60px);line-height:1.1;letter-spacing:-.035em;text-wrap:pretty">Gezielt handeln, Schritt für Schritt.</div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="podcast" style="background:#14171A;color:#FAF9F7;position:relative;overflow:hidden">
-  <img src="assets/podcast.png" alt="Dr. Bruno im Podcast-Studio" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:92% 30%;display:block">
-  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,23,26,.94) 0%,rgba(20,23,26,.78) 35%,rgba(20,23,26,.5) 55%,rgba(20,23,26,0) 82%);pointer-events:none"></div>
-  <div style="position:relative;max-width:1240px;margin:0 auto;min-height:clamp(480px,44vw,720px);display:flex;align-items:center">
-    <div style="max-width:520px;padding:clamp(56px,8vw,120px) clamp(20px,5vw,64px);display:flex;flex-direction:column;justify-content:center;gap:28px;position:relative;z-index:1">
-      <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#A3A7AB">Podcast · Second Opinion</div>
-      <h2 class="serif" style="margin:0;font-size:clamp(38px,4.6vw,66px);line-height:1.05;letter-spacing:-.015em;max-width:520px">Jeden Mittwoch eine zweite Meinung.</h2>
+<section id="felder" data-screen-label="Fachgebiete">
+  <div style="max-width:1240px;margin:0 auto;padding:clamp(80px,11vw,160px) clamp(20px,5vw,64px);display:flex;flex-direction:column;gap:clamp(40px,5vw,64px)">
+    <div style="display:flex;flex-wrap:wrap;gap:24px clamp(40px,6vw,96px);align-items:flex-end">
+      <h2 style="flex:1.2 1 440px;min-width:0;margin:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(38px,4.8vw,68px);line-height:1.02;letter-spacing:-.035em;text-wrap:balance">Prävention ist mehr als ein Laborwert.</h2>
+      <p style="flex:1 1 340px;min-width:0;margin:0;font-size:17px;line-height:1.7;color:#3A3F44;text-wrap:pretty">Jedes Fachgebiet sieht einen Ausschnitt. Erst zusammen ergeben sie ein Bild davon, wie es Ihrem Körper wirklich geht.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px">
+      <div style="background:#FFFFFF;border:1px solid #E3E0DA;border-radius:20px;padding:clamp(24px,2.6vw,36px);display:flex;flex-direction:column;gap:12px"><div style="font-size:20px;font-weight:600;letter-spacing:-.035em">Kardiologie</div><p style="margin:0;font-size:15px;line-height:1.65;color:#5A5F64;text-wrap:pretty">Herzfunktion, Rhythmus und Gefäße. Vom Ultraschall bis zur Belastungsuntersuchung.</p></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E0DA;border-radius:20px;padding:clamp(24px,2.6vw,36px);display:flex;flex-direction:column;gap:12px"><div style="font-size:20px;font-weight:600;letter-spacing:-.035em">Lipidologie</div><p style="margin:0;font-size:15px;line-height:1.65;color:#5A5F64;text-wrap:pretty">Cholesterin, Lipoprotein(a) und Fettstoffwechsel. Die Werte, die Gefäße über Jahrzehnte prägen.</p></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E0DA;border-radius:20px;padding:clamp(24px,2.6vw,36px);display:flex;flex-direction:column;gap:12px"><div style="font-size:20px;font-weight:600;letter-spacing:-.035em">Hypertensiologie</div><p style="margin:0;font-size:15px;line-height:1.65;color:#5A5F64;text-wrap:pretty">Blutdruck über 24 Stunden, nicht nur im Moment der Messung.</p></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E0DA;border-radius:20px;padding:clamp(24px,2.6vw,36px);display:flex;flex-direction:column;gap:12px"><div style="font-size:20px;font-weight:600;letter-spacing:-.035em">Sportmedizin</div><p style="margin:0;font-size:15px;line-height:1.65;color:#5A5F64;text-wrap:pretty">Leistungsdiagnostik, Spiroergometrie und Training, das zum Herzen passt.</p></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E0DA;border-radius:20px;padding:clamp(24px,2.6vw,36px);display:flex;flex-direction:column;gap:12px"><div style="font-size:20px;font-weight:600;letter-spacing:-.035em">Schlafmedizin</div><p style="margin:0;font-size:15px;line-height:1.65;color:#5A5F64;text-wrap:pretty">Schlaf als Risikofaktor für Herz, Stoffwechsel und Gehirn.</p></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E0DA;border-radius:20px;padding:clamp(24px,2.6vw,36px);display:flex;flex-direction:column;gap:12px"><div style="font-size:20px;font-weight:600;letter-spacing:-.035em">Bildgebung</div><p style="margin:0;font-size:15px;line-height:1.65;color:#5A5F64;text-wrap:pretty">Herz-MRT und Herz-CT, wenn sie die Entscheidung wirklich verändern.</p></div>
+    </div>
+
+  </div>
+</section>
+
+
+<div style="height:clamp(12px,2vw,24px)"></div>
+<section id="podcast" data-screen-label="Podcast" style="padding:0 clamp(12px,2.5vw,32px)">
+<div style="max-width:1400px;margin:0 auto;background:#0B0D0F;color:#FFFFFF;position:relative;overflow:hidden;border-radius:24px">
+  <div class="nur-breit">
+    <img src="assets/podcast.webp" alt="Dr. Bruno im Podcast-Studio" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:92% 30%;display:block">
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,13,15,.95) 0%,rgba(11,13,15,.8) 35%,rgba(11,13,15,.5) 55%,rgba(11,13,15,0) 82%);pointer-events:none"></div>
+  </div>
+  <div class="nur-schmal">
+    <div style="position:relative;height:min(90vw,380px);overflow:hidden">
+      <img src="assets/podcast.webp" alt="Dr. Bruno im Podcast-Studio" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:76% 25%;display:block">
+      <div style="position:absolute;inset:0;background:linear-gradient(0deg,#0B0D0F 0%,rgba(11,13,15,.6) 22%,rgba(11,13,15,0) 50%);pointer-events:none"></div>
+    </div>
+  </div>
+  <div style="position:relative;max-width:1240px;margin:0 auto;min-height:var(--pod-hoehe);display:flex;align-items:center">
+    <div style="max-width:520px;padding:var(--pod-polster);display:flex;flex-direction:column;justify-content:center;gap:24px;position:relative;z-index:1">
+      <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#A3A7AB;font-weight:600">Podcast „Second Opinion“</div>
+      <h2 style="margin:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(38px,4.8vw,68px);line-height:1.05;letter-spacing:-.035em;max-width:520px">Jeden Mittwoch Ihre Zweitmeinung auf die Ohren.</h2>
       <p style="margin:0;font-size:16px;line-height:1.7;color:#C9CCCF;max-width:440px">Dr. Bruno ist wöchentlich Gast im Podcast Second Opinion.</p>
       <div style="display:flex;gap:28px;flex-wrap:wrap;font-size:14px;font-weight:500;letter-spacing:.03em">
-        <a href="#" data-offen="Spotify-Link" style="color:#FAF9F7;border-bottom:1px solid #FAF9F7;padding-bottom:4px">Spotify →</a>
-        <a href="#" data-offen="YouTube-Link" style="color:#FAF9F7;border-bottom:1px solid #FAF9F7;padding-bottom:4px">YouTube →</a>
-        <a href="#" data-offen="Apple-Podcasts-Link" style="color:#FAF9F7;border-bottom:1px solid #FAF9F7;padding-bottom:4px">Apple Podcasts →</a>
+        <a href="https://open.spotify.com/show/033fkNLmr1WDIqct9d7LZF" target="_blank" rel="noopener" style="color:#FAF9F7;border-bottom:1px solid #FAF9F7;padding-bottom:4px" data-h="h6">Spotify →</a>
+        <a href="https://www.youtube.com/@DocRRBruno" target="_blank" rel="noopener" style="color:#FAF9F7;border-bottom:1px solid #FAF9F7;padding-bottom:4px" data-h="h7">YouTube →</a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+</div>
+
+<section id="buch" data-screen-label="Buch" style="overflow:hidden;padding:clamp(96px,10vw,160px) clamp(12px,2.5vw,32px) clamp(48px,6vw,96px)">
+  <div style="max-width:1400px;margin:0 auto">
+    <div style="position:relative;width:106.47%;margin-left:-3.235%">
+      <div style="position:var(--buch-position);left:3.2%;top:16%;width:var(--buch-labelbreite);font-size:clamp(13px,1.15vw,18px);font-weight:600;letter-spacing:.22em;text-transform:uppercase;line-height:1.5;color:#123540;padding:var(--buch-polster)">Coming soon<br>2027</div>
+      <img src="assets/buch-2027.webp" alt="Das Buch von PD Dr. med. Raphael R. Bruno, erscheint 2027" style="width:100%;height:auto;display:block">
+      <div style="position:var(--buch-position);left:49%;right:3.2%;top:auto;bottom:calc(59.5% + clamp(16px,2vw,32px));display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;gap:16px;padding:var(--buch-polster);color:#123540">
+        <h2 style="margin:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(30px,2.75vw,44px);line-height:1.04;letter-spacing:-.04em;white-space:var(--buch-umbruch);text-wrap:balance">One book to replace them all.</h2>
+        <p style="margin:0;font-size:16px;line-height:1.6;max-width:640px;color:#244B58;text-wrap:pretty">Zu Longevity gibt es unzählige Bücher, Protokolle und Versprechen. Dieses Buch ordnet sie ein und zeigt, was die Studienlage wirklich trägt.</p>
+        <div id="wl-knopfblock" style="display:contents">
+        <button id="wl-knopf" style="margin-top:6px;display:flex;gap:14px;align-items:center;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;padding:18px 30px;border:none;border-radius:999px;background:#123540;color:#FFFFFF;cursor:pointer" data-h="h8">Auf die Warteliste <span>→</span></button>
+      </div>
+      <div id="wl-block" hidden style="display:contents">
+        <form id="wl-form" style="margin-top:6px;width:100%;max-width:480px;display:flex;flex-wrap:wrap;gap:10px">
+          <input type="email" required name="EMAIL" placeholder="Ihre E-Mail-Adresse" aria-label="E-Mail-Adresse" style="flex:1 1 220px;min-width:0;font-family:'Inter',sans-serif;font-size:15px;padding:15px 18px;border:1px solid rgba(18,53,64,.18);border-radius:999px;background:rgba(255,255,255,.85);color:#14171A">
+          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"><button type="submit" style="flex:0 0 auto;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;padding:15px 24px;border:none;border-radius:999px;background:#123540;color:#FFFFFF;cursor:pointer">Eintragen</button>
+        </form>
+      </div>
+      <p id="wl-fehler" hidden role="status" aria-live="polite" style="margin:6px 0 0;font-size:15px;line-height:1.6;max-width:480px;color:#7A2016;font-weight:500"></p><div id="wl-danke" hidden style="display:contents">
+        <p style="margin:6px 0 0;font-family:'Inter',sans-serif;font-weight:500;font-size:22px;line-height:1.4;max-width:480px">Danke. Sie erfahren es als Erste, wenn das Buch erscheint.</p>
+      </div>
       </div>
     </div>
   </div>
 </section>
 
-<section style="border-bottom:1px solid #E3E0DA">
+<section id="stimmen" data-screen-label="Stimmen">
+  <div style="max-width:1240px;margin:0 auto;padding:clamp(72px,10vw,144px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:48px clamp(40px,6vw,96px);align-items:center">
+    <div style="flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:24px">
+      <h2 style="margin:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(38px,4.8vw,68px);line-height:1.04;letter-spacing:-.035em;text-wrap:balance">Was Patientinnen und Patienten sagen.</h2>
+      <p style="margin:0;font-size:17px;line-height:1.7;max-width:440px;color:#3A3F44;text-wrap:pretty">Stimmen aus der Praxis.</p>
+
+    </div>
+    <div id="stimmen-fenster" style="flex:1.3 1 440px;min-width:0;height:clamp(520px,52vw,680px);overflow:hidden;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 80%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 80%,transparent 100%)">
+      <div data-track="reviews" style="display:flex;flex-direction:column;gap:20px;will-change:transform">
+        <template id="vorlage-stimme">
+          <div style="background:#FFFFFF;border:1px solid #E3E0DA;border-radius:6px;padding:clamp(28px,3vw,40px);display:flex;flex-direction:column;gap:20px">
+            <div style="font-size:18px;letter-spacing:.12em;color:#14171A">★★★★★</div>
+            <p data-feld="text" style="margin:0;font-family:'Inter',sans-serif;font-weight:500;font-size:clamp(21px,2vw,26px);line-height:1.4;text-wrap:pretty"></p>
+            <div data-feld="name" style="font-size:13px;font-weight:500"></div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section id="newsletter" data-screen-label="Newsletter" style="padding:0 clamp(12px,2.5vw,32px) clamp(48px,6vw,96px)">
+  <div style="max-width:1400px;margin:0 auto;background:linear-gradient(110deg,#C6DBBC 0%,#9FCAD1 45%,#CFE3F3 100%);border-radius:24px;padding:clamp(64px,9vw,128px) clamp(24px,6vw,96px);display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px">
+    <h2 style="margin:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(38px,4.8vw,68px);line-height:1.04;letter-spacing:-.035em;text-wrap:balance">Evidenzbasierte Prävention, direkt in Ihr Postfach.</h2>
+    <p style="margin:0;font-size:17px;line-height:1.7;max-width:560px;text-wrap:pretty">Regelmäßig die neuesten Tipps und Ratgeber. Was die Studienlage sagt und wie Sie es im Alltag umsetzen.</p>
+    <div id="nl-danke" hidden style="display:contents">
+      <p style="margin:16px 0 0;font-family:'Inter',sans-serif;font-weight:600;font-size:24px;line-height:1.4;max-width:560px;letter-spacing:-.035em">Danke. Bitte bestätigen Sie Ihre Anmeldung über den Link in der E-Mail, die wir Ihnen gerade geschickt haben.</p>
+    </div>
+    <p id="nl-fehler" hidden role="status" aria-live="polite" style="margin:0;font-size:16px;line-height:1.6;max-width:560px;color:#7A2016;font-weight:500"></p><div id="nl-block" style="display:contents">
+      <form id="nl-form" style="margin-top:16px;width:100%;max-width:620px;display:flex;flex-wrap:wrap;gap:12px;margin-left:auto;margin-right:auto">
+        <input type="email" required placeholder="Ihre E-Mail-Adresse" name="EMAIL" aria-label="E-Mail-Adresse" style="flex:1 1 280px;min-width:0;font-family:'Inter',sans-serif;font-size:16px;padding:17px 20px;border:1px solid #D9D5CE;border-radius:999px;background:#FFFFFF;color:#14171A">
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"><button type="submit" style="flex:0 0 auto;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:17px 28px;border:1px solid #14171A;border-radius:999px;background:#123540;color:#FAF9F7;cursor:pointer" data-h="h9">Eintragen</button>
+      </form>
+      <p style="margin:0;font-size:13px;line-height:1.6;color:#5A5F64">Abmeldung jederzeit mit einem Klick. Hinweise zur Verarbeitung in der <a href="#" data-modal="datenschutz" style="color:#5A5F64;border-bottom:1px solid #5A5F64">Datenschutzerklärung</a>.</p>
+    </div>
+  </div>
+</section>
+
+
+<section data-screen-label="Instagram" style="border-bottom:1px solid #E3E0DA">
   <div style="max-width:1240px;margin:0 auto;padding:clamp(72px,10vw,144px) clamp(20px,5vw,64px);display:flex;flex-direction:column;gap:48px">
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px">
       <div style="display:flex;flex-direction:column;gap:20px">
-        <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5A5F64">Instagram</div>
-        <h2 class="serif" style="margin:0;font-size:clamp(34px,4vw,56px);line-height:1.05;letter-spacing:-.015em">Eine Frage, eine Minute.</h2>
+        <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5A5F64;font-weight:600">Instagram</div>
+        <h2 style="margin:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(38px,4.8vw,68px);line-height:1.05;letter-spacing:-.035em">Eine Frage, eine Minute.</h2>
       </div>
       <a href="https://www.instagram.com/doktorbruno/" target="_blank" rel="noopener" style="font-size:14px;font-weight:500;letter-spacing:.03em;border-bottom:1px solid #14171A;padding-bottom:4px">@doktorbruno →</a>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
-      <div class="slot" style="aspect-ratio:9/16">Reel / Podcast-Clip 1</div>
-      <div class="slot" style="aspect-ratio:9/16">Reel / Podcast-Clip 2</div>
-      <div class="slot" style="aspect-ratio:9/16">Reel / Podcast-Clip 3</div>
-      <div class="slot" style="aspect-ratio:9/16">Reel / Podcast-Clip 4</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+      <div style="aspect-ratio:9/16;position:relative"><button type="button" class="reel" data-reel="Ddbp-6QKasA" aria-label="Beitrag 1 von @doktorbruno laden. Dabei wird Instagram geladen."><span class="reel-knopf" aria-hidden="true">►</span><span class="reel-zeile">Beitrag ansehen</span><span class="reel-fuss">Lädt Instagram</span></button></div>
+      <div style="aspect-ratio:9/16;position:relative"><button type="button" class="reel" data-reel="DdZbKeYzW5s" aria-label="Beitrag 2 von @doktorbruno laden. Dabei wird Instagram geladen."><span class="reel-knopf" aria-hidden="true">►</span><span class="reel-zeile">Beitrag ansehen</span><span class="reel-fuss">Lädt Instagram</span></button></div>
+      <div style="aspect-ratio:9/16;position:relative"><button type="button" class="reel" data-reel="DdYh2HcCSop" aria-label="Beitrag 3 von @doktorbruno laden. Dabei wird Instagram geladen."><span class="reel-knopf" aria-hidden="true">►</span><span class="reel-zeile">Beitrag ansehen</span><span class="reel-fuss">Lädt Instagram</span></button></div>
+      <div style="aspect-ratio:9/16;position:relative"><button type="button" class="reel" data-reel="DdWEX-WCihS" aria-label="Beitrag 4 von @doktorbruno laden. Dabei wird Instagram geladen."><span class="reel-knopf" aria-hidden="true">►</span><span class="reel-zeile">Beitrag ansehen</span><span class="reel-fuss">Lädt Instagram</span></button></div>
+    </div>
+  </div>
+</section>
+</div>
+
+
+
+
+
+<section id="ueber" data-screen-label="Über Dr. Bruno" style="border-top:1px solid #E3E0DA">
+  <div style="max-width:1240px;margin:0 auto;padding:clamp(80px,11vw,160px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:48px clamp(40px,8vw,128px);align-items:center">
+    <div style="flex:1.2 1 460px;min-width:0;display:flex;flex-direction:column;gap:24px;font-size:17px;line-height:1.7;color:#2A2F34;text-wrap:pretty">
+      <h2 style="margin:0 0 8px;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(38px,4.8vw,68px);line-height:1.02;letter-spacing:-.035em;color:#14171A">Über Dr. Bruno</h2>
+      <p style="margin:0">PD Dr. med. Raphael R. Bruno ist Facharzt für Innere Medizin und Kardiologie mit den Zusatzbezeichnungen Sportmedizin sowie Notfall- und Intensivmedizin. Zuletzt war er Oberarzt an einem Universitätsklinikum und Leitender Arzt am <em>European Prevention Center</em>.</p>
+      <p style="margin:0">Er ist habilitiert in Innerer Medizin, forscht mit Förderung der Deutschen Herzstiftung und ist zertifizierter Lipidologe und Hypertensiologe.</p>
+      <p style="margin:0">Jeden Mittwoch ist er Gast im Podcast <em>Second Opinion</em>. 2027 erscheint sein erstes Buch.</p>
+    </div>
+    <div style="flex:1 1 360px;min-width:0;aspect-ratio:4/5;overflow:hidden;border-radius:20px;background:#ECEAE6">
+      <img src="assets/kasack.webp" alt="PD Dr. med. Raphael R. Bruno" style="width:100%;height:100%;object-fit:cover;object-position:50% 20%;display:block">
     </div>
   </div>
 </section>
 
-<section id="buch" style="background:#FEFEFE;border-top:1px solid #E3E0DA">
-  <div style="max-width:1400px;margin:0 auto;padding:clamp(48px,6vw,96px) clamp(12px,3vw,40px);position:relative">
-    <img src="assets/buch.png" alt="Buch „Cholesterin“ von PD Dr. Raphael R. Bruno" style="width:100%;height:auto;display:block">
-    <div id="buchtext" style="top:clamp(56px,7vw,110px);left:49%;right:5%;display:flex;flex-direction:column;align-items:flex-start;gap:18px">
-      <div style="font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#5A5F64">Das Buch · Erscheint 2027</div>
-      <h2 class="serif" style="margin:0;font-size:clamp(36px,4vw,60px);line-height:1.02;letter-spacing:-.015em">Cholesterin</h2>
-      <p style="margin:0;font-size:16px;line-height:1.65;max-width:480px;text-wrap:pretty">Was der Wert bedeutet, welcher Wert zählt und was Sie dafür nicht kaufen müssen.</p>
-      <button id="wl-knopf" class="navknopf" style="margin-top:6px;cursor:pointer;font-family:inherit">Auf die Warteliste</button>
-      <div id="wl-block" hidden style="display:contents">
-        <form id="wl-form" style="margin-top:6px;width:100%;max-width:480px;display:flex;flex-wrap:wrap;gap:10px">
-          <input type="email" required placeholder="Ihre E-Mail-Adresse" aria-label="E-Mail-Adresse" style="flex:1 1 220px;min-width:0;font-family:inherit;font-size:15px;padding:15px 18px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A">
-          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-          <button type="submit" class="navknopf" style="flex:0 0 auto;cursor:pointer;font-family:inherit">Eintragen</button>
+<section id="kontakt" data-screen-label="Kontakt" style="padding:clamp(48px,6vw,96px) clamp(12px,2.5vw,32px) clamp(48px,6vw,96px)">
+  <div style="max-width:1400px;margin:0 auto;background:#F2F0EC;border-radius:24px;padding:clamp(40px,7vw,112px) clamp(24px,6vw,96px);display:flex;flex-wrap:wrap;gap:48px clamp(40px,7vw,112px);align-items:flex-start">
+    <div style="flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:24px">
+      <h2 style="margin:0;font-family:'Inter',sans-serif;font-weight:600;font-size:clamp(38px,4.8vw,68px);line-height:1.02;letter-spacing:-.035em;text-wrap:balance">Kontakt</h2>
+      <p style="margin:0;font-size:17px;line-height:1.7;color:#3A3F44;max-width:420px;text-wrap:pretty">Für Anfragen zu Podcast, Presse, Vorträgen und Kooperationen oder zu einem Termin in der Praxis.</p>
+    </div>
+    <div style="flex:1.4 1 440px;min-width:0;background:#FFFFFF;border-radius:20px;padding:clamp(24px,4vw,48px)">
+      <div id="kt-danke" hidden style="display:contents">
+        <div style="display:flex;flex-direction:column;gap:12px;padding:24px 0">
+          <div style="font-size:clamp(24px,2.4vw,32px);font-weight:600;letter-spacing:-.035em">Vielen Dank für Ihre Nachricht.</div>
+          <p style="margin:0;font-size:16px;line-height:1.7;color:#5A5F64">Wir melden uns in der Regel innerhalb von zwei Werktagen.</p>
+        </div>
+      </div>
+      <p id="kt-fehler" hidden role="status" aria-live="polite" style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#7A2016;font-weight:500"></p><div id="kt-block" style="display:contents">
+        <form id="kt-form" style="display:flex;flex-direction:column;gap:20px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:20px">
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:600;color:#3A3F44"><span>Name<span style="color:#123540"> *</span></span><input type="text" required name="name" autocomplete="name" style="font-family:'Inter',sans-serif;font-size:16px;padding:16px 20px;border:1px solid #D9D5CE;border-radius:14px;background:#FAF9F7;color:#14171A;width:100%;box-sizing:border-box;min-width:0"></label>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:600;color:#3A3F44"><span>E-Mail<span style="color:#123540"> *</span></span><input type="email" required name="email" autocomplete="email" style="font-family:'Inter',sans-serif;font-size:16px;padding:16px 20px;border:1px solid #D9D5CE;border-radius:14px;background:#FAF9F7;color:#14171A;width:100%;box-sizing:border-box;min-width:0"></label>
+          </div>
+          <label style="display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:600;color:#3A3F44"><span>Anliegen<span style="color:#123540"> *</span></span>
+            <select required name="anliegen" style="font-family:'Inter',sans-serif;font-size:16px;padding:16px 20px;border:1px solid #D9D5CE;border-radius:14px;background:#FAF9F7;color:#14171A;width:100%;box-sizing:border-box;min-width:0;appearance:none;background-image:linear-gradient(45deg,transparent 50%,#5A5F64 50%),linear-gradient(135deg,#5A5F64 50%,transparent 50%);background-position:calc(100% - 24px) 50%,calc(100% - 18px) 50%;background-size:6px 6px;background-repeat:no-repeat">
+              <option value="">Bitte wählen</option>
+              <option>Podcast und Interviews</option>
+              <option>Presse</option>
+              <option>Vorträge und Kooperationen</option>
+              <option>Termin in der Praxis</option>
+              <option>Sonstiges</option>
+            </select>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:600;color:#3A3F44"><span>Nachricht<span style="color:#123540"> *</span></span><textarea required name="nachricht" rows="5" style="font-family:'Inter',sans-serif;font-size:16px;padding:16px 20px;border:1px solid #D9D5CE;border-radius:14px;background:#FAF9F7;color:#14171A;width:100%;box-sizing:border-box;min-width:0;resize:vertical;line-height:1.6"></textarea></label>
+          <label style="display:flex;gap:12px;align-items:flex-start;font-size:13px;line-height:1.6;color:#5A5F64"><input type="checkbox" required name="einwilligung" value="ja" style="margin:2px 0 0;width:18px;height:18px;accent-color:#123540;flex:0 0 auto;cursor:pointer"><span style="flex:1 1 auto;min-width:0;text-wrap:pretty">Ich habe die <a href="#" data-modal="datenschutz" style="color:#3A3F44;text-decoration:underline;text-underline-offset:3px">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben einverstanden.<span style="color:#123540"> *</span></span></label>
+          <p style="margin:0;font-size:12px;color:#7A7E83">* Pflichtfeld</p><p style="margin:0;font-size:12px;line-height:1.6;color:#7A7E83;text-wrap:pretty">Bitte keine Befunde, Beschwerden oder Medikamente in die Nachricht. Für medizinische Anliegen wenden Sie sich bitte direkt an die Praxis.</p><input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+          <button type="submit" style="align-self:flex-start;display:flex;gap:14px;align-items:center;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;padding:18px 30px;border:none;border-radius:999px;background:#123540;color:#FFFFFF;cursor:pointer" data-h="h10">Nachricht senden <span>→</span></button>
         </form>
-        <p style="margin:0;font-size:13px;line-height:1.6;color:#5A5F64;max-width:480px">Doppelte Bestätigung per E-Mail. Abmeldung jederzeit mit einem Klick. Hinweise zur Verarbeitung in der <a href="#" data-modal="datenschutz" style="color:#5A5F64;border-bottom:1px solid #5A5F64">Datenschutzerklärung</a>.</p>
       </div>
-      <p id="wl-danke" hidden class="serif" style="margin:6px 0 0;font-size:22px;line-height:1.4;max-width:480px">Danke. Bitte bestätigen Sie die Eintragung über den Link in der E-Mail, die wir Ihnen gerade geschickt haben.</p>
-      <p id="wl-fehler" hidden style="margin:6px 0 0;font-size:16px;line-height:1.6;max-width:480px;color:#8A2B20"></p>
-      <iframe id="wl-rahmen" name="wl-rahmen" title="Übermittlung" style="display:none" aria-hidden="true"></iframe>
     </div>
   </div>
 </section>
+<iframe id="kt-rahmen" name="kt-rahmen" title="Übermittlung" style="display:none" aria-hidden="true"></iframe>
 
-<section id="newsletter" style="background:#ECE8E1">
-  <div style="max-width:820px;margin:0 auto;padding:clamp(72px,10vw,136px) clamp(20px,5vw,64px);display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px">
-    <div style="font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#5A5F64">Newsletter · kostenlos</div>
-    <h2 class="serif" style="margin:0;font-size:clamp(40px,5.4vw,76px);line-height:1.04;letter-spacing:-.02em;text-wrap:balance">Dr. Bruno ins Postfach</h2>
-    <p style="margin:0;font-size:17px;line-height:1.7;max-width:560px;text-wrap:pretty">Jeden Mittwoch die neue Podcastfolge und eine Frage aus der Praxis, beantwortet mit Quelle.</p>
-    <p id="nl-danke" hidden class="serif" style="margin:16px 0 0;font-size:24px;line-height:1.4;max-width:560px">Danke. Bitte bestätigen Sie Ihre Anmeldung über den Link in der E-Mail, die wir Ihnen gerade geschickt haben.</p>
-    <div id="nl-block" style="display:contents">
-      <form id="nl-form" style="margin-top:16px;width:100%;max-width:620px;display:flex;flex-wrap:wrap;gap:12px">
-        <input type="email" required placeholder="Ihre E-Mail-Adresse" aria-label="E-Mail-Adresse" style="flex:1 1 280px;min-width:0;font-family:inherit;font-size:16px;padding:17px 20px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A">
-        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-        <button type="submit" class="navknopf" style="flex:0 0 auto;cursor:pointer;font-family:inherit;padding:17px 28px">Eintragen</button>
-      </form>
-      <p style="margin:0;font-size:13px;line-height:1.6;color:#5A5F64">Doppelte Bestätigung per E-Mail. Abmeldung jederzeit mit einem Klick. Hinweise zur Verarbeitung in der <a href="#" data-modal="datenschutz" style="color:#5A5F64;border-bottom:1px solid #5A5F64">Datenschutzerklärung</a>.</p>
-    </div>
-    <p id="nl-fehler" hidden style="margin:0;font-size:16px;line-height:1.6;max-width:560px;color:#8A2B20"></p>
-    <iframe id="nl-rahmen" name="nl-rahmen" title="Übermittlung" style="display:none" aria-hidden="true"></iframe>
+<!-- Instagram-Beitrag im Overlay. Erst beim Klick auf eine Karte wird
+     hier eine Einbettung erzeugt; vorher geht keine Anfrage an Meta. -->
+<div id="reel-huelle" hidden style="position:fixed;inset:0;z-index:120;background:rgba(20,23,26,.6);display:flex;align-items:center;justify-content:center;padding:clamp(12px,4vw,48px)">
+  <div data-reel-stop="1" style="display:flex;flex-direction:column;gap:12px;align-items:flex-end;width:min(400px,92vw)">
+    <button type="button" data-reel-zu="1" aria-label="Schließen" style="font-family:inherit;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:#FAF9F7;border:1px solid #FAF9F7;border-radius:999px;padding:10px 16px;cursor:pointer;color:#14171A">Schließen</button>
+    <div id="reel-fach" style="width:100%;height:min(720px,78vh);border-radius:14px;overflow:hidden;background:#FFFFFF"></div>
   </div>
-</section>
-
-<section id="kontakt">
-  <div style="max-width:1240px;margin:0 auto;padding:clamp(72px,10vw,144px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:40px clamp(40px,6vw,96px)">
-    <div style="flex:3 1 520px;min-width:0;display:flex;flex-wrap:wrap;gap:40px clamp(32px,5vw,72px);align-items:center">
-      <div style="flex:1 1 260px;min-width:0;aspect-ratio:4/5;overflow:hidden;border-radius:6px;background:#ECEAE6">
-        <img src="assets/kittel.jpg" alt="Dr. Raphael R. Bruno in der Praxis" style="width:100%;height:100%;object-fit:cover;object-position:50% 20%;display:block">
-      </div>
-      <div style="flex:1.4 1 340px;min-width:0;display:flex;flex-direction:column;gap:48px">
-        <div class="serif" style="display:flex;flex-direction:column;gap:6px;font-size:clamp(24px,2.4vw,32px);line-height:1.4">
-          <p style="margin:0">Präventive Kardiologie und Innere Medizin.</p>
-          <p style="margin:0">Privatpraxis in Düsseldorf.</p>
-          <p style="margin:0">Für Menschen, die früh wissen wollen, was läuft.</p>
-        </div>
-        <div id="kt-block" style="display:flex;flex-direction:column;gap:14px">
-          <form id="kt-form" style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:520px">
-            <input type="text" name="name" required autocomplete="name" placeholder="Ihr Name" aria-label="Name" style="font-family:inherit;font-size:16px;padding:17px 20px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A;width:100%;box-sizing:border-box">
-            <input type="email" name="email" required autocomplete="email" placeholder="Ihre E-Mail-Adresse" aria-label="E-Mail-Adresse" style="font-family:inherit;font-size:16px;padding:17px 20px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A;width:100%;box-sizing:border-box">
-            <textarea name="nachricht" required rows="4" placeholder="Worum geht es?" aria-label="Nachricht" style="font-family:inherit;font-size:16px;padding:17px 20px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A;width:100%;box-sizing:border-box;line-height:1.6;resize:vertical"></textarea>
-            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-            <button type="submit" class="navknopf" style="align-self:flex-start;cursor:pointer;font-family:inherit;padding:17px 28px">Nachricht senden</button>
-          </form>
-          <p style="margin:0;font-size:13px;line-height:1.6;color:#5A5F64;max-width:520px">Bitte keine Befunde, Beschwerden oder Medikamente in das Nachrichtenfeld. Für medizinische Anliegen und Termine wenden Sie sich bitte direkt an die <a href="https://kardio.pro" style="color:#5A5F64;border-bottom:1px solid #5A5F64">Praxis</a>. Hinweise zur Verarbeitung in der <a href="#" data-modal="datenschutz" style="color:#5A5F64;border-bottom:1px solid #5A5F64">Datenschutzerklärung</a>.</p>
-        </div>
-        <p id="kt-danke" hidden class="serif" style="margin:0;font-size:24px;line-height:1.4;max-width:520px">Danke für Ihre Nachricht. Sie wird gelesen, und Sie bekommen Antwort.</p>
-        <p id="kt-fehler" hidden style="margin:0;font-size:16px;line-height:1.6;max-width:520px;color:#8A2B20"></p>
-        <iframe id="kt-rahmen" name="kt-rahmen" title="Übermittlung" style="display:none" aria-hidden="true"></iframe>
-      </div>
-    </div>
-  </div>
-</section>
+</div>
 
 <footer style="border-top:1px solid #E3E0DA">
   <div style="max-width:1240px;margin:0 auto;padding:32px clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;font-size:13px;color:#5A5F64">
-    <div>Dr. med. Raphael R. Bruno · Düsseldorf</div>
+    <div>Dr. med. Raphael R. Bruno</div>
     <div style="display:flex;gap:28px;flex-wrap:wrap">
       <a href="#" data-modal="impressum" style="color:#5A5F64">Impressum</a>
       <a href="#" data-modal="datenschutz" style="color:#5A5F64">Datenschutz</a>
     </div>
   </div>
 </footer>
-
-<div id="modal" hidden style="position:fixed;inset:0;z-index:100;background:rgba(20,23,26,.45);display:flex;align-items:center;justify-content:center;padding:clamp(12px,4vw,48px)">
-  <div role="dialog" aria-modal="true" aria-labelledby="modal-titel" style="background:#FAF9F7;border-radius:14px;width:100%;max-width:720px;max-height:85vh;overflow:auto;box-shadow:0 30px 80px rgba(20,23,26,.25)">
-    <div style="position:sticky;top:0;background:#FAF9F7;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px clamp(24px,4vw,40px);border-bottom:1px solid #E3E0DA">
-      <h2 id="modal-titel" class="serif" style="margin:0;font-size:32px;line-height:1.1"></h2>
-      <button id="modal-zu" aria-label="Schließen" class="navknopf" style="background:none;color:#14171A;cursor:pointer;font-family:inherit;padding:10px 16px">Schließen</button>
+<div id="modal-huelle" hidden style="display:contents">
+  <div data-schliessen="1" style="position:fixed;inset:0;z-index:100;background:rgba(20,23,26,.45);display:flex;align-items:center;justify-content:center;padding:clamp(12px,4vw,48px)">
+    <div data-stop="1" role="dialog" aria-modal="true" style="background:#FAF9F7;border-radius:14px;width:100%;max-width:720px;max-height:85vh;overflow:auto;box-shadow:0 30px 80px rgba(20,23,26,.25)">
+      <div style="position:sticky;top:0;background:#FAF9F7;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px clamp(24px,4vw,40px);border-bottom:1px solid #E3E0DA">
+        <h2 id="modal-titel" style="margin:0;font-family:'Inter',sans-serif;font-weight:600;font-size:32px;line-height:1.1;letter-spacing:-.035em"></h2>
+        <button data-schliessen="1" aria-label="Schließen" style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:none;border:1px solid #14171A;border-radius:999px;padding:10px 16px;cursor:pointer;color:#14171A" data-h="h11">Schließen</button>
+      </div>
+      <div style="padding:28px clamp(24px,4vw,40px) 40px;display:flex;flex-direction:column;gap:24px;font-size:15px;line-height:1.7">
+        <template id="vorlage-block">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div data-feld="h" style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5A5F64"></div>
+            <p data-feld="t" style="margin:0;white-space:pre-line"></p>
+          </div>
+        </template>
+      </div>
     </div>
-    <div id="modal-inhalt" style="padding:28px clamp(24px,4vw,40px) 40px;display:flex;flex-direction:column;gap:24px;font-size:15px;line-height:1.7"></div>
   </div>
 </div>
 
-<style>
-  .slot{display:grid;place-items:center;background:#ECEAE6;border:1px dashed #C9C4BB;border-radius:6px;
-        color:#8A8680;font-size:13px;letter-spacing:.04em;text-align:center;padding:12px}
-  @media (min-width:961px){ #buchtext{position:absolute;padding:0} }
-  @media (max-width:960px){ #buchtext{position:static;padding:32px 8px 0} }
-</style>
 
+
+<script>
+/* ==================================================================
+   Wohin die drei Formulare senden.
+
+   DAS IST DIE EINZIGE STELLE, DIE NOCH GEFÜLLT WERDEN MUSS.
+
+     ART     'json'   Die Antwort wird gelesen, Erfolg und Fehler
+                      sind echt. Für Brevo nachgemessen: der Dienst
+                      erlaubt den Zugriff und antwortet mit
+                      {"success":…,"errors":…}.
+             'rahmen' Das Formular geht in einen unsichtbaren Rahmen.
+                      Nötig, wenn der Anbieter den Zugriff auf die
+                      Antwort nicht erlaubt. Dann wissen wir nur,
+                      DASS gesendet wurde, nicht ob es ankam.
+     ZIEL    Adresse des Formulars beim Anbieter
+     FELD    Name, unter dem die E-Mail-Adresse erwartet wird
+     KOEDER  Name des unsichtbaren Lockfelds gegen Bots
+     ZUSATZ  versteckte Felder, die mitgeschickt werden
+
+   OFFEN 1: Die Warteliste braucht ein EIGENES Brevo-Formular. Die
+   Adresse des Newsletters hier einzutragen würde Buchinteressenten
+   und Newsletter-Leser in dieselbe Liste werfen.
+
+   OFFEN 2: Das Kontaktformular braucht die Adresse von Formspree,
+   Form https://formspree.io/f/<id>.
+
+   Solange ein ZIEL leer ist, sagt das Formular offen, dass es noch
+   nicht eingerichtet ist — es zeigt kein "Danke" für etwas, das nie
+   verschickt wurde.
+   ================================================================== */
+function brevo(ziel) {
+  return { art: 'json', ziel: ziel, feld: 'EMAIL',
+           koeder: 'email_address_check',
+           zusatz: { locale: 'de', html_type: 'simple' } };
+}
+
+var ZIELE = {
+  newsletter: brevo('https://dac06a52.sibforms.com/serve/MUIFAFd3-kmN_gpO6Lf8g7uDPIZVtnF4tpkGLRsjfdKW0ByrufbM1m30_3PdBaWA6W5XMW1JlZJ3sT9gkzFuo-1UfQ3WgtwWEqvt6TyylZuEtGjsAGFxrLd_MQ-03FS58VzumPSbgN8DCK8JZhFVS7A8qrtrPWLHqLFd3IL95ea20x_mjrQBk_h_awnZZ_-zDMhVuRW9Ml7en9cY3w=='),
+  buch:       brevo(''),
+  kontakt:    { art: 'rahmen', ziel: '',   /* https://formspree.io/f/<id> */
+                koeder: '_gotcha',
+                zusatz: { _subject: 'Neue Nachricht über drraphaelrbruno.de' } }
+};
+
+var STIMMEN = [
+ {
+  "text": "Ich habe Dr. Bruno wegen einer Zweitmeinung für einen Familienangehörigen aufgesucht. Wir haben schnell einen Termin bekommen über Doctolib. Er hat sich sehr viel Zeit genommen, das komplexe Thema zu erklären und hat uns toll beraten! Wir haben uns sehr gut aufgehoben gefühlt.",
+  "name": "Lina Pal"
+ },
+ {
+  "text": "Freundliche und ausführliche Beratung und Untersuchung, sehr zu empfehlen!",
+  "name": "Jonas Diepers"
+ },
+ {
+  "text": "Herr Dr. Bruno wurde mir von Freunden empfohlen und dafür bin ich sehr dankbar! Dr. Bruno ist ein sehr verständnisvoller, gründlicher und emphatischer Arzt, der sich Zeit nimmt und fachlich sehr kompetent ist! Ich bin bin noch nie beim Kardiologen so gründlich untersucht worden! Man fühlt sich als Patient gut aufgehoben!",
+  "name": "Regine Arns"
+ },
+ {
+  "text": "In der Praxis von Dr. R. Bruno fühlte ich mich bestens aufgehoben. Die individuelle Betreuung und das hohe fachliche Niveau sind beeindruckend. Dr. Bruno geht auf jede Frage ausführlich ein und schafft eine vertrauensvolle Atmosphäre. Ich empfehle ihn von Herzen weiter.",
+  "name": "Ariane"
+ },
+ {
+  "text": "Ich bin sehr dankbar für die ausgezeichnete Betreuung in der Praxis von Dr. Raphael Bruno. Vom ersten Moment an fühlte ich mich ernst genommen und bestens versorgt. Die detaillierte Diagnostik und die verständlichen Erklärungen haben mir sehr geholfen. Absolut empfehlenswert!",
+  "name": "Kimberley"
+ },
+ {
+  "text": "Dr. Raphael Bruno ist ein hervorragender Kardiologe. Sehr freundlich und kompetent. Ich kann ihn sehr empfehlen.",
+  "name": "Radost Marinova"
+ },
+ {
+  "text": "Bei Dr. Raphael Bruno habe ich endlich einen Kardiologen gefunden, der sich Zeit für mich nimmt und mir zuhört. Seine professionelle und freundliche Art hat mir sofort Vertrauen gegeben. Die umfassende und verständliche Aufklärung meiner gesundheitlichen Situation hat mir sehr geholfen. Absolut empfehlenswert.",
+  "name": "Marcel"
+ }
+];
+
+var IMPRESSUM = [
+ {
+  "h": "Angaben gemäß § 5 DDG",
+  "t": "PD Dr. med. Raphael R. Bruno\nPrivatärztliche Praxis für Kardiologie, Innere Medizin, Sportmedizin und Sportkardiologie\n\nIm Neuen Stahlhof\nBreite Straße 69\n40213 Düsseldorf"
+ },
+ {
+  "h": "Kontakt",
+  "t": "Telefon: 0211 54 55 66 46\nTelefax: 0211 54 55 66 49\nE-Mail: praxis@kardio.pro"
+ },
+ {
+  "h": "Berufsbezeichnung und berufsrechtliche Regelungen",
+  "t": "Berufsbezeichnung: Arzt, Facharzt für Innere Medizin und Kardiologie\nVerliehen in: Nordrhein-Westfalen (Deutschland)\nZuständige Kammer: Ärztekammer Nordrhein\nEs gilt die Berufsordnung für die nordrheinischen Ärztinnen und Ärzte in der jeweils aktuellen Fassung, einsehbar unter www.aekno.de/aerzte/berufsordnung."
+ },
+ {
+  "h": "Aufsichtsbehörde",
+  "t": "Ärztekammer Nordrhein\nTersteegenstraße 9\n40474 Düsseldorf\nTelefon: 0211 4 30 20\nE-Mail: aerztekammer@aekno.de\nwww.aekno.de"
+ },
+ {
+  "h": "Berufshaftpflichtversicherung",
+  "t": "ERGO Versicherung AG\nERGO-Platz 1, 40477 Düsseldorf\nRäumlicher Geltungsbereich: Deutschland bzw. Europa"
+ },
+ {
+  "h": "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV",
+  "t": "PD Dr. med. Raphael R. Bruno, Anschrift wie oben"
+ },
+ {
+  "h": "Verbraucherstreitbeilegung",
+  "t": "Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+ },
+ {
+  "h": "Haftung für Inhalte",
+  "t": "Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt.\n\nDie Inhalte dieser Website dienen der allgemeinen Information und ersetzen keine individuelle ärztliche Beratung, Diagnose oder Behandlung."
+ },
+ {
+  "h": "Haftung für Links",
+  "t": "Diese Website enthält Links zu externen Websites Dritter, etwa zu Spotify, YouTube und Instagram. Für deren Inhalte ist stets der jeweilige Anbieter verantwortlich. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen."
+ },
+ {
+  "h": "Urheberrecht",
+  "t": "Die durch den Seitenbetreiber erstellten Inhalte und Werke auf dieser Website unterliegen dem deutschen Urheberrecht. Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des Autors."
+ },
+ {
+  "h": "Bildnachweise",
+  "t": "Praxisbilder: Georg Lukas\nWeiteres Bildmaterial: Andreas Endermann\n[Bitte für diese Website prüfen und ergänzen]"
+ }
+];
+
+var DATENSCHUTZ = [
+ {
+  "h": "1. Datenschutz auf einen Blick",
+  "t": "Der Schutz Ihrer persönlichen Daten ist uns wichtig. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können. Wir behandeln Ihre Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften, insbesondere der DSGVO, sowie dieser Datenschutzerklärung."
+ },
+ {
+  "h": "2. Verantwortliche Stelle",
+  "t": "PD Dr. med. Raphael R. Bruno\nBreite Straße 69\n40213 Düsseldorf\nTelefon: 0211 54 55 66 46\nE-Mail: praxis@kardio.pro"
+ },
+ {
+  "h": "Datenschutzbeauftragter",
+  "t": "Wir sind nicht verpflichtet, einen Datenschutzbeauftragten zu bestellen."
+ },
+ {
+  "h": "SSL- bzw. TLS-Verschlüsselung",
+  "t": "Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher Inhalte eine SSL- bzw. TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie an „https://“ in der Adresszeile Ihres Browsers."
+ },
+ {
+  "h": "Ihre Rechte",
+  "t": "Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten. Sie haben außerdem ein Recht auf Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit (Art. 15 bis 20 DSGVO) sowie ein Beschwerderecht bei der zuständigen Aufsichtsbehörde."
+ },
+ {
+  "h": "Widerruf Ihrer Einwilligung",
+  "t": "Viele Datenverarbeitungsvorgänge sind nur mit Ihrer ausdrücklichen Einwilligung möglich (Art. 6 Abs. 1 lit. a DSGVO). Eine bereits erteilte Einwilligung können Sie jederzeit formlos per E-Mail widerrufen. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Verarbeitung bleibt unberührt."
+ },
+ {
+  "h": "Widerspruchsrecht (Art. 21 DSGVO)",
+  "t": "Erfolgt die Verarbeitung auf Grundlage von Art. 6 Abs. 1 lit. e oder f DSGVO, können Sie aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit Widerspruch einlegen. Gegen die Verarbeitung zum Zweck der Direktwerbung können Sie jederzeit widersprechen."
+ },
+ {
+  "h": "3. Hosting",
+  "t": "Diese Website wird von GitHub Pages (GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA) ausgeliefert. Beim Abruf erfasst GitHub technische Zugriffsdaten, insbesondere IP-Adresse, Browsertyp und Uhrzeit, und speichert sie in Server-Logdateien. Grundlage ist unser berechtigtes Interesse an einer sicheren und effizienten Bereitstellung (Art. 6 Abs. 1 lit. f DSGVO). Die Übermittlung in die USA erfolgt auf Grundlage der Standardvertragsklauseln der Europäischen Kommission."
+ },
+ {
+  "h": "Cookies",
+  "t": "Diese Website setzt nur technisch notwendige Cookies bzw. lokale Speicherungen ein, die für den Betrieb erforderlich sind (§ 25 Abs. 2 TDDDG, Art. 6 Abs. 1 lit. f DSGVO).\n[Bei Einsatz von Analyse-Tools anpassen]"
+ },
+ {
+  "h": "Kontaktformular und E-Mail",
+  "t": "Wenn Sie uns über das Kontaktformular oder per E-Mail kontaktieren, werden Ihre Angaben (Name, E-Mail-Adresse, Anliegen, Nachricht) zur Bearbeitung Ihrer Anfrage gespeichert und verarbeitet. Grundlage ist Art. 6 Abs. 1 lit. b DSGVO bzw. unser berechtigtes Interesse an der Bearbeitung von Anfragen (Art. 6 Abs. 1 lit. f DSGVO).\n\nFür die Übermittlung setzen wir Formspree (Formspree, Inc., USA) als Auftragsverarbeiter ein. Die Nachricht wird dort entgegengenommen und als E-Mail zugestellt. Grundlage der Übermittlung in die USA sind die Standardvertragsklauseln der Europäischen Kommission.\n\nBitte übermitteln Sie über das Formular keine Gesundheitsdaten. Die Daten werden gelöscht, sobald der Zweck entfällt und keine gesetzlichen Aufbewahrungsfristen entgegenstehen."
+ },
+ {
+  "h": "Newsletter und Buch-Warteliste",
+  "t": "Für den Newsletter und die Warteliste zum Buch verarbeiten wir Ihre E-Mail-Adresse auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) im Double-Opt-in-Verfahren. Bis Sie die Anmeldung über den Link in der ersten E-Mail bestätigen, wird die Adresse nicht in den Verteiler aufgenommen.\n\nVersanddienstleister ist Brevo (Sendinblue GmbH, Köpenicker Straße 126, 10179 Berlin, für die Brevo SAS, Frankreich). Die Verarbeitung findet auf Servern innerhalb der Europäischen Union statt.\n\nSie können sich jederzeit über den Abmeldelink in jeder E-Mail abmelden. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Verarbeitung bleibt unberührt."
+ },
+ {
+  "h": "Schriftarten",
+  "t": "Zur einheitlichen Darstellung nutzen wir die Schriftart Inter. [Vor Livegang lokal einbinden, damit keine Verbindung zu Servern von Google hergestellt wird]"
+ },
+ {
+  "h": "Links zu Spotify, YouTube und Instagram",
+  "t": "Diese Website verlinkt auf unsere Angebote bei Spotify, YouTube und Instagram. Beim bloßen Aufruf der Seite werden keine Inhalte dieser Dienste geladen und keine Daten an sie übermittelt.\n\nIm Abschnitt Instagram sind vier Beiträge eingebettet, die erst nach einem ausdrücklichen Klick geladen werden (Zwei-Klick-Verfahren). Erst mit diesem Klick wird eine Verbindung zu Servern von Meta hergestellt, dabei wird Ihre IP-Adresse übermittelt und Meta kann Cookies setzen. Grundlage ist Ihre Einwilligung durch das Anklicken (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG). Anbieter ist Meta Platforms Ireland Ltd., Dublin, Irland. Klicken Sie nicht, findet diese Verarbeitung nicht statt."
+ },
+ {
+  "h": "Stand",
+  "t": "1. Oktober 2026"
+ }
+];
+</script>
 <script>
 (function () {
   'use strict';
 
-  /* Kopfzeile: blendet beim Herunterscrollen aus, Schatten ab 20 px. */
-  var kopf = document.getElementById('kopf'),
-      kasten = document.getElementById('kopfkasten'),
-      letztes = window.scrollY, versteckt = false, geschattet = false;
-  window.addEventListener('scroll', function () {
-    var y = window.scrollY, dy = y - letztes;
-    if (Math.abs(dy) < 6) return;
-    var v = dy > 0 && y > 120, s = y > 20;
-    if (v !== versteckt) { versteckt = v; kopf.style.transform = v ? 'translateY(-130%)' : 'translateY(0)'; }
-    if (s !== geschattet) { geschattet = s; kasten.style.boxShadow = s ? '0 8px 30px rgba(20,23,26,.08)' : 'none'; }
-    letztes = y;
-  }, { passive: true });
-
   /* ================================================================
-     Newsletter, Buch-Warteliste und Kontaktformular.
-
-     Newsletter und Warteliste laufen über Brevo, das Kontaktformular
-     über Formspree. Zu jedem Ziel gehören:
-
-         ART     wie gesendet wird, siehe unten
-         ZIEL    die Adresse des Formulars beim Anbieter
-         FELD    Name, unter dem die E-Mail-Adresse erwartet wird
-         KOEDER  Name des unsichtbaren Lockfelds gegen Bots
-         ZUSATZ  versteckte Felder, die mitgeschickt werden
-
-     ART bestimmt, wie gesendet wird:
-
-       'json'    Die Antwort wird gelesen, Erfolg und Fehler sind
-                 echt. Für Brevo nachgemessen: der Dienst erlaubt
-                 den Zugriff und antwortet mit
-                 {"success":…,"errors":…}. Scheitert die Anmeldung,
-                 sagen wir das — und zeigen Brevos eigenen Grund.
-
-       'rahmen'  Das Formular geht in einen unsichtbaren Rahmen.
-                 Nötig, wenn der Anbieter den Zugriff auf die
-                 Antwort nicht erlaubt. Dann wissen wir nur, DASS
-                 gesendet wurde, nicht ob es angenommen wurde.
-
-     NOCH OFFEN: die Warteliste braucht ein EIGENES Brevo-Formular.
-     Die Newsletter-Adresse dort einzutragen würde beide Gruppen in
-     dieselbe Liste werfen, und genau das wollen wir nicht.
-
-     Wichtig: bei Brevo die doppelte Bestätigung (Double Opt-In)
-     einschalten. Der Dankestext unten sagt genau das zu.
-
-     Das Kontaktformular gehört NICHT zu Brevo. Brevo legt Kontakte in
-     Marketinglisten an, und ein Anliegen ist keine Newsletter-Anmeldung.
-     Es läuft über Formspree, weil es dort einen AVV gibt. Dort fehlt
-     nur noch die Formular-Adresse: auf formspree.io ein Formular
-     anlegen, die Adresse hat die Form
-
-         https://formspree.io/f/<id>
-
-     Die Kennung darf im Quelltext stehen, das ist dort so vorgesehen.
-     _subject setzt die Betreffzeile der Benachrichtigung, _gotcha ist
-     der Köder, den Formspree selbst auswertet.
-
-     Solange ZIEL leer ist, sagt das Formular ehrlich, dass es noch
-     nicht eingerichtet ist — es zeigt kein "Danke" für etwas, das nie
-     verschickt wurde.
+     Entwurfs-Tor. KEIN echter Schutz: das Passwort steht im Quelltext
+     und das Repo ist öffentlich. Es hält nur zufällige Besucher ab.
      ================================================================ */
-  function brevo(ziel) {
-    return { art: 'json', ziel: ziel, feld: 'EMAIL',
-             koeder: 'email_address_check',
-             zusatz: { locale: 'de', html_type: 'simple' } };
+  var WORT = '1000', SCHL = 'bruno-entwurf-frei';
+  function aufschliessen() {
+    var s = document.getElementById('sperre'); if (s) s.remove();
+    var tor = document.getElementById('tor'); if (tor) tor.remove();
+    try { sessionStorage.setItem(SCHL, '1'); } catch (e) {}
+    los();
   }
+  try { if (sessionStorage.getItem(SCHL) === '1') aufschliessen(); } catch (e) {}
 
-  var ZIELE = {
-    newsletter: brevo('https://dac06a52.sibforms.com/serve/MUIFAFd3-kmN_gpO6Lf8g7uDPIZVtnF4tpkGLRsjfdKW0ByrufbM1m30_3PdBaWA6W5XMW1JlZJ3sT9gkzFuo-1UfQ3WgtwWEqvt6TyylZuEtGjsAGFxrLd_MQ-03FS58VzumPSbgN8DCK8JZhFVS7A8qrtrPWLHqLFd3IL95ea20x_mjrQBk_h_awnZZ_-zDMhVuRW9Ml7en9cY3w=='),
-    buch:       brevo(''),
-    kontakt:    { art: 'rahmen', ziel: '',   /* https://formspree.io/f/<id> */
-                  koeder: '_gotcha',
-                  zusatz: { _subject: 'Neue Nachricht über drraphaelrbruno.de' } }
-  };
+  var torForm = document.getElementById('tor-form');
+  if (torForm) torForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var feld = document.getElementById('tor-feld');
+    if (feld.value === WORT) { aufschliessen(); return; }
+    feld.value = '';
+    document.getElementById('tor-fehler').hidden = false;
+    feld.focus();
+  });
 
-  /* Das Formular wird in einen unsichtbaren Rahmen geschickt. Dadurch
-     bleibt der Besucher auf der Seite, es braucht keine CORS-Freigabe
-     beim Anbieter, und wir wissen sicher, dass die Anmeldung wirklich
-     rausgegangen ist, bevor wir uns bedanken. */
-  /* Eingerichtet ist ein Formular erst, wenn das Ziel steht UND kein
-     Zusatzfeld leer geblieben ist — sonst würde die Seite gegen einen
-     Dienst senden, der die Nachricht verwirft, und sich trotzdem
-     bedanken. */
-  function fertig(l) {
-    var z = l.zusatz || {};
-    return !!l.ziel && Object.keys(z).every(function (k) { return !!z[k]; });
-  }
+  var gestartet = false;
+  function los() {
+    if (gestartet) return;
+    gestartet = true;
 
-  function absenden(o) {
-    var liste  = ZIELE[o.liste],
-        form   = document.getElementById(o.form),
-        block  = document.getElementById(o.block),
-        danke  = document.getElementById(o.danke),
-        fehler = document.getElementById(o.fehler),
-        rahmen = document.getElementById(o.rahmen),
-        feld   = form.querySelector('input[type=email]'),
-        topf   = form.querySelector('input[name=website], input[name=_gotcha], input[name=email_address_check]'),
-        knopf  = form.querySelector('button[type=submit]'),
-        beschriftung = knopf.textContent,
-        laeuft = false, uhr = null;
+    /* ============================================================
+       Kopfzeile: versteckt sich beim Scrollen nach unten.
+       ============================================================ */
+    var wurzel = document.documentElement, letztes = window.scrollY,
+        versteckt = false, geschattet = false;
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY, dy = y - letztes;
+      if (Math.abs(dy) < 6) return;
+      var v = dy > 0 && y > 120, s = y > 20;
+      if (v !== versteckt) {
+        versteckt = v;
+        wurzel.style.setProperty('--nav-schub', v ? 'translateY(-130%)' : 'translateY(0)');
+      }
+      if (s !== geschattet) {
+        geschattet = s;
+        wurzel.style.setProperty('--nav-schatten', s ? '0 8px 30px rgba(20,23,26,.08)' : 'none');
+      }
+      letztes = y;
+    }, { passive: true });
 
-    /* Feld- und Ködernamen richten sich nach dem Anbieter, die
-       versteckten Zusatzfelder kommen als echte Eingabefelder dazu,
-       damit sie auf beiden Wegen mitgehen. */
-    if (liste.feld && feld) feld.name = liste.feld;
-    if (liste.koeder && topf) topf.name = liste.koeder;
-    Object.keys(liste.zusatz || {}).forEach(function (k) {
-      var h = document.createElement('input');
-      h.type = 'hidden'; h.name = k; h.value = liste.zusatz[k];
-      form.appendChild(h);
+    /* ============================================================
+       Diagramm zur Gesundheitsspanne: zeichnet sich beim Scrollen.
+       Übernommen aus dem Entwurf.
+       ============================================================ */
+    var diagrammStand = 0;
+    function diagrammSchritt() {
+      var wz = document.querySelector('[data-chart-root]');
+      if (!wz) return;
+      var r = wz.getBoundingClientRect(), vh = window.innerHeight || 800;
+      var ziel = Math.max(0, Math.min(1, (vh * 0.9 - r.top) / (vh * 0.55)));
+      if (Math.abs(ziel - diagrammStand) < 0.0005) return;
+      diagrammStand += (ziel - diagrammStand) * 0.08;
+      var q = wz.querySelectorAll.bind(wz),
+          c = function (v) { return Math.max(0, Math.min(1, v)); },
+          weich = function (t) { return 1 - Math.pow(1 - t, 3); },
+          pw = weich(c(diagrammStand / 0.75)),
+          pp = weich(c((diagrammStand - 0.1) / 0.75));
+      q('[data-chart="w"]').forEach(function (e) { e.style.strokeDashoffset = 1 - pw; });
+      q('[data-chart="p"]').forEach(function (e) { e.style.strokeDashoffset = 1 - pp; });
+      q('[data-chart="dw"]').forEach(function (e) { e.style.opacity = c((pw - 0.97) / 0.03); });
+      q('[data-chart="dp"]').forEach(function (e) { e.style.opacity = c((pp - 0.97) / 0.03); });
+      q('[data-chart="area"]').forEach(function (e) { e.style.opacity = c((diagrammStand - 0.8) / 0.2); });
+      q('[data-chart="labels"]').forEach(function (e) { e.style.opacity = c((diagrammStand - 0.55) / 0.3); });
+    }
+
+    /* ============================================================
+       Stimmen: die Liste läuft doppelt, damit sie nahtlos umbricht.
+       ============================================================ */
+    var bahn = document.querySelector('[data-track="reviews"]'),
+        vorlage = document.getElementById('vorlage-stimme');
+    if (bahn && vorlage) {
+      vorlage.remove();
+      STIMMEN.concat(STIMMEN).forEach(function (s) {
+        var k = vorlage.content.cloneNode(true);
+        k.querySelector('[data-feld="text"]').textContent = '„' + s.text + '“';
+        k.querySelector('[data-feld="name"]').textContent = s.name;
+        bahn.appendChild(k);
+      });
+    }
+
+    var pausiert = false, fenster = document.getElementById('stimmen-fenster');
+    if (fenster) {
+      fenster.addEventListener('mouseenter', function () { pausiert = true; });
+      fenster.addEventListener('mouseleave', function () { pausiert = false; });
+    }
+
+    var ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var zuletzt = performance.now(), weg = 0;
+    (function takt(jetzt) {
+      var dt = Math.min(jetzt - zuletzt, 64); zuletzt = jetzt;
+      if (bahn && !pausiert && !ruhig) {
+        var halb = bahn.scrollHeight / 2 + 10;
+        weg += dt * 0.03;
+        if (halb > 10 && weg >= halb) weg -= halb;
+        bahn.style.transform = 'translateY(' + (-weg) + 'px)';
+      }
+      diagrammSchritt();
+      requestAnimationFrame(takt);
+    })(performance.now());
+
+    /* ============================================================
+       Impressum und Datenschutz als Overlay.
+       ============================================================ */
+    var huelle = document.getElementById('modal-huelle'),
+        titel = document.getElementById('modal-titel'),
+        blockVorlage = document.getElementById('vorlage-block'),
+        blockZiel = blockVorlage && blockVorlage.parentNode,
+        zuletztAktiv = null;
+    if (blockVorlage) blockVorlage.remove();
+
+    function overlay(welches) {
+      titel.textContent = welches === 'impressum' ? 'Impressum' : 'Datenschutz';
+      blockZiel.innerHTML = '';
+      (welches === 'impressum' ? IMPRESSUM : DATENSCHUTZ).forEach(function (b) {
+        var k = blockVorlage.content.cloneNode(true);
+        k.querySelector('[data-feld="h"]').textContent = b.h;
+        k.querySelector('[data-feld="t"]').textContent = b.t;
+        blockZiel.appendChild(k);
+      });
+      huelle.hidden = false;
+      document.body.style.overflow = 'hidden';
+      var zu = huelle.querySelector('button[data-schliessen]');
+      if (zu) zu.focus();
+    }
+    function overlayZu() {
+      huelle.hidden = true;
+      document.body.style.overflow = '';
+      if (zuletztAktiv && zuletztAktiv.focus) zuletztAktiv.focus();
+    }
+
+    document.addEventListener('click', function (e) {
+      var auf = e.target.closest('[data-modal]');
+      if (auf) { e.preventDefault(); zuletztAktiv = auf; overlay(auf.getAttribute('data-modal')); return; }
+      if (e.target.closest('[data-stop]')) return;
+      if (e.target.closest('[data-schliessen]')) { e.preventDefault(); overlayZu(); }
     });
-    if (fertig(liste) && liste.art === 'rahmen') {
-      form.action = liste.ziel;
-      form.method = 'post';
-      form.target = rahmen.name;
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (huelle && !huelle.hidden) overlayZu();
+      var rh = document.getElementById('reel-huelle');
+      if (rh && !rh.hidden) reelZu();
+    });
+
+    /* ============================================================
+       Instagram im Zwei-Klick-Verfahren. Vor dem Klick geht keine
+       Anfrage an Meta — deshalb liegt hier kein Vorschaubild von
+       Instagram, sondern eine eigene Karte.
+       ============================================================ */
+    var reelHuelle = document.getElementById('reel-huelle'),
+        reelFach = document.getElementById('reel-fach'),
+        reelZurueck = null;
+
+    function reelZu() {
+      reelFach.innerHTML = '';          /* beendet die Wiedergabe */
+      reelHuelle.hidden = true;
+      document.body.style.overflow = '';
+      if (reelZurueck && reelZurueck.focus) reelZurueck.focus();
     }
 
-    function umschalten(ziel, text) {
-      if (text) ziel.textContent = text;
-      block.hidden = true;
-      danke.hidden = ziel !== danke;
-      fehler.hidden = ziel !== fehler;
+    document.querySelectorAll('[data-reel]').forEach(function (karte) {
+      karte.addEventListener('click', function () {
+        /* Die Einbettung bringt Kopf- und Fußleiste mit und passt
+           deshalb nicht in die schmale Rasterzelle. Im Overlay hat
+           sie Platz, und es lädt immer nur eine davon. */
+        var rahmen = document.createElement('iframe');
+        rahmen.src = 'https://www.instagram.com/reel/' + karte.getAttribute('data-reel') + '/embed/';
+        rahmen.title = 'Instagram-Beitrag von @doktorbruno';
+        rahmen.allowFullscreen = true;
+        rahmen.setAttribute('scrolling', 'no');
+        rahmen.style.cssText = 'width:100%;height:100%;border:0;display:block;background:#FFFFFF';
+        reelZurueck = karte;
+        reelFach.innerHTML = '';
+        reelFach.appendChild(rahmen);
+        reelHuelle.hidden = false;
+        document.body.style.overflow = 'hidden';
+        var zu = reelHuelle.querySelector('[data-reel-zu]');
+        if (zu) zu.focus();
+      });
+    });
+
+    reelHuelle.addEventListener('click', function (e) {
+      if (e.target.closest('[data-reel-stop]') && !e.target.closest('[data-reel-zu]')) return;
+      reelZu();
+    });
+
+    /* ============================================================
+       Die drei Formulare. Siehe ZIELE weiter unten.
+       ============================================================ */
+    function fertig(l) {
+      var z = l.zusatz || {};
+      return !!l.ziel && Object.keys(z).every(function (k) { return !!z[k]; });
     }
 
-    function zurueck(text) {
-      laeuft = false;
-      clearTimeout(uhr);
-      knopf.disabled = false;
-      knopf.textContent = beschriftung;
-      fehler.textContent = text;
-      fehler.hidden = false;
-    }
+    function absenden(o) {
+      var liste  = ZIELE[o.liste],
+          form   = document.getElementById(o.form),
+          block  = document.getElementById(o.block),
+          danke  = document.getElementById(o.danke),
+          fehler = document.getElementById(o.fehler),
+          rahmen = o.rahmen ? document.getElementById(o.rahmen) : null,
+          feld   = form.querySelector('input[type=email]'),
+          topf   = form.querySelector('input[name=website], input[name=_gotcha]'),
+          knopf  = form.querySelector('button[type=submit]'),
+          beschriftung = knopf.innerHTML,
+          laeuft = false, uhr = null;
 
-    var MISSLUNGEN = 'Das hat gerade nicht geklappt. Bitte versuchen Sie es noch einmal.';
-
-    form.addEventListener('submit', function (e) {
-      /* Ein ausgefülltes Lockfeld heißt: kein Mensch. Wir senden nichts
-         und zeigen trotzdem den Dank, damit der Bot nichts lernt. */
-      if (topf && topf.value) { e.preventDefault(); umschalten(danke); return; }
-      if (!fertig(liste)) { e.preventDefault(); zurueck(o.unfertig); return; }
-      if (laeuft) { e.preventDefault(); return; }
-
-      laeuft = true;
-      fehler.hidden = true;
-      knopf.disabled = true;
-      knopf.textContent = 'Wird gesendet …';
-
-      if (liste.art !== 'json') {
-        /* Rahmenweg: kein preventDefault, der Browser schickt das
-           Formular jetzt wirklich ab. Die Uhr fängt den Fall ab, dass
-           nie eine Antwort kommt. */
-        uhr = setTimeout(function () { if (laeuft) zurueck(MISSLUNGEN); }, 12000);
-        return;
+      if (liste.feld && feld) feld.name = liste.feld;
+      if (liste.koeder && topf) topf.name = liste.koeder;
+      Object.keys(liste.zusatz || {}).forEach(function (k) {
+        var h = document.createElement('input');
+        h.type = 'hidden'; h.name = k; h.value = liste.zusatz[k];
+        form.appendChild(h);
+      });
+      if (fertig(liste) && liste.art === 'rahmen') {
+        form.action = liste.ziel; form.method = 'post'; form.target = rahmen.name;
       }
 
-      /* JSON-Weg: wir lesen die Antwort und wissen damit wirklich, ob
-         die Anmeldung angenommen wurde. */
-      e.preventDefault();
-      fetch(liste.ziel, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
-      })
-        .then(function (r) { return r.json().catch(function () { return {}; }); })
-        .then(function (d) {
-          if (d && d.success === false) {
-            var grund = d.errors && d.errors[liste.feld];
-            throw new Error(grund || MISSLUNGEN);
-          }
-          laeuft = false;
-          umschalten(danke);
+      function umschalten() {
+        block.hidden = true; fehler.hidden = true; danke.hidden = false;
+        if (o.zusatzBlock) document.getElementById(o.zusatzBlock).hidden = true;
+      }
+      function zurueck(text) {
+        laeuft = false; clearTimeout(uhr);
+        knopf.disabled = false; knopf.innerHTML = beschriftung;
+        fehler.textContent = text; fehler.hidden = false;
+      }
+
+      var MISSLUNGEN = 'Das hat gerade nicht geklappt. Bitte versuchen Sie es noch einmal.';
+
+      form.addEventListener('submit', function (e) {
+        /* Ein ausgefülltes Lockfeld heißt: kein Mensch. Wir senden
+           nichts und zeigen trotzdem den Dank, damit der Bot nichts
+           lernt. */
+        if (topf && topf.value) { e.preventDefault(); umschalten(); return; }
+        if (!fertig(liste)) { e.preventDefault(); zurueck(o.unfertig); return; }
+        if (laeuft) { e.preventDefault(); return; }
+
+        laeuft = true; fehler.hidden = true;
+        knopf.disabled = true; knopf.textContent = 'Wird gesendet …';
+
+        if (liste.art !== 'json') {
+          /* Rahmenweg: kein preventDefault, der Browser schickt das
+             Formular jetzt wirklich ab. Die Uhr fängt den Fall ab,
+             dass nie eine Antwort kommt. */
+          uhr = setTimeout(function () { if (laeuft) zurueck(MISSLUNGEN); }, 12000);
+          return;
+        }
+
+        /* JSON-Weg: wir lesen die Antwort und wissen damit wirklich,
+           ob die Anmeldung angenommen wurde. */
+        e.preventDefault();
+        fetch(liste.ziel, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
         })
-        .catch(function (err) {
-          zurueck((err && err.message) || MISSLUNGEN);
-        });
+          .then(function (r) { return r.json().catch(function () { return {}; }); })
+          .then(function (d) {
+            if (d && d.success === false) {
+              throw new Error((d.errors && d.errors[liste.feld]) || MISSLUNGEN);
+            }
+            laeuft = false; umschalten();
+          })
+          .catch(function (err) { zurueck((err && err.message) || MISSLUNGEN); });
+      });
+
+      /* Der erste load gilt dem leeren Rahmen beim Seitenaufbau,
+         deshalb die Abfrage auf laeuft. */
+      if (rahmen) rahmen.addEventListener('load', function () {
+        if (!laeuft) return;
+        laeuft = false; clearTimeout(uhr); umschalten();
+      });
+    }
+
+    var NOCHNICHT = 'Das ist hier noch nicht eingerichtet. Bitte wenden Sie sich so lange direkt an die Praxis.';
+
+    var wlKnopf = document.getElementById('wl-knopf'),
+        wlKnopfblock = document.getElementById('wl-knopfblock'),
+        wlBlock = document.getElementById('wl-block');
+    if (wlKnopf) wlKnopf.addEventListener('click', function () {
+      wlKnopfblock.hidden = true; wlBlock.hidden = false;
+      var f = wlBlock.querySelector('input[type=email]'); if (f) f.focus();
     });
 
-    /* Der erste load gilt dem leeren Rahmen beim Seitenaufbau, deshalb
-       die Abfrage auf laeuft. */
-    if (rahmen) rahmen.addEventListener('load', function () {
-      if (!laeuft) return;
-      laeuft = false;
-      clearTimeout(uhr);
-      umschalten(danke);
-    });
+    absenden({ liste: 'newsletter', form: 'nl-form', block: 'nl-block',
+               danke: 'nl-danke', fehler: 'nl-fehler', unfertig: NOCHNICHT });
+    absenden({ liste: 'buch', form: 'wl-form', block: 'wl-block',
+               danke: 'wl-danke', fehler: 'wl-fehler',
+               zusatzBlock: 'wl-knopfblock', unfertig: NOCHNICHT });
+    absenden({ liste: 'kontakt', form: 'kt-form', block: 'kt-block',
+               danke: 'kt-danke', fehler: 'kt-fehler', rahmen: 'kt-rahmen',
+               unfertig: NOCHNICHT });
   }
-
-  var wlKnopf = document.getElementById('wl-knopf'),
-      wlBlock = document.getElementById('wl-block');
-  wlKnopf.addEventListener('click', function () {
-    wlKnopf.hidden = true; wlBlock.hidden = false;
-    var f = wlBlock.querySelector('input[type=email]'); if (f) f.focus();
-  });
-
-  var NOCHNICHT = 'Das ist hier noch nicht eingerichtet. Bitte wenden Sie sich so lange direkt an die Praxis.';
-
-  absenden({ liste: 'buch', form: 'wl-form', block: 'wl-block',
-             danke: 'wl-danke', fehler: 'wl-fehler', rahmen: 'wl-rahmen',
-             unfertig: NOCHNICHT });
-  absenden({ liste: 'newsletter', form: 'nl-form', block: 'nl-block',
-             danke: 'nl-danke', fehler: 'nl-fehler', rahmen: 'nl-rahmen',
-             unfertig: NOCHNICHT });
-  absenden({ liste: 'kontakt', form: 'kt-form', block: 'kt-block',
-             danke: 'kt-danke', fehler: 'kt-fehler', rahmen: 'kt-rahmen',
-             unfertig: NOCHNICHT });
-
-  /* Impressum und Datenschutz als Overlay. Die eckigen Klammern sind
-     Platzhalter und müssen vor dem Livegang ersetzt werden. */
-  var IMPRESSUM = [
-    ['Angaben gemäß § 5 DDG', 'Dr. med. Raphael R. Bruno\n[Straße Hausnummer]\n[PLZ] Düsseldorf'],
-    ['Kontakt', 'Telefon: [Telefonnummer]\nE-Mail: [E-Mail-Adresse]'],
-    ['Berufsbezeichnung', 'Arzt, verliehen in der Bundesrepublik Deutschland\nFacharzt für Innere Medizin und Kardiologie'],
-    ['Zuständige Kammer', 'Ärztekammer Nordrhein, Tersteegenstraße 9, 40474 Düsseldorf'],
-    ['Berufsrechtliche Regelungen', 'Berufsordnung der Ärztekammer Nordrhein, Heilberufsgesetz NRW. [Platzhalter, rechtlich prüfen lassen]'],
-    ['Zuständige Aufsichtsbehörde', '[Kassenärztliche Vereinigung bzw. Aufsichtsbehörde]'],
-    ['Verantwortlich für den Inhalt', 'Dr. med. Raphael R. Bruno, Anschrift wie oben']
-  ];
-  var DATENSCHUTZ = [
-    ['Verantwortlicher', 'Dr. med. Raphael R. Bruno, [Anschrift], [E-Mail-Adresse]'],
-    ['Hosting', '[Platzhalter: Anbieter, Serverstandort, Art der verarbeiteten Server-Logdaten und Speicherdauer]'],
-    ['Cookies und Tracking', '[Platzhalter: Angaben zu Cookies, Analyse- und Tracking-Diensten]'],
-    ['Kontaktformular', 'Name, E-Mail-Adresse und Nachricht werden ausschließlich zur Beantwortung der Anfrage verarbeitet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Für die Übermittlung wird Formspree (Formspree Inc., USA) als Auftragsverarbeiter eingesetzt; die Daten werden dort verarbeitet und anschließend als E-Mail zugestellt. Grundlage der Übermittlung in die USA sind die Standardvertragsklauseln der Europäischen Kommission. Die Nachrichten werden gelöscht, sobald die Anfrage erledigt ist und keine Aufbewahrungspflichten entgegenstehen. [Vor dem Livegang: Auftragsverarbeitungsvertrag mit Formspree abschließen.]'],
-    ['Newsletter', 'Für Anmeldung und Versand wird Brevo eingesetzt. Die Anmeldung erfolgt im Verfahren der doppelten Bestätigung; bis zur Bestätigung über den Link in der ersten E-Mail wird die Adresse nicht in den Verteiler aufgenommen. Rechtsgrundlage ist die Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO. Sie kann jederzeit über den Abmeldelink in jeder E-Mail widerrufen werden. [Vor dem Livegang: Auftragsverarbeitungsvertrag mit Brevo abschließen.]'],
-    ['Externe Links', '[Platzhalter: Hinweise zu verlinkten Diensten wie Instagram, Spotify, YouTube und kardio.pro]'],
-    ['Ihre Rechte', 'Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Widerspruch und Datenübertragbarkeit nach Art. 15 bis 21 DSGVO. Beschwerderecht bei der Landesbeauftragten für Datenschutz und Informationsfreiheit NRW.'],
-    ['Stand', '[Datum]']
-  ];
-  var modal = document.getElementById('modal'),
-      titel = document.getElementById('modal-titel'),
-      inhalt = document.getElementById('modal-inhalt');
-
-  function oeffne(art) {
-    titel.textContent = art === 'impressum' ? 'Impressum' : 'Datenschutz';
-    inhalt.textContent = '';
-    (art === 'impressum' ? IMPRESSUM : DATENSCHUTZ).forEach(function (b) {
-      var w = document.createElement('div');
-      w.style.cssText = 'display:flex;flex-direction:column;gap:6px';
-      var h = document.createElement('div');
-      h.style.cssText = 'font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#5A5F64';
-      h.textContent = b[0];
-      var p = document.createElement('p');
-      p.style.cssText = 'margin:0;white-space:pre-line';
-      p.textContent = b[1];
-      w.appendChild(h); w.appendChild(p); inhalt.appendChild(w);
-    });
-    modal.hidden = false;
-    document.body.style.overflow = 'hidden';
-  }
-  function schliesse() { modal.hidden = true; document.body.style.overflow = ''; }
-
-  document.querySelectorAll('[data-modal]').forEach(function (a) {
-    a.addEventListener('click', function (e) { e.preventDefault(); oeffne(a.getAttribute('data-modal')); });
-  });
-  document.getElementById('modal-zu').addEventListener('click', schliesse);
-  modal.addEventListener('click', function (e) { if (e.target === modal) schliesse(); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) schliesse(); });
-
-  /* Fehlende Bilder: aus der Design-Schnittstelle kamen nur kleine Dateien
-     durch, alles ueber 192 KiB wird dort abgeschnitten. Bis der Handoff-Export
-     da ist, steht an der Stelle ein beschrifteter Kasten. */
-  document.querySelectorAll('img').forEach(function (img) {
-    img.addEventListener('error', function () {
-      var k = document.createElement('div');
-      k.className = 'slot';
-      k.style.cssText += ';width:100%;height:100%;min-height:220px';
-      k.textContent = 'Bild fehlt: ' + img.getAttribute('src').split('/').pop();
-      if (img.parentNode) img.parentNode.replaceChild(k, img);
-    });
-  });
-
-  /* Noch offene Links sollen nicht nach oben springen. */
-  document.querySelectorAll('[data-offen]').forEach(function (a) {
-    a.addEventListener('click', function (e) { e.preventDefault(); });
-    a.title = 'Link fehlt noch: ' + a.getAttribute('data-offen');
-  });
 })();
 </script>
 </body>
