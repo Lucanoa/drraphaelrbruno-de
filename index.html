@@ -156,7 +156,21 @@
          border:1px dashed #C9C5BE;border-radius:14px;background:#F2F0EC;color:#8A8E93;
          font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
 
-  .menue-knopf{display:none;flex:0 0 auto;flex-direction:column;justify-content:center;
+  
+  /* Wortmarke aus dem Entwurf: "PD DR. MED." ueber dem Namen. Als
+     echter Text statt als Bild, damit sie in Inter steht, bei jeder
+     Groesse scharf bleibt und vorgelesen werden kann. Die gelieferten
+     SVGs tragen keine Schriftangabe und waeren als Bild in der
+     Standardschrift des Browsers gelandet. */
+  .marke{flex:0 0 auto;display:flex;flex-direction:column;gap:3px;
+    line-height:1;white-space:nowrap}
+  .marke-oben{font-size:clamp(9.5px,.75vw,11px);font-weight:600;letter-spacing:.14em;
+    text-transform:uppercase;color:#5A5F64}
+  .marke-name{font-size:clamp(19px,1.9vw,29px);font-weight:600;letter-spacing:-.035em;
+    color:#14171A}
+  .marke:hover .marke-name{color:#5A5F64}
+
+.menue-knopf{display:none;flex:0 0 auto;flex-direction:column;justify-content:center;
     gap:5px;width:38px;height:38px;padding:0 7px;border:0;background:none;cursor:pointer;
     box-sizing:border-box}
   .menue-knopf span{display:block;height:2px;width:100%;background:#14171A;border-radius:2px;
@@ -172,7 +186,8 @@
        aus. Geoeffnet legen sich die Verweise unter die Leiste. */
     header > div{flex-wrap:wrap;row-gap:0;gap:8px!important;
       padding-left:16px!important;padding-right:10px!important}
-    header > div > a:first-child{font-size:15px!important;letter-spacing:-.01em!important}
+    .marke-name{font-size:17px!important}
+    .marke-oben{font-size:9px!important}
     #nav-cta{padding:10px 13px!important;font-size:10px!important;letter-spacing:.06em!important}
     .menue-knopf{width:34px!important;padding:0 5px!important}
     .menue-knopf{display:flex!important}
@@ -209,7 +224,8 @@
      Schritt rutscht der Burger in eine zweite Zeile. */
   @media (max-width:359px){
     header > div{gap:6px!important;padding-left:12px!important;padding-right:8px!important}
-    header > div > a:first-child{font-size:13px!important}
+    .marke-name{font-size:15px!important}
+    .marke-oben{font-size:8.5px!important}
     #nav-cta{padding:10px 11px!important}
   }
 
@@ -239,7 +255,7 @@
 
 <header style="position:fixed;top:0;left:0;right:0;width:var(--kopf-breite);box-sizing:border-box;z-index:50;padding:16px clamp(12px,2.5vw,32px);pointer-events:none;transition:transform .45s cubic-bezier(.2,.7,.2,1);transform:var(--nav-schub)">
   <div style="pointer-events:auto;max-width:1400px;margin:0 auto;background:#FFFFFF;border:1px solid #E3E0DA;border-radius:14px;box-shadow:var(--nav-schatten);padding:12px clamp(14px,3vw,40px) 12px clamp(18px,3vw,40px);display:flex;align-items:center;justify-content:space-between;gap:clamp(12px,3vw,40px);transition:box-shadow .3s">
-    <a href="#top" style="flex:0 0 auto;font-family:'Inter',sans-serif;font-weight:500;font-size:clamp(17px,2vw,28px);letter-spacing:.005em;white-space:nowrap">PD Dr. Raphael R. Bruno</a>
+    <a href="#top" class="marke" aria-label="PD Dr. med. Raphael R. Bruno"><span class="marke-oben">PD Dr. med.</span><span class="marke-name">Raphael R. Bruno</span></a>
     <nav id="menue" style="flex:1 1 0;min-width:0;display:var(--nav-links);flex-wrap:wrap;justify-content:flex-end;column-gap:clamp(18px,2.4vw,34px);height:20px;overflow:hidden;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;line-height:20px">
       <a href="#podcast" style="white-space:nowrap">Podcast</a>
       <a href="#buch" style="white-space:nowrap">Buch</a>
