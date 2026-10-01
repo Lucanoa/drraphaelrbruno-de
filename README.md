@@ -48,8 +48,13 @@ vorzutäuschen.
 
 ## Handouts
 
-Unter `handouts/` liegt je Thema ein Ordner mit dem PDF und einer
-schlanken Seite, die es anzeigt und zum Herunterladen anbietet:
+`/handouts/` ist eine Uebersicht mit allen zehn Blaettern, nach
+Ueberblick, Werten, Alltag und Vorsorge gruppiert. Titel und
+Einleitungssatz jeder Karte stammen woertlich aus dem jeweiligen PDF,
+damit nichts dazuerfunden ist.
+
+Darunter liegt je Thema ein Ordner mit dem PDF und einer schlanken
+Seite, die es anzeigt und zum Herunterladen anbietet:
 
     /handouts/ausdauer/            /handouts/blutzucker-und-niere/
     /handouts/blutdruck/           /handouts/cholesterin/
