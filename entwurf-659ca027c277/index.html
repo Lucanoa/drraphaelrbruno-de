@@ -9,7 +9,8 @@
 <!-- ENTWURF. Nicht verlinken, nicht indexieren.
      Umgesetzt aus dem Claude-Design-Artboard "Landingpage Dr Bruno.dc.html".
      Offen: Impressumsdaten, Datenschutztext, Podcast-Links, Instagram-Clips,
-     Empfänger für die beiden Formulare, Schriften selbst hosten. -->
+     Schriften selbst hosten. Die beiden Formulare sind fertig; es
+     fehlen nur noch die zwei ZIEL-Adressen in LISTEN (siehe unten). -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -218,11 +219,17 @@
       <h2 class="serif" style="margin:0;font-size:clamp(36px,4vw,60px);line-height:1.02;letter-spacing:-.015em">Cholesterin</h2>
       <p style="margin:0;font-size:16px;line-height:1.65;max-width:480px;text-wrap:pretty">Was der Wert bedeutet, welcher Wert zählt und was Sie dafür nicht kaufen müssen.</p>
       <button id="wl-knopf" class="navknopf" style="margin-top:6px;cursor:pointer;font-family:inherit">Auf die Warteliste</button>
-      <form id="wl-form" hidden style="margin-top:6px;width:100%;max-width:480px;display:flex;flex-wrap:wrap;gap:10px">
-        <input type="email" required placeholder="Ihre E-Mail-Adresse" aria-label="E-Mail-Adresse" style="flex:1 1 220px;min-width:0;font-family:inherit;font-size:15px;padding:15px 18px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A">
-        <button type="submit" class="navknopf" style="flex:0 0 auto;cursor:pointer;font-family:inherit">Eintragen</button>
-      </form>
-      <p id="wl-danke" hidden class="serif" style="margin:6px 0 0;font-size:22px;line-height:1.4;max-width:480px">Danke. Sie erfahren es als Erste, wenn das Buch erscheint.</p>
+      <div id="wl-block" hidden style="display:contents">
+        <form id="wl-form" style="margin-top:6px;width:100%;max-width:480px;display:flex;flex-wrap:wrap;gap:10px">
+          <input type="email" required placeholder="Ihre E-Mail-Adresse" aria-label="E-Mail-Adresse" style="flex:1 1 220px;min-width:0;font-family:inherit;font-size:15px;padding:15px 18px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A">
+          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+          <button type="submit" class="navknopf" style="flex:0 0 auto;cursor:pointer;font-family:inherit">Eintragen</button>
+        </form>
+        <p style="margin:0;font-size:13px;line-height:1.6;color:#5A5F64;max-width:480px">Doppelte Bestätigung per E-Mail. Abmeldung jederzeit mit einem Klick. Hinweise zur Verarbeitung in der <a href="#" data-modal="datenschutz" style="color:#5A5F64;border-bottom:1px solid #5A5F64">Datenschutzerklärung</a>.</p>
+      </div>
+      <p id="wl-danke" hidden class="serif" style="margin:6px 0 0;font-size:22px;line-height:1.4;max-width:480px">Danke. Bitte bestätigen Sie die Eintragung über den Link in der E-Mail, die wir Ihnen gerade geschickt haben.</p>
+      <p id="wl-fehler" hidden style="margin:6px 0 0;font-size:16px;line-height:1.6;max-width:480px;color:#8A2B20"></p>
+      <iframe id="wl-rahmen" name="wl-rahmen" title="Übermittlung" style="display:none" aria-hidden="true"></iframe>
     </div>
   </div>
 </section>
@@ -236,10 +243,13 @@
     <div id="nl-block" style="display:contents">
       <form id="nl-form" style="margin-top:16px;width:100%;max-width:620px;display:flex;flex-wrap:wrap;gap:12px">
         <input type="email" required placeholder="Ihre E-Mail-Adresse" aria-label="E-Mail-Adresse" style="flex:1 1 280px;min-width:0;font-family:inherit;font-size:16px;padding:17px 20px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A">
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
         <button type="submit" class="navknopf" style="flex:0 0 auto;cursor:pointer;font-family:inherit;padding:17px 28px">Eintragen</button>
       </form>
-      <p style="margin:0;font-size:13px;line-height:1.6;color:#5A5F64">Abmeldung jederzeit mit einem Klick. Hinweise zur Verarbeitung in der <a href="#" data-modal="datenschutz" style="color:#5A5F64;border-bottom:1px solid #5A5F64">Datenschutzerklärung</a>.</p>
+      <p style="margin:0;font-size:13px;line-height:1.6;color:#5A5F64">Doppelte Bestätigung per E-Mail. Abmeldung jederzeit mit einem Klick. Hinweise zur Verarbeitung in der <a href="#" data-modal="datenschutz" style="color:#5A5F64;border-bottom:1px solid #5A5F64">Datenschutzerklärung</a>.</p>
     </div>
+    <p id="nl-fehler" hidden style="margin:0;font-size:16px;line-height:1.6;max-width:560px;color:#8A2B20"></p>
+    <iframe id="nl-rahmen" name="nl-rahmen" title="Übermittlung" style="display:none" aria-hidden="true"></iframe>
   </div>
 </section>
 
@@ -306,25 +316,116 @@
     letztes = y;
   }, { passive: true });
 
-  /* Warteliste und Newsletter. Beide schicken noch nirgendwohin — der
-     Empfänger fehlt. Siehe den Kommentar im Kopf der Datei. */
+  /* ================================================================
+     Newsletter und Buch-Warteliste.
+
+     EINZIGE STELLE, DIE NOCH GEFÜLLT WERDEN MUSS: die beiden ZIEL-
+     Adressen unten. Sie stehen im Konto des Newsletter-Anbieters
+     beim jeweiligen Formular ("Embed" / "HTML-Code"), im action-
+     Attribut. FELD ist der Name, unter dem der Anbieter die
+     E-Mail-Adresse erwartet — je nach Anbieter:
+
+         MailerLite   fields[email]
+         beehiiv      email
+         Kit          email_address
+         Mailchimp    EMAIL
+
+     Beide Listen gehören in dasselbe Konto, aber in zwei getrennte
+     Formulare, damit die Buch-Leute später gezielt angeschrieben
+     werden können.
+
+     Wichtig: beim Anbieter die doppelte Bestätigung (Double Opt-In)
+     einschalten. Der Dankestext unten sagt genau das zu.
+
+     Solange ZIEL leer ist, sagt das Formular ehrlich, dass die
+     Anmeldung noch nicht eingerichtet ist — es zeigt kein "Danke"
+     für etwas, das nie verschickt wurde.
+     ================================================================ */
+  var LISTEN = {
+    newsletter: { ziel: '', feld: 'fields[email]' },
+    buch:       { ziel: '', feld: 'fields[email]' }
+  };
+
+  /* Das Formular wird in einen unsichtbaren Rahmen geschickt. Dadurch
+     bleibt der Besucher auf der Seite, es braucht keine CORS-Freigabe
+     beim Anbieter, und wir wissen sicher, dass die Anmeldung wirklich
+     rausgegangen ist, bevor wir uns bedanken. */
+  function anmeldung(o) {
+    var liste  = LISTEN[o.liste],
+        form   = document.getElementById(o.form),
+        block  = document.getElementById(o.block),
+        danke  = document.getElementById(o.danke),
+        fehler = document.getElementById(o.fehler),
+        rahmen = document.getElementById(o.rahmen),
+        feld   = form.querySelector('input[type=email]'),
+        topf   = form.querySelector('input[name=website]'),
+        knopf  = form.querySelector('button[type=submit]'),
+        beschriftung = knopf.textContent,
+        laeuft = false, uhr = null;
+
+    if (liste.ziel) {
+      form.action = liste.ziel;
+      form.method = 'post';
+      form.target = rahmen.name;
+      feld.name   = liste.feld;
+    }
+
+    function umschalten(ziel, text) {
+      if (text) ziel.textContent = text;
+      block.hidden = true;
+      danke.hidden = ziel !== danke;
+      fehler.hidden = ziel !== fehler;
+    }
+
+    function zurueck(text) {
+      laeuft = false;
+      clearTimeout(uhr);
+      knopf.disabled = false;
+      knopf.textContent = beschriftung;
+      fehler.textContent = text;
+      fehler.hidden = false;
+    }
+
+    form.addEventListener('submit', function (e) {
+      if (topf && topf.value) { e.preventDefault(); umschalten(danke); return; }
+      if (!liste.ziel) {
+        e.preventDefault();
+        zurueck('Die Anmeldung ist noch nicht eingerichtet. Bitte schreiben Sie uns kurz, dann tragen wir Sie von Hand ein.');
+        return;
+      }
+      if (laeuft) { e.preventDefault(); return; }
+      laeuft = true;
+      fehler.hidden = true;
+      knopf.disabled = true;
+      knopf.textContent = 'Wird gesendet …';
+      uhr = setTimeout(function () {
+        if (laeuft) zurueck('Das hat gerade nicht geklappt. Bitte versuchen Sie es noch einmal.');
+      }, 12000);
+      /* kein preventDefault: der Browser schickt das Formular jetzt
+         wirklich ab, Ziel ist der unsichtbare Rahmen. */
+    });
+
+    /* Der erste load gilt dem leeren Rahmen beim Seitenaufbau, deshalb
+       die Abfrage auf laeuft. */
+    rahmen.addEventListener('load', function () {
+      if (!laeuft) return;
+      laeuft = false;
+      clearTimeout(uhr);
+      umschalten(danke);
+    });
+  }
+
   var wlKnopf = document.getElementById('wl-knopf'),
-      wlForm = document.getElementById('wl-form'),
-      wlDanke = document.getElementById('wl-danke');
+      wlBlock = document.getElementById('wl-block');
   wlKnopf.addEventListener('click', function () {
-    wlKnopf.hidden = true; wlForm.hidden = false;
-    var f = wlForm.querySelector('input'); if (f) f.focus();
-  });
-  wlForm.addEventListener('submit', function (e) {
-    e.preventDefault(); wlForm.hidden = true; wlDanke.hidden = false;
+    wlKnopf.hidden = true; wlBlock.hidden = false;
+    var f = wlBlock.querySelector('input[type=email]'); if (f) f.focus();
   });
 
-  var nlForm = document.getElementById('nl-form'),
-      nlBlock = document.getElementById('nl-block'),
-      nlDanke = document.getElementById('nl-danke');
-  nlForm.addEventListener('submit', function (e) {
-    e.preventDefault(); nlBlock.hidden = true; nlDanke.hidden = false;
-  });
+  anmeldung({ liste: 'buch', form: 'wl-form', block: 'wl-block',
+              danke: 'wl-danke', fehler: 'wl-fehler', rahmen: 'wl-rahmen' });
+  anmeldung({ liste: 'newsletter', form: 'nl-form', block: 'nl-block',
+              danke: 'nl-danke', fehler: 'nl-fehler', rahmen: 'nl-rahmen' });
 
   /* Impressum und Datenschutz als Overlay. Die eckigen Klammern sind
      Platzhalter und müssen vor dem Livegang ersetzt werden. */
