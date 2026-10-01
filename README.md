@@ -62,11 +62,13 @@ Seite, die es anzeigt und zum Herunterladen anbietet:
     /handouts/krafttraining/       /handouts/krebsfrueherkennung/
     /handouts/rauchen/             /handouts/schlaf/
 
-Die Seiten sind nirgends verlinkt und tragen `noindex`. Für die PDFs
-selbst geht das nicht: Dafür braucht es einen `X-Robots-Tag` im
-HTTP-Kopf, und den kann GitHub Pages nicht setzen. Wer die PDF-Adresse
-direkt kennt, kommt also an die Datei, und eine Suchmaschine koennte sie
-aufnehmen, falls die Adresse irgendwo auftaucht.
+Von der Hauptseite ist nichts davon verlinkt. Indexierung ist erlaubt,
+die Seiten tragen kein `noindex` mehr.
+
+Beides zusammen heisst praktisch: gefunden wird vorerst nichts. Ohne
+einen Verweis von irgendwoher und ohne Eintrag in einer `sitemap.xml`
+kennt keine Suchmaschine die Adressen. Soll das anders sein, braucht es
+eine Sitemap oder einen Verweis.
 
 ## Offen
 
