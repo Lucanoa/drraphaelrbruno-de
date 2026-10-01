@@ -137,14 +137,16 @@
     width:clamp(32px,10%,120px);z-index:1;pointer-events:none}
   .bekannt-fenster::before{left:0;background:linear-gradient(90deg,#FAF9F7,rgba(250,249,247,0))}
   .bekannt-fenster::after{right:0;background:linear-gradient(270deg,#FAF9F7,rgba(250,249,247,0))}
-  .bekannt-bahn{display:flex;width:max-content;will-change:transform;
-    transform:translate3d(0,0,0);backface-visibility:hidden;
-    animation:bekannt-lauf 60s linear infinite}
+  /* Das Band laeuft per Skript, nicht per CSS-Animation. Eine
+     Dauer-Animation auf einem derart breiten Element laesst den
+     Browser eine entsprechend breite Ebene anlegen; auf dem Handy
+     wirft er die unter Druck weg, und dann ist das Band schlicht
+     leer. Ein Transform pro Einzelbild hat dieses Problem nicht. */
+  .bekannt-bahn{display:flex;width:max-content}
   .bekannt-satz{display:flex;align-items:center;gap:clamp(48px,6vw,88px);
                 padding-right:clamp(48px,6vw,88px)}
   .bekannt-satz img{width:auto;flex:0 0 auto;opacity:.72;display:block}
-  @keyframes bekannt-lauf{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
-  @media (prefers-reduced-motion:reduce){.bekannt-bahn{animation:none}}
+  @media (prefers-reduced-motion:reduce){.bekannt-bahn{transform:none!important}}
 
   /* Platzhalter für die vier Instagram-Clips, bis die Dateien da sind. */
   .platz{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
@@ -232,8 +234,8 @@
       <a href="#ueber" style="white-space:nowrap">Über Dr. Bruno</a>
       <a href="https://www.instagram.com/doktorbruno/" target="_blank" rel="noopener" style="white-space:nowrap">Instagram ↗</a>
     </nav>
-    <button type="button" id="menue-knopf" class="menue-knopf" aria-expanded="false" aria-controls="menue" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
     <a href="#kontakt" style="flex:0 0 auto;white-space:nowrap;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:13px 22px;border-radius:999px;background:#123540;color:#FAF9F7;border:1px solid #14171A" data-h="h0" id="nav-cta"><span class="nur-breit-i">Kontakt aufnehmen</span><span class="nur-schmal-i">Kontakt</span></a>
+    <button type="button" id="menue-knopf" class="menue-knopf" aria-expanded="false" aria-controls="menue" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
   </div>
 </header>
 <div id="top" style="height:clamp(84px,9vw,110px)"></div>
@@ -851,6 +853,7 @@ var DATENSCHUTZ = [
     /* Auf schmalen Schirmen wird gewischt statt gelaufen, sonst
        kaempfen Skript und Finger um dieselbe Achse. */
     var schmal = window.matchMedia('(max-width:759px)');
+    var logoBahn = document.querySelector('.bekannt-bahn'), logoWeg = 0;
     var zuletzt = performance.now(), weg = 0;
     /* Beim Wechsel der Richtung von vorn, sonst springt das Band. */
     schmal.addEventListener('change', function () { weg = 0; });
@@ -864,6 +867,17 @@ var DATENSCHUTZ = [
         if (halb > 10 && weg >= halb) weg -= halb;
         bahn.style.transform = (quer ? 'translateX(' : 'translateY(') + (-weg) + 'px)';
       }
+      /* Logoband. Schmal etwas flotter, sonst wirkt es auf dem
+         kurzen Weg wie Stillstand. */
+      if (logoBahn && !ruhig) {
+        var logoHalb = logoBahn.scrollWidth / 2;
+        if (logoHalb > 10) {
+          logoWeg += dt * (schmal.matches ? 0.075 : 0.03);
+          if (logoWeg >= logoHalb) logoWeg -= logoHalb;
+          logoBahn.style.transform = 'translateX(' + (-logoWeg) + 'px)';
+        }
+      }
+
       diagrammSchritt();
       requestAnimationFrame(takt);
     })(performance.now());
