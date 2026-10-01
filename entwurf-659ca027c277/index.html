@@ -440,7 +440,6 @@
     </div>
   </div>
 </section>
-<iframe id="kt-rahmen" name="kt-rahmen" title="Übermittlung" style="display:none" aria-hidden="true"></iframe>
 
 <!-- Instagram-Beitrag im Overlay. Erst beim Klick auf eine Karte wird
      hier eine Einbettung erzeugt; vorher geht keine Anfrage an Meta. -->
@@ -487,25 +486,25 @@
 
    DAS IST DIE EINZIGE STELLE, DIE NOCH GEFÜLLT WERDEN MUSS.
 
-     ART     'json'   Die Antwort wird gelesen, Erfolg und Fehler
-                      sind echt. Für Brevo nachgemessen: der Dienst
-                      erlaubt den Zugriff und antwortet mit
-                      {"success":…,"errors":…}.
-             'rahmen' Das Formular geht in einen unsichtbaren Rahmen.
-                      Nötig, wenn der Anbieter den Zugriff auf die
-                      Antwort nicht erlaubt. Dann wissen wir nur,
-                      DASS gesendet wurde, nicht ob es ankam.
+     Beide Anbieter erlauben den Zugriff auf ihre Antwort, das ist
+     nachgemessen. Deshalb wird sie gelesen, und Erfolg wie Fehler
+     sind echt — kein Dank für etwas, das der Dienst abgelehnt hat.
+     Die Antworten sehen unterschiedlich aus:
+
+         Brevo       {"success":false,"errors":{"EMAIL":"…"}}
+         Formspree   {"errors":[{"message":"…"}]}
+
+     Beide Formen werden ausgewertet.
+
      ZIEL    Adresse des Formulars beim Anbieter
      FELD    Name, unter dem die E-Mail-Adresse erwartet wird
      KOEDER  Name des unsichtbaren Lockfelds gegen Bots
      ZUSATZ  versteckte Felder, die mitgeschickt werden
 
-   OFFEN 1: Die Warteliste braucht ein EIGENES Brevo-Formular. Die
-   Adresse des Newsletters hier einzutragen würde Buchinteressenten
-   und Newsletter-Leser in dieselbe Liste werfen.
-
-   OFFEN 2: Das Kontaktformular braucht die Adresse von Formspree,
-   Form https://formspree.io/f/<id>.
+   OFFEN: Die Warteliste hat in Brevo eine eigene Liste und ein
+   eigenes Formular, aber dessen Adresse fehlt hier noch. Die des
+   Newsletters einzutragen würde beide Gruppen in dieselbe Liste
+   werfen.
 
    Solange ein ZIEL leer ist, sagt das Formular offen, dass es noch
    nicht eingerichtet ist — es zeigt kein "Danke" für etwas, das nie
@@ -520,7 +519,7 @@ function brevo(ziel) {
 var ZIELE = {
   newsletter: brevo('https://dac06a52.sibforms.com/serve/MUIFAFd3-kmN_gpO6Lf8g7uDPIZVtnF4tpkGLRsjfdKW0ByrufbM1m30_3PdBaWA6W5XMW1JlZJ3sT9gkzFuo-1UfQ3WgtwWEqvt6TyylZuEtGjsAGFxrLd_MQ-03FS58VzumPSbgN8DCK8JZhFVS7A8qrtrPWLHqLFd3IL95ea20x_mjrQBk_h_awnZZ_-zDMhVuRW9Ml7en9cY3w=='),
   buch:       brevo(''),
-  kontakt:    { art: 'rahmen', ziel: '',   /* https://formspree.io/f/<id> */
+  kontakt:    { art: 'json', ziel: 'https://formspree.io/f/mgavbpjv',
                 koeder: '_gotcha',
                 zusatz: { _subject: 'Neue Nachricht über drraphaelrbruno.de' } }
 };
@@ -642,7 +641,7 @@ var DATENSCHUTZ = [
  },
  {
   "h": "Kontaktformular und E-Mail",
-  "t": "Wenn Sie uns über das Kontaktformular oder per E-Mail kontaktieren, werden Ihre Angaben (Name, E-Mail-Adresse, Anliegen, Nachricht) zur Bearbeitung Ihrer Anfrage gespeichert und verarbeitet. Grundlage ist Art. 6 Abs. 1 lit. b DSGVO bzw. unser berechtigtes Interesse an der Bearbeitung von Anfragen (Art. 6 Abs. 1 lit. f DSGVO).\n\nFür die Übermittlung setzen wir Formspree (Formspree, Inc., USA) als Auftragsverarbeiter ein. Die Nachricht wird dort entgegengenommen und als E-Mail zugestellt. Grundlage der Übermittlung in die USA sind die Standardvertragsklauseln der Europäischen Kommission.\n\nBitte übermitteln Sie über das Formular keine Gesundheitsdaten. Die Daten werden gelöscht, sobald der Zweck entfällt und keine gesetzlichen Aufbewahrungsfristen entgegenstehen."
+  "t": "Wenn Sie uns über das Kontaktformular oder per E-Mail kontaktieren, werden Ihre Angaben (Name, E-Mail-Adresse, Anliegen, Nachricht) zur Bearbeitung Ihrer Anfrage gespeichert und verarbeitet. Grundlage ist Art. 6 Abs. 1 lit. b DSGVO bzw. unser berechtigtes Interesse an der Bearbeitung von Anfragen (Art. 6 Abs. 1 lit. f DSGVO).\n\nFür die Übermittlung setzen wir Formspree (Formspree, Inc., USA) ein. Die Nachricht wird dort entgegengenommen und als E-Mail zugestellt; dabei werden die Daten in den USA verarbeitet. [Vor dem Livegang zwingend zu klären: Auftragsverarbeitungsvertrag nach Art. 28 DSGVO und Grundlage der Drittlandübermittlung nach Art. 44 ff. DSGVO. Solange beides fehlt, darf dieser Absatz keine vertragliche Grundlage behaupten.]\n\nBitte übermitteln Sie über das Formular keine Gesundheitsdaten. Die Daten werden gelöscht, sobald der Zweck entfällt und keine gesetzlichen Aufbewahrungsfristen entgegenstehen."
  },
  {
   "h": "Newsletter und Buch-Warteliste",
@@ -867,18 +866,32 @@ var DATENSCHUTZ = [
       return !!l.ziel && Object.keys(z).every(function (k) { return !!z[k]; });
     }
 
+    /* Brevo meldet {"success":false,"errors":{"EMAIL":"…"}},
+       Formspree {"errors":[{"message":"…"}]}. Beides hier auspacken,
+       damit der Besucher den echten Grund sieht statt einer Floskel. */
+    function grundFinden(d, liste) {
+      if (!d) return null;
+      if (Array.isArray(d.errors) && d.errors.length) {
+        return d.errors.map(function (f) { return f.message; })
+                       .filter(Boolean).join(' ') || null;
+      }
+      if (d.success === false) {
+        return (d.errors && liste.feld && d.errors[liste.feld]) || null;
+      }
+      return null;
+    }
+
     function absenden(o) {
       var liste  = ZIELE[o.liste],
           form   = document.getElementById(o.form),
           block  = document.getElementById(o.block),
           danke  = document.getElementById(o.danke),
           fehler = document.getElementById(o.fehler),
-          rahmen = o.rahmen ? document.getElementById(o.rahmen) : null,
           feld   = form.querySelector('input[type=email]'),
           topf   = form.querySelector('input[name=website], input[name=_gotcha]'),
           knopf  = form.querySelector('button[type=submit]'),
           beschriftung = knopf.innerHTML,
-          laeuft = false, uhr = null;
+          laeuft = false;
 
       if (liste.feld && feld) feld.name = liste.feld;
       if (liste.koeder && topf) topf.name = liste.koeder;
@@ -887,16 +900,13 @@ var DATENSCHUTZ = [
         h.type = 'hidden'; h.name = k; h.value = liste.zusatz[k];
         form.appendChild(h);
       });
-      if (fertig(liste) && liste.art === 'rahmen') {
-        form.action = liste.ziel; form.method = 'post'; form.target = rahmen.name;
-      }
 
       function umschalten() {
         block.hidden = true; fehler.hidden = true; danke.hidden = false;
         if (o.zusatzBlock) document.getElementById(o.zusatzBlock).hidden = true;
       }
       function zurueck(text) {
-        laeuft = false; clearTimeout(uhr);
+        laeuft = false;
         knopf.disabled = false; knopf.innerHTML = beschriftung;
         fehler.textContent = text; fehler.hidden = false;
       }
@@ -914,38 +924,25 @@ var DATENSCHUTZ = [
         laeuft = true; fehler.hidden = true;
         knopf.disabled = true; knopf.textContent = 'Wird gesendet …';
 
-        if (liste.art !== 'json') {
-          /* Rahmenweg: kein preventDefault, der Browser schickt das
-             Formular jetzt wirklich ab. Die Uhr fängt den Fall ab,
-             dass nie eine Antwort kommt. */
-          uhr = setTimeout(function () { if (laeuft) zurueck(MISSLUNGEN); }, 12000);
-          return;
-        }
-
-        /* JSON-Weg: wir lesen die Antwort und wissen damit wirklich,
-           ob die Anmeldung angenommen wurde. */
         e.preventDefault();
+        var angekommen = false;
         fetch(liste.ziel, {
           method: 'POST',
           body: new FormData(form),
           headers: { 'Accept': 'application/json' }
         })
-          .then(function (r) { return r.json().catch(function () { return {}; }); })
+          .then(function (r) {
+            angekommen = r.ok;
+            return r.json().catch(function () { return {}; });
+          })
           .then(function (d) {
-            if (d && d.success === false) {
-              throw new Error((d.errors && d.errors[liste.feld]) || MISSLUNGEN);
-            }
+            var grund = grundFinden(d, liste);
+            if (grund || !angekommen) throw new Error(grund || MISSLUNGEN);
             laeuft = false; umschalten();
           })
           .catch(function (err) { zurueck((err && err.message) || MISSLUNGEN); });
       });
 
-      /* Der erste load gilt dem leeren Rahmen beim Seitenaufbau,
-         deshalb die Abfrage auf laeuft. */
-      if (rahmen) rahmen.addEventListener('load', function () {
-        if (!laeuft) return;
-        laeuft = false; clearTimeout(uhr); umschalten();
-      });
     }
 
     var NOCHNICHT = 'Das ist hier noch nicht eingerichtet. Bitte wenden Sie sich so lange direkt an die Praxis.';
@@ -964,8 +961,7 @@ var DATENSCHUTZ = [
                danke: 'wl-danke', fehler: 'wl-fehler',
                zusatzBlock: 'wl-knopfblock', unfertig: NOCHNICHT });
     absenden({ liste: 'kontakt', form: 'kt-form', block: 'kt-block',
-               danke: 'kt-danke', fehler: 'kt-fehler', rahmen: 'kt-rahmen',
-               unfertig: NOCHNICHT });
+               danke: 'kt-danke', fehler: 'kt-fehler', unfertig: NOCHNICHT });
   }
 })();
 </script>
