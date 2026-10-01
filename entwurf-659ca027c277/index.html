@@ -52,6 +52,7 @@
      Grenzen wie im Entwurf: schmal unter 760, breit über 1100. */
   :root{
     --nav-schub:translateY(0);
+    --kopf-breite:auto;
     --nav-schatten:none;
     --nav-links:flex;
     --hero-richtung:row;
@@ -137,7 +138,7 @@
 </div>
 
 
-<header style="position:fixed;top:0;left:0;right:0;z-index:50;padding:16px clamp(12px,2.5vw,32px);pointer-events:none;transition:transform .45s cubic-bezier(.2,.7,.2,1);transform:var(--nav-schub)">
+<header style="position:fixed;top:0;left:0;right:0;width:var(--kopf-breite);box-sizing:border-box;z-index:50;padding:16px clamp(12px,2.5vw,32px);pointer-events:none;transition:transform .45s cubic-bezier(.2,.7,.2,1);transform:var(--nav-schub)">
   <div style="pointer-events:auto;max-width:1400px;margin:0 auto;background:#FFFFFF;border:1px solid #E3E0DA;border-radius:14px;box-shadow:var(--nav-schatten);padding:12px clamp(14px,3vw,40px) 12px clamp(18px,3vw,40px);display:flex;align-items:center;justify-content:space-between;gap:clamp(12px,3vw,40px);transition:box-shadow .3s">
     <a href="#top" style="flex:0 0 auto;font-family:'Inter',sans-serif;font-weight:500;font-size:clamp(17px,2vw,28px);letter-spacing:.005em;white-space:nowrap">Dr. Raphael R. Bruno</a>
     <nav style="flex:1 1 0;min-width:0;display:var(--nav-links);flex-wrap:wrap;justify-content:flex-end;column-gap:clamp(18px,2.4vw,34px);height:20px;overflow:hidden;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;line-height:20px">
@@ -378,7 +379,7 @@
       </div>
       <a href="https://www.instagram.com/doktorbruno/" target="_blank" rel="noopener" style="font-size:14px;font-weight:500;letter-spacing:.03em;border-bottom:1px solid #14171A;padding-bottom:4px">@doktorbruno →</a>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:12px">
       <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><iframe class="reel" src="https://www.instagram.com/reel/Ddbp-6QKasA/embed/" title="Instagram-Beitrag 1 von @doktorbruno" loading="lazy" allowfullscreen scrolling="no"></iframe></div>
       <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><iframe class="reel" src="https://www.instagram.com/reel/DdZbKeYzW5s/embed/" title="Instagram-Beitrag 2 von @doktorbruno" loading="lazy" allowfullscreen scrolling="no"></iframe></div>
       <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><iframe class="reel" src="https://www.instagram.com/reel/DdYh2HcCSop/embed/" title="Instagram-Beitrag 3 von @doktorbruno" loading="lazy" allowfullscreen scrolling="no"></iframe></div>
@@ -695,6 +696,24 @@ var DATENSCHUTZ = [
        ============================================================ */
     var wurzel = document.documentElement, letztes = window.scrollY,
         versteckt = false, geschattet = false;
+
+    /* Eine feste Leiste misst sich am Fenster, der Inhalt darunter am
+       Dokument. Wo eine Scrollleiste Platz wegnimmt, liegen die beiden
+       um deren Breite auseinander, und die Kanten der Navigationskarte
+       und des Hero fluchten nicht mehr. Welcher Browser wie rechnet,
+       raten wir nicht, sondern setzen die Leiste schlicht auf die
+       Inhaltsbreite. Dann gilt darin dieselbe Rechnung wie überall
+       sonst auf der Seite.
+
+       Polster nachzuschieben reicht nicht: Sitzt die Karte auf ihrer
+       Maximalbreite und ist zentriert, verschiebt ein Polster rechts
+       sie nur um die halbe Strecke. */
+    function leisteAusrichten() {
+      wurzel.style.setProperty('--kopf-breite', wurzel.clientWidth + 'px');
+    }
+    leisteAusrichten();
+    window.addEventListener('resize', leisteAusrichten);
+    window.addEventListener('load', leisteAusrichten);
     window.addEventListener('scroll', function () {
       var y = window.scrollY, dy = y - letztes;
       if (Math.abs(dy) < 6) return;
