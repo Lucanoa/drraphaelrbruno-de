@@ -22,8 +22,10 @@ Bilder liegen als WebP vor. Die Vorlagen aus dem Handoff wogen zusammen
 
 ## Die drei Formulare
 
-Newsletter und Buch-Warteliste gehen an Brevo, das Kontaktformular an
-Formspree. Konfiguriert wird das an genau einer Stelle, `ZIELE` in
+Newsletter und Buch-Warteliste gehen an Brevo, in zwei getrennte Listen,
+das Kontaktformular an Formspree. Die beiden Brevo-Adressen sehen fast
+gleich aus; vertauscht man sie, landen beide Gruppen im falschen
+Verteiler, ohne dass es auffällt. Konfiguriert wird das an genau einer Stelle, `ZIELE` in
 `index.html`.
 
 Brevo erlaubt den Zugriff auf die Antwort und meldet Erfolg oder Fehler
@@ -49,9 +51,6 @@ mitbringt und in der schmalen Rasterzelle beschnitten würde.
 
 ## Offen
 
-- **Buch-Warteliste**: Liste und Formular sind in Brevo angelegt, aber
-  die Adresse des Formulars fehlt noch in `ZIELE`. Die des Newsletters
-  einzutragen würde beide Gruppen in dieselbe Liste werfen.
 - **Formspree ohne AVV**: Der Endpunkt steht, aber ein
   Auftragsverarbeitungsvertrag ist dort nicht abschließbar. Damit fehlt
   die Grundlage nach Art. 28 DSGVO, und die Übermittlung in die USA hat

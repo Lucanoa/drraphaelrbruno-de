@@ -501,10 +501,10 @@
      KOEDER  Name des unsichtbaren Lockfelds gegen Bots
      ZUSATZ  versteckte Felder, die mitgeschickt werden
 
-   OFFEN: Die Warteliste hat in Brevo eine eigene Liste und ein
-   eigenes Formular, aber dessen Adresse fehlt hier noch. Die des
-   Newsletters einzutragen würde beide Gruppen in dieselbe Liste
-   werfen.
+   Die beiden Brevo-Adressen sehen fast gleich aus und gehören zu
+   getrennten Listen: die erste zum Newsletter, die zweite zur
+   Buch-Warteliste. Vertauscht man sie, landen beide Gruppen im
+   falschen Verteiler, ohne dass es auffällt.
 
    Solange ein ZIEL leer ist, sagt das Formular offen, dass es noch
    nicht eingerichtet ist — es zeigt kein "Danke" für etwas, das nie
@@ -518,7 +518,7 @@ function brevo(ziel) {
 
 var ZIELE = {
   newsletter: brevo('https://dac06a52.sibforms.com/serve/MUIFAFd3-kmN_gpO6Lf8g7uDPIZVtnF4tpkGLRsjfdKW0ByrufbM1m30_3PdBaWA6W5XMW1JlZJ3sT9gkzFuo-1UfQ3WgtwWEqvt6TyylZuEtGjsAGFxrLd_MQ-03FS58VzumPSbgN8DCK8JZhFVS7A8qrtrPWLHqLFd3IL95ea20x_mjrQBk_h_awnZZ_-zDMhVuRW9Ml7en9cY3w=='),
-  buch:       brevo(''),
+  buch:       brevo('https://dac06a52.sibforms.com/serve/MUIFAG84X33QZsHKXyMrlTLowxpVReh0gKTuw5md13uAFghqqYNXVCnPalB2nq2tGdOybXqGuJwVZP9qotST07O5yMuOv-Ts5T7fxZnMAFEFAgCLJ65aDZ9mwzsyai0fxojU_tLaRNPvKuc0jRGlL0lNC5jTGuj6ztZhp_BPgdof5EpPkcJcOFIvz4tlW9nZrPaRJI59UxZcDH-_kA=='),
   kontakt:    { art: 'json', ziel: 'https://formspree.io/f/mgavbpjv',
                 koeder: '_gotcha',
                 zusatz: { _subject: 'Neue Nachricht über drraphaelrbruno.de' } }
