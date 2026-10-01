@@ -98,5 +98,8 @@ keine Anfrage an Google; nachgemessen.
 - **Einwilligung für die Instagram-Einbettungen**, siehe oben.
 - **Bildnachweise** im Impressum bestätigen.
 - Vor dem Livegang: Tor entfernen, `noindex` entfernen.
+- Titel, Beschreibung, Vorschaubild und `canonical` zeigen bereits auf
+  die Wurzel `https://drraphaelrbruno.de/`. Unter dem Entwurfspfad läuft
+  das Vorschaubild deshalb ins Leere; nach dem Umzug stimmt es.
 - `assets/portrait.webp` stammt aus der ersten Fassung und wird nicht
   mehr verwendet.
