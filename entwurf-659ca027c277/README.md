@@ -49,11 +49,33 @@ Rasterzelle ist `177.78% + 136px` hoch: das Hochformat des Videos plus
 Kopf-, Aktions- und Fußleiste, die Instagram mitliefert. Ohne den
 Zuschlag wird die Einbettung unten abgeschnitten.
 
-Die Einbettungen laden beim Aufruf der Seite und kontaktieren damit
-Meta, bevor jemand zugestimmt hat. Dafür verlangt § 25 TDDDG eine
-vorherige Einwilligung. **Das ist vor dem Livegang zu lösen**, entweder
-mit einer Einwilligungslösung oder indem die Clips selbst gehostet
-werden. Der Datenschutztext benennt die Lücke.
+Sie laden erst nach einer Einwilligung. Bis dahin steht an ihrer
+Stelle eine eigene Kachel.
+
+## Einwilligung
+
+Betrifft genau einen Dienst, die Instagram-Einbettungen. Alles andere
+auf dieser Seite kommt vom eigenen Server, auch die Schrift.
+
+Entscheidend ist, **wie** blockiert wird: Die Einbettungen stehen nicht
+im Quelltext und werden nicht nachträglich abgeschaltet, sondern erst
+nach der Zustimmung erzeugt. Vor der Zustimmung gibt es nichts, was
+Meta kontaktieren könnte; nachgemessen.
+
+Ein Klick auf eine einzelne Kachel lädt nur diesen einen Beitrag und
+wird nicht gespeichert. Wer einen Clip sehen will, muss dafür nicht
+dauerhaft zustimmen.
+
+Die Entscheidung liegt unter `bruno-einwilligung` im lokalen Speicher.
+Am Seitenende lässt sie sich über „Einwilligung ändern" widerrufen.
+
+**Zur Gestaltung:** Der Hinweis ist auf Zustimmung hin gebaut, Ablehnen
+liegt auf der zweiten Ebene hinter „Einstellungen". Das ist eine
+bewusste Entscheidung des Auftraggebers. Die Aufsichtsbehörden halten
+dieses Muster für unzulässig, weil Ablehnen genauso einfach sein muss
+wie Zustimmen; es ist zugleich das meistgerügte Muster überhaupt.
+Gleichwertige Schaltflächen auf der ersten Ebene wären eine Zeile
+Arbeit, falls die Entscheidung einmal anders ausfällt.
 
 ## Schriften
 

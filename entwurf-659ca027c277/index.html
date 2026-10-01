@@ -11,8 +11,6 @@
      Umgesetzt aus dem Claude-Design-Artboard "Landingpage Dr Bruno v2.dc.html".
 
      Offen vor dem Livegang:
-       - Einwilligung für die Instagram-Einbettungen (§ 25 TDDDG). Sie
-         laden jetzt beim Aufruf und kontaktieren damit Meta ungefragt.
        - Auftragsverarbeitung für Formspree
        - Bildnachweise im Impressum bestätigen
        - Passwortsperre entfernen, noindex entfernen -->
@@ -106,6 +104,45 @@
      Karte, keine Anfrage an Meta. */
   .reel{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:14px;
         background:#FFFFFF;display:block;overflow:hidden}
+
+  /* Bis zur Einwilligung steht hier eine eigene Kachel. Die Einbettung
+     ist nicht nur versteckt, sie existiert noch gar nicht. */
+  .reel-platz{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+              justify-content:center;gap:10px;border:1px solid #E3E0DA;border-radius:14px;
+              background:#F2F0EC;color:#14171A;cursor:pointer;font-family:inherit;
+              transition:background .2s,border-color .2s}
+  .reel-platz:hover{background:#FFFFFF;border-color:#123540}
+  .reel-zeichen{display:flex;align-items:center;justify-content:center;width:52px;height:52px;
+                border-radius:999px;background:#123540;color:#FFFFFF;font-size:17px;padding-left:3px}
+  .reel-zeile{font-size:14px;font-weight:600;letter-spacing:-.01em}
+  .reel-fuss{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#7A7E83}
+
+  /* Einwilligung */
+  #ew{position:fixed;left:0;right:0;bottom:0;z-index:200;padding:clamp(10px,2vw,20px);
+      pointer-events:none}
+  #ew-kasten{pointer-events:auto;max-width:1400px;margin:0 auto;background:#FFFFFF;
+             border:1px solid #E3E0DA;border-radius:18px;
+             box-shadow:0 18px 50px rgba(20,23,26,.16);
+             padding:clamp(18px,2.4vw,26px) clamp(18px,3vw,32px)}
+  .ew-reihe{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+            gap:14px clamp(20px,3vw,40px)}
+  .ew-text{flex:1 1 420px;min-width:0;margin:0;font-size:14px;line-height:1.6;color:#3A3F44;
+           text-wrap:pretty}
+  .ew-text a{color:#3A3F44;text-decoration:underline;text-underline-offset:3px}
+  .ew-knoepfe{flex:0 0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px}
+  .ew-ja{font-family:inherit;font-size:14px;font-weight:600;padding:15px 30px;border:1px solid #123540;
+         border-radius:999px;background:#123540;color:#FFFFFF;cursor:pointer;white-space:nowrap}
+  .ew-ja:hover{background:#0B0D0F;border-color:#0B0D0F}
+  .ew-neben{font-family:inherit;font-size:14px;font-weight:500;padding:15px 8px;border:0;
+            background:none;color:#5A5F64;cursor:pointer;white-space:nowrap;
+            text-decoration:underline;text-underline-offset:3px}
+  .ew-neben:hover{color:#14171A}
+  #ew-zwei{display:flex;flex-direction:column;gap:18px}
+  .ew-schalter{display:flex;gap:14px;align-items:flex-start;font-size:14px;line-height:1.6;
+               color:#3A3F44;cursor:pointer}
+  .ew-schalter input{margin:2px 0 0;width:18px;height:18px;accent-color:#123540;flex:0 0 auto;
+                     cursor:pointer}
+  .ew-noetig{font-size:13px;line-height:1.6;color:#7A7E83;margin:0}
 [data-h="h0"]:hover{background:#FFFFFF;color:#14171A}
 [data-h="h1"]:hover{background:#E3E0DA;color:#0B0D0F}
 [data-h="h2"]:hover{color:#C9CCCF}
@@ -364,10 +401,10 @@
       <a href="https://www.instagram.com/doktorbruno/" target="_blank" rel="noopener" style="font-size:14px;font-weight:500;letter-spacing:.03em;border-bottom:1px solid #14171A;padding-bottom:4px">@doktorbruno →</a>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:12px">
-      <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><iframe class="reel" src="https://www.instagram.com/reel/Ddbp-6QKasA/embed/" title="Instagram-Beitrag 1 von @doktorbruno" loading="lazy" allowfullscreen scrolling="no"></iframe></div>
-      <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><iframe class="reel" src="https://www.instagram.com/reel/DdZbKeYzW5s/embed/" title="Instagram-Beitrag 2 von @doktorbruno" loading="lazy" allowfullscreen scrolling="no"></iframe></div>
-      <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><iframe class="reel" src="https://www.instagram.com/reel/DdYh2HcCSop/embed/" title="Instagram-Beitrag 3 von @doktorbruno" loading="lazy" allowfullscreen scrolling="no"></iframe></div>
-      <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><iframe class="reel" src="https://www.instagram.com/reel/DdWEX-WCihS/embed/" title="Instagram-Beitrag 4 von @doktorbruno" loading="lazy" allowfullscreen scrolling="no"></iframe></div>
+      <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><button type="button" class="reel-platz" data-reel="Ddbp-6QKasA" aria-label="Instagram-Beitrag 1 von @doktorbruno anzeigen. Dabei wird Instagram geladen."><span class="reel-zeichen" aria-hidden="true">&#9658;</span><span class="reel-zeile">Beitrag anzeigen</span><span class="reel-fuss">L&#228;dt Instagram</span></button></div>
+      <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><button type="button" class="reel-platz" data-reel="DdZbKeYzW5s" aria-label="Instagram-Beitrag 2 von @doktorbruno anzeigen. Dabei wird Instagram geladen."><span class="reel-zeichen" aria-hidden="true">&#9658;</span><span class="reel-zeile">Beitrag anzeigen</span><span class="reel-fuss">L&#228;dt Instagram</span></button></div>
+      <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><button type="button" class="reel-platz" data-reel="DdYh2HcCSop" aria-label="Instagram-Beitrag 3 von @doktorbruno anzeigen. Dabei wird Instagram geladen."><span class="reel-zeichen" aria-hidden="true">&#9658;</span><span class="reel-zeile">Beitrag anzeigen</span><span class="reel-fuss">L&#228;dt Instagram</span></button></div>
+      <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><button type="button" class="reel-platz" data-reel="DdWEX-WCihS" aria-label="Instagram-Beitrag 4 von @doktorbruno anzeigen. Dabei wird Instagram geladen."><span class="reel-zeichen" aria-hidden="true">&#9658;</span><span class="reel-zeile">Beitrag anzeigen</span><span class="reel-fuss">L&#228;dt Instagram</span></button></div>
     </div>
   </div>
 </section>
@@ -432,12 +469,43 @@
 
 </div>
 
+<!-- Einwilligung. Betrifft genau einen Dienst: die Instagram-
+     Einbettungen. Bis hier zugestimmt wird, steht im Abschnitt
+     Instagram nur eine eigene Kachel, keine ladbare Einbettung. -->
+<div id="ew" hidden role="dialog" aria-modal="false" aria-labelledby="ew-titel">
+  <div id="ew-kasten">
+    <div id="ew-eins">
+      <div class="ew-reihe">
+        <p class="ew-text" id="ew-titel">Diese Seite zeigt Beiträge von Instagram. Dafür wird eine Verbindung zu Meta hergestellt, dabei wird Ihre IP-Adresse übermittelt und es können Cookies gesetzt werden. Mehr dazu in der <a href="#" data-modal="datenschutz">Datenschutzerklärung</a>.</p>
+        <div class="ew-knoepfe">
+          <button type="button" class="ew-neben" id="ew-mehr">Einstellungen</button>
+          <button type="button" class="ew-ja" id="ew-ja">Einverstanden</button>
+        </div>
+      </div>
+    </div>
+    <div id="ew-zwei" hidden>
+      <label class="ew-schalter">
+        <input type="checkbox" id="ew-instagram">
+        <span><strong style="font-weight:600;color:#14171A">Instagram</strong><br>Zeigt die eingebetteten Beiträge von @doktorbruno. Anbieter ist Meta Platforms Ireland Ltd. Ohne diese Freigabe bleiben die Beiträge als Kachel stehen und lassen sich einzeln laden.</span>
+      </label>
+      <p class="ew-noetig">Technisch notwendig und immer aktiv: die Speicherung dieser Entscheidung auf Ihrem Gerät. Sonst nichts. Diese Seite verwendet keine Analyse- oder Werbedienste.</p>
+      <div class="ew-reihe" style="justify-content:flex-end">
+        <div class="ew-knoepfe">
+          <button type="button" class="ew-neben" id="ew-nein">Alle ablehnen</button>
+          <button type="button" class="ew-ja" id="ew-speichern">Auswahl speichern</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer style="border-top:1px solid #E3E0DA">
   <div style="max-width:1240px;margin:0 auto;padding:32px clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;font-size:13px;color:#5A5F64">
     <div>Dr. med. Raphael R. Bruno</div>
     <div style="display:flex;gap:28px;flex-wrap:wrap">
       <a href="#" data-modal="impressum" style="color:#5A5F64">Impressum</a>
       <a href="#" data-modal="datenschutz" style="color:#5A5F64">Datenschutz</a>
+      <button type="button" id="ew-oeffnen" style="font-family:inherit;font-size:13px;padding:0;border:0;background:none;color:#5A5F64;cursor:pointer">Einwilligung ändern</button>
     </div>
   </div>
 </footer>
@@ -619,7 +687,7 @@ var DATENSCHUTZ = [
  },
  {
   "h": "Cookies",
-  "t": "Diese Website setzt nur technisch notwendige Cookies bzw. lokale Speicherungen ein, die für den Betrieb erforderlich sind (§ 25 Abs. 2 TDDDG, Art. 6 Abs. 1 lit. f DSGVO).\n[Bei Einsatz von Analyse-Tools anpassen]"
+  "t": "Diese Website setzt selbst keine Cookies. Im lokalen Speicher Ihres Browsers wird lediglich Ihre Entscheidung über die Instagram-Einbettungen abgelegt, damit wir sie nicht bei jedem Besuch erneut erfragen müssen. Diese Speicherung ist für den ausdrücklich gewünschten Dienst unbedingt erforderlich und daher nach § 25 Abs. 2 Nr. 2 TDDDG einwilligungsfrei.\n\nAnalyse- oder Werbedienste werden nicht eingesetzt. Cookies von Meta können erst entstehen, nachdem Sie den Instagram-Einbettungen zugestimmt haben."
  },
  {
   "h": "Kontaktformular und E-Mail",
@@ -635,7 +703,7 @@ var DATENSCHUTZ = [
  },
  {
   "h": "Links zu Spotify, YouTube und Instagram",
-  "t": "Diese Website verlinkt auf unsere Angebote bei Spotify und YouTube. Deren Inhalte werden nicht eingebettet; erst wenn Sie einen Link anklicken, gelten die Datenschutzbestimmungen des jeweiligen Anbieters.\n\nIm Abschnitt Instagram sind vier Beiträge eingebettet. Diese Einbettungen werden beim Aufruf der Seite geladen. Dabei wird eine Verbindung zu Servern von Meta hergestellt, Ihre IP-Adresse wird übermittelt und Meta kann Cookies setzen oder auf Ihrem Gerät gespeicherte Informationen auslesen. Anbieter ist Meta Platforms Ireland Ltd., Dublin, Irland. [Vor dem Livegang zwingend zu klären: Für das Setzen von Cookies und den Zugriff auf Informationen im Endgerät verlangt § 25 Abs. 1 TDDDG eine vorherige Einwilligung. Ohne Einwilligungslösung ist diese Einbettung nicht zulässig.]"
+  "t": "Diese Website verlinkt auf unsere Angebote bei Spotify und YouTube. Deren Inhalte werden nicht eingebettet; erst wenn Sie einen Link anklicken, gelten die Datenschutzbestimmungen des jeweiligen Anbieters.\n\nIm Abschnitt Instagram sind vier Beiträge eingebettet. Sie werden erst geladen, nachdem Sie eingewilligt haben — entweder über den Hinweis beim ersten Besuch oder indem Sie eine einzelne Kachel anklicken. Bis dahin wird keine Verbindung zu Meta hergestellt und es werden keine Daten übermittelt.\n\nMit der Einwilligung wird eine Verbindung zu Servern von Meta hergestellt, Ihre IP-Adresse wird übermittelt und Meta kann Cookies setzen oder auf in Ihrem Endgerät gespeicherte Informationen zugreifen. Anbieter ist Meta Platforms Ireland Ltd., Merrion Road, Dublin 4, Irland. Rechtsgrundlage sind Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO und § 25 Abs. 1 TDDDG. Eine Übermittlung in die USA ist dabei nicht ausgeschlossen.\n\nSie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen. Dafür gibt es am Seitenende den Punkt „Einwilligung ändern\"."
  },
  {
   "h": "Stand",
@@ -809,6 +877,102 @@ var DATENSCHUTZ = [
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && huelle && !huelle.hidden) overlayZu();
     });
+
+    /* ============================================================
+       Einwilligung.
+
+       Es geht um genau einen Dienst: die Instagram-Einbettungen.
+       Alles andere auf dieser Seite kommt vom eigenen Server, auch
+       die Schrift. Deshalb fragt der Hinweis nur diese eine Sache.
+
+       Entscheidend ist, WIE blockiert wird: Die Einbettungen stehen
+       nicht im Quelltext und werden nicht nachträglich abgeschaltet,
+       sondern erst nach der Zustimmung erzeugt. Vor der Zustimmung
+       gibt es nichts, was Meta kontaktieren könnte.
+
+       Die Entscheidung liegt im lokalen Speicher des Browsers. Das
+       ist technisch notwendig, um sie zu merken, und braucht daher
+       selbst keine Einwilligung.
+       ============================================================ */
+    var EW_SCHLUESSEL = 'bruno-einwilligung', EW_FASSUNG = 1;
+    var ew        = document.getElementById('ew'),
+        ewEins    = document.getElementById('ew-eins'),
+        ewZwei    = document.getElementById('ew-zwei'),
+        ewSchalter= document.getElementById('ew-instagram');
+
+    function ewLesen() {
+      try {
+        var r = JSON.parse(localStorage.getItem(EW_SCHLUESSEL) || 'null');
+        return (r && r.fassung === EW_FASSUNG) ? r : null;
+      } catch (e) { return null; }
+    }
+    function ewSchreiben(instagram) {
+      try {
+        localStorage.setItem(EW_SCHLUESSEL, JSON.stringify({
+          fassung: EW_FASSUNG, instagram: !!instagram, zeit: Date.now()
+        }));
+      } catch (e) {}
+    }
+
+    /* Die Einbettungen entstehen erst hier. */
+    function instagramLaden(karte) {
+      var rahmen = document.createElement('iframe');
+      rahmen.className = 'reel';
+      rahmen.src = 'https://www.instagram.com/reel/' + karte.getAttribute('data-reel') + '/embed/';
+      rahmen.title = 'Instagram-Beitrag von @doktorbruno';
+      rahmen.loading = 'lazy';
+      rahmen.allowFullscreen = true;
+      rahmen.setAttribute('scrolling', 'no');
+      karte.replaceWith(rahmen);
+    }
+    function instagramAlle() {
+      document.querySelectorAll('.reel-platz').forEach(instagramLaden);
+    }
+
+    function ewAnwenden(wahl) {
+      if (wahl && wahl.instagram) instagramAlle();
+    }
+
+    function ewZeigen(aufEbeneZwei) {
+      var stand = ewLesen();
+      ewSchalter.checked = stand ? !!stand.instagram : false;
+      ewEins.hidden = !!aufEbeneZwei;
+      ewZwei.hidden = !aufEbeneZwei;
+      ew.hidden = false;
+      wurzel.style.setProperty('--ew-hoehe', ew.offsetHeight + 'px');
+    }
+    function ewSchliessen() {
+      ew.hidden = true;
+      wurzel.style.setProperty('--ew-hoehe', '0px');
+    }
+    function ewEntscheiden(instagram) {
+      ewSchreiben(instagram);
+      ewSchliessen();
+      ewAnwenden(ewLesen());
+    }
+
+    document.getElementById('ew-ja').addEventListener('click', function () { ewEntscheiden(true); });
+    document.getElementById('ew-nein').addEventListener('click', function () { ewEntscheiden(false); });
+    document.getElementById('ew-mehr').addEventListener('click', function () {
+      ewZeigen(true);
+      ewSchalter.focus();
+    });
+    document.getElementById('ew-speichern').addEventListener('click', function () {
+      ewEntscheiden(ewSchalter.checked);
+    });
+    document.getElementById('ew-oeffnen').addEventListener('click', function () { ewZeigen(true); });
+
+    /* Eine einzelne Kachel anzuklicken ist ebenfalls eine Zustimmung —
+       aber nur für diesen einen Beitrag, und sie wird nicht
+       gespeichert. Wer nur einen Clip sehen will, muss dafür nicht
+       dauerhaft zustimmen. */
+    document.addEventListener('click', function (e) {
+      var karte = e.target.closest('.reel-platz');
+      if (karte) instagramLaden(karte);
+    });
+
+    var ewStand = ewLesen();
+    if (ewStand) ewAnwenden(ewStand); else ewZeigen(false);
 
     /* ============================================================
        Die drei Formulare. Siehe ZIELE weiter unten.
