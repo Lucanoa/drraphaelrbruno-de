@@ -53,10 +53,14 @@ vorzutäuschen.
   die Übermittlung in die USA hat keine benannte Grundlage nach
   Art. 44 ff. Zu klären: AVV beim Anbieter erfragen, Anbieter wechseln
   oder einen eigenen Endpunkt betreiben. Der Datenschutztext behauptet
-  bewusst keinen Vertrag, solange keiner existiert.
+  bewusst keinen Vertrag, solange keiner existiert, nennt aber auch
+  keine Grundlage für die Übermittlung in die USA. Das bleibt
+  unvollständig, bis der AVV steht.
 - **Formspree-Einstellungen**: erlaubte Domains auf
   `drraphaelrbruno.de` begrenzen, falls der Tarif das hergibt. Die
   Adresse steht offen im Quelltext.
-- **Bildnachweise** im Impressum bestätigen.
+- **Bildnachweise**: Der Block ist aus dem Impressum entfernt. Falls die
+  Lizenzen der Fotografen eine Namensnennung verlangen, muss sie zurück,
+  entweder im Impressum oder an den Bildern selbst.
 - `assets/portrait.webp` stammt aus der ersten Fassung und wird nicht
   mehr verwendet.
