@@ -46,6 +46,23 @@ unterschiedlich aus, Brevo meldet ein Objekt, Formspree eine Liste;
 Ist ein Ziel leer, sagt das Formular das offen, statt eine Anmeldung
 vorzutäuschen.
 
+## Handouts
+
+Unter `handouts/` liegt je Thema ein Ordner mit dem PDF und einer
+schlanken Seite, die es anzeigt und zum Herunterladen anbietet:
+
+    /handouts/ausdauer/            /handouts/blutzucker-und-niere/
+    /handouts/blutdruck/           /handouts/cholesterin/
+    /handouts/deine-werte/         /handouts/ernaehrung/
+    /handouts/krafttraining/       /handouts/krebsfrueherkennung/
+    /handouts/rauchen/             /handouts/schlaf/
+
+Die Seiten sind nirgends verlinkt und tragen `noindex`. Für die PDFs
+selbst geht das nicht: Dafür braucht es einen `X-Robots-Tag` im
+HTTP-Kopf, und den kann GitHub Pages nicht setzen. Wer die PDF-Adresse
+direkt kennt, kommt also an die Datei, und eine Suchmaschine koennte sie
+aufnehmen, falls die Adresse irgendwo auftaucht.
+
 ## Offen
 
 - **Formspree ohne AVV**: Ein Auftragsverarbeitungsvertrag ist dort
