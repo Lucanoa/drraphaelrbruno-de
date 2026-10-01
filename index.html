@@ -83,12 +83,11 @@
     --hero-polster:clamp(48px,6vw,96px) clamp(28px,6vw,88px);
     --pod-hoehe:clamp(480px,44vw,720px);
     --pod-polster:clamp(56px,8vw,120px) clamp(20px,5vw,64px);
-    --chart-fs:15px;
   }
   @media (max-width:759px){
     :root{--hero-richtung:column;--hero-achse:stretch;
           --hero-hoehe:0;--hero-textbreite:100%;--hero-polster:8px 24px 44px;
-          --pod-hoehe:0;--pod-polster:8px 24px 40px;--chart-fs:28px}
+          --pod-hoehe:0;--pod-polster:8px 24px 40px}
   }
 
   /* display:contents, damit die Umschalt-Hüllen das Layout der
@@ -97,16 +96,26 @@
   .nur-schmal{display:none}
   .nur-breit-i{display:inline}
   .nur-schmal-i{display:none}
-  .nur-schmal-svg{display:none}
   @media (max-width:759px){
     .nur-breit{display:none}
     .nur-schmal{display:contents}
     .nur-breit-i{display:none}
     .nur-schmal-i{display:inline}
-    .nur-breit-svg{display:none}
-    .nur-schmal-svg{display:inline}
   }
-  .dg{font-size:var(--chart-fs)}
+  /* Zwei Fassungen des Diagramms: breit mit Beschriftungen im Bild,
+     schmal hochkant mit Legende darunter. Eine einzige Zeichnung war
+     auf dem Handy entweder zu flach oder musste geschoben werden. */
+  /* Auf dem Schreibtisch ohne Trennlinie ueber den Verweisen. */
+  @media (min-width:760px){
+    .hero-fuss{border-top:0!important;padding-top:0!important;
+      margin-top:clamp(10px,1.6vw,22px)!important}
+  }
+
+  .dg-schmal{display:none;flex-direction:column;gap:20px}
+  @media (max-width:759px){
+    .dg-breit{display:none}
+    .dg-schmal{display:flex}
+  }
 
   /* Bekannt aus: Logoband. Die Bahn trägt den Satz zweimal, damit der
      Sprung bei -50% nahtlos ist. Es hält beim Darüberzeigen nicht an,
@@ -287,7 +296,7 @@
         <a href="#kontakt" style="display:flex;gap:14px;align-items:center;font-size:15px;font-weight:600;padding:18px 30px;border-radius:999px;background:#FFFFFF;color:#0B0D0F" data-h="h1">Kontakt aufnehmen <span>→</span></a>
         <a href="#newsletter" style="display:flex;align-items:center;font-size:15px;font-weight:600;padding:18px 30px;border-radius:999px;border:1px solid rgba(255,255,255,.35);color:#FFFFFF" data-h="h2">Newsletter abonnieren</a>
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:clamp(4px,1vw,10px);padding-top:clamp(14px,1.6vw,22px);border-top:1px solid rgba(255,255,255,.14);font-size:13px;color:#A3A7AB">
+      <div class="hero-fuss" style="display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:clamp(4px,1vw,10px);padding-top:clamp(14px,1.6vw,22px);border-top:1px solid rgba(255,255,255,.14);font-size:13px;color:#A3A7AB">
         <a href="https://www.instagram.com/doktorbruno/" target="_blank" rel="noopener" style="color:#C9CCCF" data-h="h3">Instagram ↗</a>
         <a href="https://www.youtube.com/@DocRRBruno" target="_blank" rel="noopener" style="color:#C9CCCF" data-h="h4">YouTube ↗</a>
       </div>
@@ -337,7 +346,8 @@
       </div>
     </div>
     <div class="dg-kasten" style="background:#FFFFFF;border:1px solid #E3E0DA;border-radius:24px;padding:clamp(20px,4vw,56px) clamp(16px,4vw,56px) clamp(20px,3vw,40px);display:flex;flex-direction:column;gap:20px">
-      <svg data-chart-root="1" viewBox="0 0 1000 410" style="width:100%;height:auto;display:block;font-family:'Inter',sans-serif;overflow:visible" role="img" aria-label="Mit Prävention bleibt die Gesundheit länger hoch und die Lebensspanne ist länger.">
+      <div class="dg-breit">
+      <svg data-chart-root="breit" viewBox="0 0 1000 410" style="width:100%;height:auto;display:block;font-family:'Inter',sans-serif;overflow:visible" role="img" aria-label="Mit Prävention bleibt die Gesundheit länger hoch und die Lebensspanne ist länger.">
           <defs><linearGradient id="gapGrad" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#B9D3B0"></stop><stop offset="0.55" stop-color="#7FB8C0"></stop><stop offset="1" stop-color="#A9CBE6"></stop></linearGradient></defs>
           <line x1="80" x2="960" y1="360" y2="360" stroke="#D9D5CE" stroke-width="1"></line>
           <path data-chart="area" d="M80.0,43.2 C121.9,44.8 258.1,49.1 331.4,52.8 C404.8,56.5 467.6,60.3 520.0,65.6 C572.4,70.9 610.1,76.3 645.7,84.8 C681.3,93.3 710.7,102.9 733.7,116.8 C756.8,130.7 770.4,144.5 784.0,168.0 C797.6,191.5 807.0,225.6 815.4,257.6 C823.8,289.6 831.1,342.9 834.3,360.0 L670.9,360.0 C668.8,354.7 666.7,342.9 658.3,328.0 C649.9,313.1 637.3,290.7 620.6,270.4 C603.8,250.1 580.8,226.7 557.7,206.4 C534.7,186.1 509.5,166.4 482.3,148.8 C455.0,131.2 429.9,114.7 394.3,100.8 C358.7,86.9 321.0,74.7 268.6,65.6 C216.2,56.5 111.4,49.6 80.0,46.4 Z" fill="url(#gapGrad)" fill-opacity="0.55" style="opacity:0;transition:none"></path>
@@ -346,15 +356,36 @@
           <circle data-chart="dw" cx="670.9" cy="360.0" r="5" fill="#A7B4B8" style="opacity:0;transition:none"></circle>
           <circle data-chart="dp" cx="834.3" cy="360.0" r="6" fill="#123540" style="opacity:0;transition:none"></circle>
           <g data-chart="labels" style="opacity:0;transition:none">
-            <text x="716.1" y="200" text-anchor="middle" class="dg" font-weight="600" fill="#14171A">Gewonnene</text>
-            <text x="716.1" y="220" text-anchor="middle" class="dg nur-breit-svg" font-weight="600" fill="#14171A">gesunde Jahre</text><text x="716.1" y="234" text-anchor="middle" class="dg nur-schmal-svg" font-weight="600" fill="#14171A">gesunde Jahre</text>
-            <text x="432.0" y="45.599999999999966" class="dg" font-weight="600" fill="#123540">Mit Prävention</text>
-            <text x="205.7" y="116.8" class="dg" font-weight="500" fill="#8A8E93">Ohne Prävention</text>
+            <text x="716.1" y="200" text-anchor="middle" font-size="15" font-weight="600" fill="#14171A">Gewonnene</text>
+            <text x="716.1" y="220" text-anchor="middle" font-size="15" font-weight="600" fill="#14171A">gesunde Jahre</text>
+            <text x="432.0" y="45.599999999999966" font-size="15" font-weight="600" fill="#123540">Mit Prävention</text>
+            <text x="205.7" y="116.8" font-size="15" font-weight="500" fill="#8A8E93">Ohne Prävention</text>
           </g>
-          <text x="205.7" y="392" text-anchor="middle" class="dg" fill="#9A9EA3">40</text><text x="457.1" y="392" text-anchor="middle" class="dg" fill="#9A9EA3">60</text><text x="708.6" y="392" text-anchor="middle" class="dg" fill="#9A9EA3">80</text><text x="960.0" y="392" text-anchor="middle" class="dg" fill="#9A9EA3">100</text>
-          <text x="960" y="392" text-anchor="end" class="dg" fill="#9A9EA3" dx="0" dy="0" style="display:none">Alter</text>
-          <text x="80" y="392" class="dg" fill="#9A9EA3">Alter</text>
+          <text x="205.7" y="392" text-anchor="middle" font-size="15" fill="#9A9EA3">40</text><text x="457.1" y="392" text-anchor="middle" font-size="15" fill="#9A9EA3">60</text><text x="708.6" y="392" text-anchor="middle" font-size="15" fill="#9A9EA3">80</text><text x="960.0" y="392" text-anchor="middle" font-size="15" fill="#9A9EA3">100</text>
+          <text x="960" y="392" text-anchor="end" font-size="15" fill="#9A9EA3" dx="0" dy="0" style="display:none">Alter</text>
+          <text x="80" y="392" font-size="15" fill="#9A9EA3">Alter</text>
         </svg>
+    </div>
+      <div class="dg-schmal">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7A7E83">Körperliche und geistige Funktion</div>
+          <svg data-chart-root="schmal" viewBox="0 0 400 300" style="width:100%;height:auto;display:block;font-family:'Inter',sans-serif;overflow:visible" role="img" aria-label="Mit Prävention bleibt die Gesundheit länger hoch und die Lebensspanne ist länger.">
+            <defs><linearGradient id="gapGradM" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#B9D3B0"></stop><stop offset="0.55" stop-color="#7FB8C0"></stop><stop offset="1" stop-color="#A9CBE6"></stop></linearGradient></defs>
+            <line x1="24" x2="384" y1="262" y2="262" stroke="#D9D5CE" stroke-width="1"></line>
+            <path data-chart="area" d="M24.0,34.3 C41.1,35.5 96.9,38.5 126.9,41.2 C156.9,43.9 182.6,46.6 204.0,50.4 C225.4,54.2 240.9,58.1 255.4,64.2 C270.0,70.3 282.0,77.2 291.4,87.2 C300.9,97.2 306.4,107.1 312.0,124.0 C317.6,140.9 321.4,165.4 324.9,188.4 C328.3,211.4 331.3,249.7 332.6,262.0 L265.7,262.0 C264.9,258.2 264.0,249.7 260.6,239.0 C257.1,228.3 252.0,212.2 245.1,197.6 C238.3,183.0 228.9,166.2 219.4,151.6 C210.0,137.0 199.7,122.9 188.6,110.2 C177.4,97.6 167.1,85.7 152.6,75.7 C138.0,65.7 122.6,56.9 101.1,50.4 C79.7,43.9 36.9,38.9 24.0,36.6 Z" fill="url(#gapGradM)" fill-opacity="0.6" style="opacity:0;transition:none"></path>
+            <path data-chart="w" d="M24.0,36.6 C36.9,38.9 79.7,43.9 101.1,50.4 C122.6,56.9 138.0,65.7 152.6,75.7 C167.1,85.7 177.4,97.6 188.6,110.2 C199.7,122.9 210.0,137.0 219.4,151.6 C228.9,166.2 238.3,183.0 245.1,197.6 C252.0,212.2 257.1,228.3 260.6,239.0 C264.0,249.7 264.9,258.2 265.7,262.0" pathLength="1" fill="none" stroke="#A7B4B8" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:1;stroke-dashoffset:1"></path>
+            <path data-chart="p" d="M24.0,34.3 C41.1,35.5 96.9,38.5 126.9,41.2 C156.9,43.9 182.6,46.6 204.0,50.4 C225.4,54.2 240.9,58.1 255.4,64.2 C270.0,70.3 282.0,77.2 291.4,87.2 C300.9,97.2 306.4,107.1 312.0,124.0 C317.6,140.9 321.4,165.4 324.9,188.4 C328.3,211.4 331.3,249.7 332.6,262.0" pathLength="1" fill="none" stroke="#123540" stroke-width="3.5" stroke-linecap="round" style="stroke-dasharray:1;stroke-dashoffset:1"></path>
+            <circle data-chart="dw" cx="265.7" cy="262.0" r="5" fill="#A7B4B8" style="opacity:0;transition:none"></circle>
+            <circle data-chart="dp" cx="332.6" cy="262.0" r="6" fill="#123540" style="opacity:0;transition:none"></circle>
+            <g data-chart="labels" style="opacity:0;transition:none"></g>
+            <text x="75.4" y="288" text-anchor="middle" font-size="14" fill="#7A7E83">40</text><text x="178.3" y="288" text-anchor="middle" font-size="14" fill="#7A7E83">60</text><text x="281.1" y="288" text-anchor="middle" font-size="14" fill="#7A7E83">80</text><text x="384.0" y="288" text-anchor="middle" font-size="14" fill="#7A7E83">100</text>
+            <text x="24" y="288" font-size="14" fill="#7A7E83">Alter</text>
+          </svg>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;font-weight:500;color:#3A3F44">
+            <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:3px;border-radius:2px;background:#123540;flex:0 0 auto"></span>Mit Prävention</div>
+            <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:3px;border-radius:2px;background:#A7B4B8;flex:0 0 auto"></span>Ohne Prävention</div>
+            <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:14px;border-radius:4px;background:linear-gradient(90deg,#B9D3B0,#7FB8C0,#A9CBE6);opacity:.8;flex:0 0 auto"></span>Gewonnene gesunde Jahre</div>
+          </div>
+    </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:28px clamp(24px,4vw,56px)">
       <div style="border-top:2px solid #A7B4B8;padding-top:18px;display:flex;flex-direction:column;gap:10px"><div style="font-size:17px;font-weight:600;letter-spacing:-.035em">Lebensspanne</div><p style="margin:0;font-size:15px;line-height:1.65;color:#5A5F64;text-wrap:pretty">Wie viele Jahre Sie leben.</p></div>
@@ -855,13 +886,20 @@ var DATENSCHUTZ = [
        ============================================================ */
     var diagrammStand = 0;
     function diagrammSchritt() {
-      var wz = document.querySelector('[data-chart-root]');
+      /* Es haengen zwei Zeichnungen in der Seite, sichtbar ist je
+         nach Breite nur eine. Gemessen wird an der sichtbaren,
+         gezeichnet wird in beiden: die verdeckte kostet nichts und
+         steht fertig da, wenn gedreht wird. */
+      var wz = null, alle = document.querySelectorAll('[data-chart-root]');
+      for (var i = 0; i < alle.length; i++) {
+        if (alle[i].getBoundingClientRect().width > 0) { wz = alle[i]; break; }
+      }
       if (!wz) return;
       var r = wz.getBoundingClientRect(), vh = window.innerHeight || 800;
       var ziel = Math.max(0, Math.min(1, (vh * 0.9 - r.top) / (vh * 0.55)));
       if (Math.abs(ziel - diagrammStand) < 0.0005) return;
       diagrammStand += (ziel - diagrammStand) * 0.08;
-      var q = wz.querySelectorAll.bind(wz),
+      var q = document.querySelectorAll.bind(document),
           c = function (v) { return Math.max(0, Math.min(1, v)); },
           weich = function (t) { return 1 - Math.pow(1 - t, 3); },
           pw = weich(c(diagrammStand / 0.75)),
