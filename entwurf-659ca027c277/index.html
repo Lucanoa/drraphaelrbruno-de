@@ -11,16 +11,27 @@
      Umgesetzt aus dem Claude-Design-Artboard "Landingpage Dr Bruno v2.dc.html".
 
      Offen vor dem Livegang:
-       - Instagram-Clips (vier Platzhalter im Abschnitt Instagram)
-       - Inter selbst hosten, damit keine Verbindung zu Google entsteht
+       - Einwilligung für die Instagram-Einbettungen (§ 25 TDDDG). Sie
+         laden jetzt beim Aufruf und kontaktieren damit Meta ungefragt.
+       - Auftragsverarbeitung für Formspree
        - Bildnachweise im Impressum bestätigen
-       - Zieladresse der Buch-Warteliste (eigenes Brevo-Formular)
-       - Zieladresse des Kontaktformulars (Formspree)
        - Passwortsperre entfernen, noindex entfernen -->
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<!-- Inter liegt hier, nicht bei Google. Eine Datei, variabler Schnitt
+     von 100 bis 900, deshalb genügt ein @font-face für alle Gewichte. -->
+<link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face{
+    font-family:'Inter';
+    font-style:normal;
+    font-weight:100 900;
+    font-display:swap;
+    src:url('assets/fonts/inter-latin-wght-normal.woff2') format('woff2-variations');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,
+                  U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,
+                  U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+  }
+</style>
 
 <!-- Sperre vor dem ersten Anstrich: ohne sie blitzt die Seite kurz auf,
      bevor das Tor da ist. Wird nach der richtigen Eingabe entfernt. -->
@@ -94,15 +105,8 @@
 
   /* Instagram im Zwei-Klick-Verfahren: bis zum Klick nur eine eigene
      Karte, keine Anfrage an Meta. */
-  .reel{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-        justify-content:center;gap:10px;border:1px solid #E3E0DA;border-radius:14px;
-        background:#F2F0EC;color:#14171A;cursor:pointer;font-family:inherit;
-        transition:background .2s,border-color .2s}
-  .reel:hover{background:#FFFFFF;border-color:#123540}
-  .reel-knopf{display:flex;align-items:center;justify-content:center;width:52px;height:52px;
-              border-radius:999px;background:#123540;color:#FFFFFF;font-size:17px;padding-left:3px}
-  .reel-zeile{font-size:14px;font-weight:600;letter-spacing:-.01em}
-  .reel-fuss{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#7A7E83}
+  .reel{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:14px;
+        background:#FFFFFF;display:block;overflow:hidden}
 [data-h="h0"]:hover{background:#FFFFFF;color:#14171A}
 [data-h="h1"]:hover{background:#E3E0DA;color:#0B0D0F}
 [data-h="h2"]:hover{color:#C9CCCF}
@@ -375,10 +379,10 @@
       <a href="https://www.instagram.com/doktorbruno/" target="_blank" rel="noopener" style="font-size:14px;font-weight:500;letter-spacing:.03em;border-bottom:1px solid #14171A;padding-bottom:4px">@doktorbruno →</a>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
-      <div style="aspect-ratio:9/16;position:relative"><button type="button" class="reel" data-reel="Ddbp-6QKasA" aria-label="Beitrag 1 von @doktorbruno laden. Dabei wird Instagram geladen."><span class="reel-knopf" aria-hidden="true">►</span><span class="reel-zeile">Beitrag ansehen</span><span class="reel-fuss">Lädt Instagram</span></button></div>
-      <div style="aspect-ratio:9/16;position:relative"><button type="button" class="reel" data-reel="DdZbKeYzW5s" aria-label="Beitrag 2 von @doktorbruno laden. Dabei wird Instagram geladen."><span class="reel-knopf" aria-hidden="true">►</span><span class="reel-zeile">Beitrag ansehen</span><span class="reel-fuss">Lädt Instagram</span></button></div>
-      <div style="aspect-ratio:9/16;position:relative"><button type="button" class="reel" data-reel="DdYh2HcCSop" aria-label="Beitrag 3 von @doktorbruno laden. Dabei wird Instagram geladen."><span class="reel-knopf" aria-hidden="true">►</span><span class="reel-zeile">Beitrag ansehen</span><span class="reel-fuss">Lädt Instagram</span></button></div>
-      <div style="aspect-ratio:9/16;position:relative"><button type="button" class="reel" data-reel="DdWEX-WCihS" aria-label="Beitrag 4 von @doktorbruno laden. Dabei wird Instagram geladen."><span class="reel-knopf" aria-hidden="true">►</span><span class="reel-zeile">Beitrag ansehen</span><span class="reel-fuss">Lädt Instagram</span></button></div>
+      <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><iframe class="reel" src="https://www.instagram.com/reel/Ddbp-6QKasA/embed/" title="Instagram-Beitrag 1 von @doktorbruno" loading="lazy" allowfullscreen scrolling="no"></iframe></div>
+      <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><iframe class="reel" src="https://www.instagram.com/reel/DdZbKeYzW5s/embed/" title="Instagram-Beitrag 2 von @doktorbruno" loading="lazy" allowfullscreen scrolling="no"></iframe></div>
+      <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><iframe class="reel" src="https://www.instagram.com/reel/DdYh2HcCSop/embed/" title="Instagram-Beitrag 3 von @doktorbruno" loading="lazy" allowfullscreen scrolling="no"></iframe></div>
+      <div style="position:relative;height:0;padding-bottom:calc(177.78% + 136px)"><iframe class="reel" src="https://www.instagram.com/reel/DdWEX-WCihS/embed/" title="Instagram-Beitrag 4 von @doktorbruno" loading="lazy" allowfullscreen scrolling="no"></iframe></div>
     </div>
   </div>
 </section>
@@ -441,13 +445,6 @@
   </div>
 </section>
 
-<!-- Instagram-Beitrag im Overlay. Erst beim Klick auf eine Karte wird
-     hier eine Einbettung erzeugt; vorher geht keine Anfrage an Meta. -->
-<div id="reel-huelle" hidden style="position:fixed;inset:0;z-index:120;background:rgba(20,23,26,.6);display:flex;align-items:center;justify-content:center;padding:clamp(12px,4vw,48px)">
-  <div data-reel-stop="1" style="display:flex;flex-direction:column;gap:12px;align-items:flex-end;width:min(400px,92vw)">
-    <button type="button" data-reel-zu="1" aria-label="Schließen" style="font-family:inherit;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:#FAF9F7;border:1px solid #FAF9F7;border-radius:999px;padding:10px 16px;cursor:pointer;color:#14171A">Schließen</button>
-    <div id="reel-fach" style="width:100%;height:min(720px,78vh);border-radius:14px;overflow:hidden;background:#FFFFFF"></div>
-  </div>
 </div>
 
 <footer style="border-top:1px solid #E3E0DA">
@@ -649,11 +646,11 @@ var DATENSCHUTZ = [
  },
  {
   "h": "Schriftarten",
-  "t": "Zur einheitlichen Darstellung nutzen wir die Schriftart Inter. [Vor Livegang lokal einbinden, damit keine Verbindung zu Servern von Google hergestellt wird]"
+  "t": "Zur einheitlichen Darstellung nutzen wir die Schriftart Inter. Die Schriftdatei wird von dieser Website selbst ausgeliefert. Es wird dabei keine Verbindung zu Servern von Google hergestellt und es werden keine Daten an Google übermittelt."
  },
  {
   "h": "Links zu Spotify, YouTube und Instagram",
-  "t": "Diese Website verlinkt auf unsere Angebote bei Spotify, YouTube und Instagram. Beim bloßen Aufruf der Seite werden keine Inhalte dieser Dienste geladen und keine Daten an sie übermittelt.\n\nIm Abschnitt Instagram sind vier Beiträge eingebettet, die erst nach einem ausdrücklichen Klick geladen werden (Zwei-Klick-Verfahren). Erst mit diesem Klick wird eine Verbindung zu Servern von Meta hergestellt, dabei wird Ihre IP-Adresse übermittelt und Meta kann Cookies setzen. Grundlage ist Ihre Einwilligung durch das Anklicken (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG). Anbieter ist Meta Platforms Ireland Ltd., Dublin, Irland. Klicken Sie nicht, findet diese Verarbeitung nicht statt."
+  "t": "Diese Website verlinkt auf unsere Angebote bei Spotify und YouTube. Deren Inhalte werden nicht eingebettet; erst wenn Sie einen Link anklicken, gelten die Datenschutzbestimmungen des jeweiligen Anbieters.\n\nIm Abschnitt Instagram sind vier Beiträge eingebettet. Diese Einbettungen werden beim Aufruf der Seite geladen. Dabei wird eine Verbindung zu Servern von Meta hergestellt, Ihre IP-Adresse wird übermittelt und Meta kann Cookies setzen oder auf Ihrem Gerät gespeicherte Informationen auslesen. Anbieter ist Meta Platforms Ireland Ltd., Dublin, Irland. [Vor dem Livegang zwingend zu klären: Für das Setzen von Cookies und den Zugriff auf Informationen im Endgerät verlangt § 25 Abs. 1 TDDDG eine vorherige Einwilligung. Ohne Einwilligungslösung ist diese Einbettung nicht zulässig.]"
  },
  {
   "h": "Stand",
@@ -753,17 +750,11 @@ var DATENSCHUTZ = [
       });
     }
 
-    var pausiert = false, fenster = document.getElementById('stimmen-fenster');
-    if (fenster) {
-      fenster.addEventListener('mouseenter', function () { pausiert = true; });
-      fenster.addEventListener('mouseleave', function () { pausiert = false; });
-    }
-
     var ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var zuletzt = performance.now(), weg = 0;
     (function takt(jetzt) {
       var dt = Math.min(jetzt - zuletzt, 64); zuletzt = jetzt;
-      if (bahn && !pausiert && !ruhig) {
+      if (bahn && !ruhig) {
         var halb = bahn.scrollHeight / 2 + 10;
         weg += dt * 0.03;
         if (halb > 10 && weg >= halb) weg -= halb;
@@ -806,56 +797,14 @@ var DATENSCHUTZ = [
     document.addEventListener('click', function (e) {
       var auf = e.target.closest('[data-modal]');
       if (auf) { e.preventDefault(); zuletztAktiv = auf; overlay(auf.getAttribute('data-modal')); return; }
+      /* Zuerst der Schließen-Knopf: er sitzt IM Dialog, und der trägt
+         data-stop. Andersherum verschluckt der Stopp den Knopf. */
+      if (e.target.closest('[data-schliessen]')) { e.preventDefault(); overlayZu(); return; }
       if (e.target.closest('[data-stop]')) return;
-      if (e.target.closest('[data-schliessen]')) { e.preventDefault(); overlayZu(); }
+      if (huelle && !huelle.hidden && e.target === huelle.firstElementChild) overlayZu();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape') return;
-      if (huelle && !huelle.hidden) overlayZu();
-      var rh = document.getElementById('reel-huelle');
-      if (rh && !rh.hidden) reelZu();
-    });
-
-    /* ============================================================
-       Instagram im Zwei-Klick-Verfahren. Vor dem Klick geht keine
-       Anfrage an Meta — deshalb liegt hier kein Vorschaubild von
-       Instagram, sondern eine eigene Karte.
-       ============================================================ */
-    var reelHuelle = document.getElementById('reel-huelle'),
-        reelFach = document.getElementById('reel-fach'),
-        reelZurueck = null;
-
-    function reelZu() {
-      reelFach.innerHTML = '';          /* beendet die Wiedergabe */
-      reelHuelle.hidden = true;
-      document.body.style.overflow = '';
-      if (reelZurueck && reelZurueck.focus) reelZurueck.focus();
-    }
-
-    document.querySelectorAll('[data-reel]').forEach(function (karte) {
-      karte.addEventListener('click', function () {
-        /* Die Einbettung bringt Kopf- und Fußleiste mit und passt
-           deshalb nicht in die schmale Rasterzelle. Im Overlay hat
-           sie Platz, und es lädt immer nur eine davon. */
-        var rahmen = document.createElement('iframe');
-        rahmen.src = 'https://www.instagram.com/reel/' + karte.getAttribute('data-reel') + '/embed/';
-        rahmen.title = 'Instagram-Beitrag von @doktorbruno';
-        rahmen.allowFullscreen = true;
-        rahmen.setAttribute('scrolling', 'no');
-        rahmen.style.cssText = 'width:100%;height:100%;border:0;display:block;background:#FFFFFF';
-        reelZurueck = karte;
-        reelFach.innerHTML = '';
-        reelFach.appendChild(rahmen);
-        reelHuelle.hidden = false;
-        document.body.style.overflow = 'hidden';
-        var zu = reelHuelle.querySelector('[data-reel-zu]');
-        if (zu) zu.focus();
-      });
-    });
-
-    reelHuelle.addEventListener('click', function (e) {
-      if (e.target.closest('[data-reel-stop]') && !e.target.closest('[data-reel-zu]')) return;
-      reelZu();
+      if (e.key === 'Escape' && huelle && !huelle.hidden) overlayZu();
     });
 
     /* ============================================================

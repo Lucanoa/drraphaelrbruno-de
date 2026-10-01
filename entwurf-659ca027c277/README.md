@@ -44,10 +44,22 @@ wurde.
 
 ## Instagram
 
-Vier Beiträge, im Zwei-Klick-Verfahren. Vor dem Klick geht keine Anfrage
-an Meta; nachgemessen. Erst der Klick öffnet ein Overlay mit der
-Einbettung. Inline ging nicht, weil die Einbettung Kopf- und Fußleiste
-mitbringt und in der schmalen Rasterzelle beschnitten würde.
+Vier Beiträge, direkt eingebettet und beim Aufruf sichtbar. Die
+Rasterzelle ist `177.78% + 136px` hoch: das Hochformat des Videos plus
+Kopf-, Aktions- und Fußleiste, die Instagram mitliefert. Ohne den
+Zuschlag wird die Einbettung unten abgeschnitten.
+
+Die Einbettungen laden beim Aufruf der Seite und kontaktieren damit
+Meta, bevor jemand zugestimmt hat. Dafür verlangt § 25 TDDDG eine
+vorherige Einwilligung. **Das ist vor dem Livegang zu lösen**, entweder
+mit einer Einwilligungslösung oder indem die Clips selbst gehostet
+werden. Der Datenschutztext benennt die Lücke.
+
+## Schriften
+
+Inter liegt unter `assets/fonts/` und wird von dieser Seite selbst
+ausgeliefert, eine Datei mit allen Gewichten von 100 bis 900. Es geht
+keine Anfrage an Google; nachgemessen.
 
 ## Offen
 
@@ -61,8 +73,7 @@ mitbringt und in der schmalen Rasterzelle beschnitten würde.
 - **Formspree-Einstellungen**: erlaubte Domains auf `drraphaelrbruno.de`
   begrenzen, falls der Tarif das hergibt. Die Adresse steht offen im
   Quelltext.
-- **Inter selbst hosten**, damit beim Aufruf keine Verbindung zu Google
-  entsteht. Der Datenschutztext sagt das zu.
+- **Einwilligung für die Instagram-Einbettungen**, siehe oben.
 - **Bildnachweise** im Impressum bestätigen.
 - Vor dem Livegang: Tor entfernen, `noindex` entfernen.
 - `assets/portrait.webp` stammt aus der ersten Fassung und wird nicht
