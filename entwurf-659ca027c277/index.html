@@ -270,8 +270,7 @@
             <input type="text" name="name" required autocomplete="name" placeholder="Ihr Name" aria-label="Name" style="font-family:inherit;font-size:16px;padding:17px 20px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A;width:100%;box-sizing:border-box">
             <input type="email" name="email" required autocomplete="email" placeholder="Ihre E-Mail-Adresse" aria-label="E-Mail-Adresse" style="font-family:inherit;font-size:16px;padding:17px 20px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A;width:100%;box-sizing:border-box">
             <textarea name="nachricht" required rows="4" placeholder="Worum geht es?" aria-label="Nachricht" style="font-family:inherit;font-size:16px;padding:17px 20px;border:1px solid #D9D5CE;border-radius:6px;background:#FFFFFF;color:#14171A;width:100%;box-sizing:border-box;line-height:1.6;resize:vertical"></textarea>
-            <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-            <input type="checkbox" name="botcheck" tabindex="-1" aria-hidden="true" style="display:none">
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
             <button type="submit" class="navknopf" style="align-self:flex-start;cursor:pointer;font-family:inherit;padding:17px 28px">Nachricht senden</button>
           </form>
           <p style="margin:0;font-size:13px;line-height:1.6;color:#5A5F64;max-width:520px">Bitte keine Befunde, Beschwerden oder Medikamente in das Nachrichtenfeld. Für medizinische Anliegen und Termine wenden Sie sich bitte direkt an die <a href="https://kardio.pro" style="color:#5A5F64;border-bottom:1px solid #5A5F64">Praxis</a>. Hinweise zur Verarbeitung in der <a href="#" data-modal="datenschutz" style="color:#5A5F64;border-bottom:1px solid #5A5F64">Datenschutzerklärung</a>.</p>
@@ -351,12 +350,15 @@
 
      Das Kontaktformular gehört NICHT zu Brevo. Brevo legt Kontakte in
      Marketinglisten an, und ein Anliegen ist keine Newsletter-Anmeldung.
-     Es läuft über Web3Forms. Dort fehlt nur noch der ACCESS_KEY: auf
-     web3forms.com die Empfängeradresse eintragen, der Schlüssel kommt
-     per Mail. Er darf im Quelltext stehen, das ist dort so vorgesehen.
+     Es läuft über Formspree, weil es dort einen AVV gibt. Dort fehlt
+     nur noch die Formular-Adresse: auf formspree.io ein Formular
+     anlegen, die Adresse hat die Form
 
-     Ein Wechsel zu Formspree wäre eine Zeile: ziel auf
-     https://formspree.io/f/<id> und zusatz auf {}.
+         https://formspree.io/f/<id>
+
+     Die Kennung darf im Quelltext stehen, das ist dort so vorgesehen.
+     _subject setzt die Betreffzeile der Benachrichtigung, _gotcha ist
+     der Köder, den Formspree selbst auswertet.
 
      Solange ZIEL leer ist, sagt das Formular ehrlich, dass es noch
      nicht eingerichtet ist — es zeigt kein "Danke" für etwas, das nie
@@ -365,9 +367,8 @@
   var ZIELE = {
     newsletter: { ziel: '', feld: 'fields[email]' },
     buch:       { ziel: '', feld: 'fields[email]' },
-    kontakt:    { ziel: 'https://api.web3forms.com/submit',
-                  zusatz: { access_key: '',
-                            subject: 'Neue Nachricht über drraphaelrbruno.de' } }
+    kontakt:    { ziel: '',   /* https://formspree.io/f/<id> */
+                  zusatz: { _subject: 'Neue Nachricht über drraphaelrbruno.de' } }
   };
 
   /* Das Formular wird in einen unsichtbaren Rahmen geschickt. Dadurch
@@ -375,8 +376,9 @@
      beim Anbieter, und wir wissen sicher, dass die Anmeldung wirklich
      rausgegangen ist, bevor wir uns bedanken. */
   /* Eingerichtet ist ein Formular erst, wenn das Ziel steht UND kein
-     Pflicht-Zusatzfeld leer geblieben ist — sonst würde es gegen einen
-     Dienst senden, der die Nachricht mangels Schlüssel verwirft. */
+     Zusatzfeld leer geblieben ist — sonst würde die Seite gegen einen
+     Dienst senden, der die Nachricht verwirft, und sich trotzdem
+     bedanken. */
   function fertig(l) {
     var z = l.zusatz || {};
     return !!l.ziel && Object.keys(z).every(function (k) { return !!z[k]; });
@@ -390,7 +392,7 @@
         fehler = document.getElementById(o.fehler),
         rahmen = document.getElementById(o.rahmen),
         feld   = form.querySelector('input[type=email]'),
-        topf   = form.querySelector('input[name=website]'),
+        topf   = form.querySelector('input[name=website], input[name=_gotcha]'),
         knopf  = form.querySelector('button[type=submit]'),
         beschriftung = knopf.textContent,
         laeuft = false, uhr = null;
@@ -488,7 +490,7 @@
     ['Verantwortlicher', 'Dr. med. Raphael R. Bruno, [Anschrift], [E-Mail-Adresse]'],
     ['Hosting', '[Platzhalter: Anbieter, Serverstandort, Art der verarbeiteten Server-Logdaten und Speicherdauer]'],
     ['Cookies und Tracking', '[Platzhalter: Angaben zu Cookies, Analyse- und Tracking-Diensten]'],
-    ['Kontaktformular', 'Name, E-Mail-Adresse und Nachricht werden ausschließlich zur Beantwortung der Anfrage verarbeitet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Für die Übermittlung wird Web3Forms eingesetzt; die Daten werden dabei auf Servern in den USA verarbeitet und anschließend als E-Mail zugestellt. Die Nachrichten werden gelöscht, sobald die Anfrage erledigt ist und keine Aufbewahrungspflichten entgegenstehen. [Vor dem Livegang prüfen lassen: Auftragsverarbeitung und Drittlandübermittlung.]'],
+    ['Kontaktformular', 'Name, E-Mail-Adresse und Nachricht werden ausschließlich zur Beantwortung der Anfrage verarbeitet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Für die Übermittlung wird Formspree (Formspree Inc., USA) als Auftragsverarbeiter eingesetzt; die Daten werden dort verarbeitet und anschließend als E-Mail zugestellt. Grundlage der Übermittlung in die USA sind die Standardvertragsklauseln der Europäischen Kommission. Die Nachrichten werden gelöscht, sobald die Anfrage erledigt ist und keine Aufbewahrungspflichten entgegenstehen. [Vor dem Livegang: Auftragsverarbeitungsvertrag mit Formspree abschließen.]'],
     ['Newsletter', 'Für Anmeldung und Versand wird Brevo eingesetzt. Die Anmeldung erfolgt im Verfahren der doppelten Bestätigung; bis zur Bestätigung über den Link in der ersten E-Mail wird die Adresse nicht in den Verteiler aufgenommen. Rechtsgrundlage ist die Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO. Sie kann jederzeit über den Abmeldelink in jeder E-Mail widerrufen werden. [Vor dem Livegang: Auftragsverarbeitungsvertrag mit Brevo abschließen.]'],
     ['Externe Links', '[Platzhalter: Hinweise zu verlinkten Diensten wie Instagram, Spotify, YouTube und kardio.pro]'],
     ['Ihre Rechte', 'Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Widerspruch und Datenübertragbarkeit nach Art. 15 bis 21 DSGVO. Beschwerderecht bei der Landesbeauftragten für Datenschutz und Informationsfreiheit NRW.'],
