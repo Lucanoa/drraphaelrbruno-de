@@ -70,6 +70,36 @@ einen Verweis von irgendwoher und ohne Eintrag in einer `sitemap.xml`
 kennt keine Suchmaschine die Adressen. Soll das anders sein, braucht es
 eine Sitemap oder einen Verweis.
 
+## tersiva
+
+`/tersiva/` ist die Landingpage fuer das Praeventivprogramm in
+Duesseldorf. Sie kommt aus einem Entwurfsbuendel und wurde hier
+ausgepackt: aus den eingebetteten Daten sind echte Dateien geworden.
+
+Von der Hauptseite ist sie **nicht verlinkt**, und sie traegt
+`noindex, nofollow`. Ohne Verweis und ohne Sitemap kennt die Adresse
+niemand, der sie nicht bekommen hat.
+
+Sie haelt sich an die Regel oben: **nichts von Dritten**. Das Buendel
+holte React, ReactDOM und die Schriften von unpkg und Google; beides
+liegt jetzt unter `tersiva/assets/`. Die Seite laedt damit keine fremde
+Adresse, setzt keine Cookies und speichert nichts.
+
+    tersiva/index.html                     die Seite
+    tersiva/assets/react*.js               React 18.3.1, UMD
+    tersiva/assets/dc-runtime.js           die Laufzeit des Entwurfs
+    tersiva/assets/*.woff2                 DM Sans und Manrope
+    tersiva/assets/*.webp                  die sieben Bilder
+
+Die Bilder waren JPEG und liegen jetzt wie ueberall sonst als WebP vor.
+
+Das Titelbild zeigt die Punta Tersiva und stammt von Wikimedia Commons
+unter CC BY-SA 2.0. Die Namensnennung und der Lizenzverweis stehen im
+Fuss der Seite und muessen dort bleiben.
+
+Es gibt kein Formular. Die Schaltflaechen fuehren auf Abschnitte
+derselben Seite, einzig die Telefonnummer fuehrt hinaus.
+
 ## Offen
 
 - **Formspree ohne AVV**: Ein Auftragsverarbeitungsvertrag ist dort
