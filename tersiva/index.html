@@ -237,7 +237,7 @@ h1,h2,h3,p{margin:0}
   </div>
 </section>
 
-<div style="padding:{{ ui.promPad }};display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));border-bottom:1px solid #D2DCE3;gap:28px 40px">
+<div data-tv="fakten" style="padding:{{ ui.promPad }};display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));border-bottom:1px solid #D2DCE3;gap:28px 40px">
   <div><strong style="font-size:17px;font-weight:600">Über 100 Laborwerte</strong><p style="font-size:14px;color:#55616C;margin-top:4px">Herz, Gefäße, Stoffwechsel, Organe</p></div>
   <div><strong style="font-size:17px;font-weight:600">Besprechung um 14 Uhr</strong><p style="font-size:14px;color:#55616C;margin-top:4px">persönlich vom Kardiologen</p></div>
   <div><strong style="font-size:17px;font-weight:600">Plan für 12 Monate</strong><p style="font-size:14px;color:#55616C;margin-top:4px">bei Act mit Nachmessung</p></div>
@@ -361,7 +361,7 @@ h1,h2,h3,p{margin:0}
       </ul>
       <button sc-camel-on-click="{{ openReport }}" style="padding:7px 0;border-bottom:1px solid currentColor;background:none;font-size:14px">Musterbefund ansehen →</button>
     </div>
-    <div data-reveal="1">
+    <div data-reveal="1" data-tv="befundkarte">
       <div style="background:#F3F6F8;padding:34px;box-shadow:0 15px 60px #0E162118;transform:rotate(-3deg);border-radius:4px;transition:transform .7s;max-width:620px" style-hover="transform:rotate(0)">
         <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #D2DCE3;padding-bottom:20px"><span style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;line-height:1"><svg sc-camel-view-box="0 0 120 22" style="width:54px;height:auto;display:block;overflow:visible"><path d="M0 21 L38 12 L52 15 L78 2 L92 9 L120 21" fill="none" stroke="currentColor" stroke-width="1.4" vector-effect="non-scaling-stroke"></path></svg><span style="font-family:'Tenor Sans',sans-serif;font-size:16px;letter-spacing:.24em;margin-right:-.24em">TERSIVA</span></span><span style="font-size:10px;letter-spacing:.14em">MUSTERBEFUND</span></div>
         <p style="font-size:12px;color:#55616C;margin:16px 0 22px">Beispiel: Frau, 48 Jahre · keine echte Person</p>
@@ -494,7 +494,7 @@ h1,h2,h3,p{margin:0}
 
 <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
   <div sc-camel-on-click="{{ closeModal }}" style="position:fixed;inset:0;z-index:100;background:#0F1B26aa;backdrop-filter:blur(8px);display:grid;place-items:center;padding:14px">
-    <div sc-camel-on-click="{{ stop }}" style="position:relative;background:#F3F6F8;color:#0F1B26;width:min(680px,100%);max-height:90svh;overflow:auto;padding:clamp(40px,6vw,50px) clamp(24px,6vw,50px);border-radius:8px;box-shadow:0 20px 100px #0004">
+    <div data-tv="modal" sc-camel-on-click="{{ stop }}" style="position:relative;background:#F3F6F8;color:#0F1B26;width:min(680px,100%);max-height:90svh;overflow:auto;padding:clamp(40px,6vw,50px) clamp(24px,6vw,50px);border-radius:8px;box-shadow:0 20px 100px #0004">
       <button sc-camel-on-click="{{ closeModal }}" aria-label="Schließen" style="position:absolute;right:18px;top:12px;font-size:28px;background:none">×</button>
 
       <sc-if value="{{ m.isBook }}" hint-placeholder-val="{{ false }}">
@@ -636,4 +636,148 @@ class Component extends DCLogic {
 </script>
 
 
+
+<!-- ===========================================================
+     Mobile Nachbesserungen, 19.10.2026 (Luca)
+
+     Vier Stellen, die auf dem Telefon nicht funktionierten. Alles steht
+     hier an einer Stelle und haengt an data-tv-/data-wp-Haken und an den
+     role-Attributen des Entwurfs, damit es sich nach einem neuen
+     Vorschaupaket in einem Stueck wieder einsetzen laesst.
+
+       1  Die Faktenzeile unter dem Hero stapelte sich untereinander.
+          Jetzt laeuft sie waagerecht durch.
+       2  Im Abschnitt "Ein Check-up ..." stand die Tafel unter der
+          ganzen Liste: wer oben "Herz & Gefaesse" antippte, sah nichts.
+          Jetzt klappt sie in der angetippten Zeile auf.
+       3  Die Striche der Bergpunkte waren 22 px lang und endeten im
+          Leeren. Jetzt reichen sie bis unter den Text.
+       4  Die hohe Befundkarte ist weg, der Musterbefund laeuft ueber das
+          Fenster, und dessen Ueberschriften sind nicht mehr starr 43 px.
+
+     Umbruch bei 760 px, wie im uebrigen Entwurf.
+     =========================================================== -->
+<style id="tv-mobil">
+/* Das Band entsteht unabhaengig von der Breite, damit beim Drehen des
+   Geraets nichts neu gebaut werden muss. Ab 761 px traegt es deshalb
+   dasselbe Raster wie vorher der Kasten, und die Kopie der drei Fakten
+   ist aus. Ohne diese zwei Zeilen stapelte die Zeile auf dem Schreibtisch
+   untereinander -- die Seite wurde 268 px hoeher. */
+[data-tv="fakten"] .tv-band{display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:28px 40px}
+[data-tv="fakten"] .tv-band>[aria-hidden="true"]{display:none}
+
+@media (max-width:760px){
+
+  /* 1 Faktenzeile als Laufband */
+  [data-tv="fakten"]{display:block!important;overflow:hidden;position:relative;
+    padding-left:0!important;padding-right:0!important;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent)}
+  [data-tv="fakten"] .tv-band{display:flex!important;width:max-content;gap:40px;
+    animation:tv-lauf 26s linear infinite}
+  [data-tv="fakten"] .tv-band>[aria-hidden="true"]{display:block}
+  [data-tv="fakten"] .tv-band>div{flex:0 0 auto}
+  [data-tv="fakten"]:hover .tv-band,[data-tv="fakten"]:active .tv-band{animation-play-state:paused}
+  @keyframes tv-lauf{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 20px))}}
+
+  /* 2 Tafel klappt in der Zeile auf */
+  #checkup [role="tabpanel"].tv-inline{min-height:0!important;margin:0 0 4px}
+  #checkup [role="tabpanel"].tv-inline img{height:210px!important}
+
+  /* 3 Striche bis unter den Text: Hoehe setzt das Skript je Punkt */
+  [data-wp] .tv-stiel{height:var(--tv-stiel,22px)!important}
+
+  /* 4 hohe Befundkarte weg, der Knopf daneben bleibt */
+  [data-tv="befundkarte"]{display:none!important}
+
+  /* 4 Fenster: Ueberschriften mitwachsen lassen statt 43 px */
+  [data-tv="modal"]{padding:34px 20px 28px!important}
+  [data-tv="modal"] h2{font-size:clamp(26px,7.4vw,34px)!important;
+    hyphens:auto;-webkit-hyphens:auto;overflow-wrap:anywhere}
+  [data-tv="modal"] p,[data-tv="modal"] li{font-size:14px!important}
+}
+@media (prefers-reduced-motion:reduce){
+  [data-tv="fakten"] .tv-band{animation:none!important}
+}
+</style>
+<script id="tv-mobil-js">
+(function(){
+  var MOBIL = window.matchMedia('(max-width:760px)');
+
+  // 1 Die drei Fakten in ein Band legen und einmal verdoppeln, damit die
+  //   Schleife ohne Sprung laeuft. Die Kopie ist fuer Vorleseprogramme
+  //   unsichtbar -- derselbe Text zweimal waere nur Laerm.
+  function band(){
+    var z = document.querySelector('[data-tv="fakten"]');
+    if (!z || z.querySelector('.tv-band')) return;
+    var kinder = [].slice.call(z.children);
+    if (!kinder.length) return;
+    var b = document.createElement('div'); b.className = 'tv-band';
+    kinder.forEach(function(k){ b.appendChild(k); });
+    kinder.forEach(function(k){
+      var k2 = k.cloneNode(true); k2.setAttribute('aria-hidden','true'); b.appendChild(k2);
+    });
+    z.appendChild(b);
+  }
+
+  // 2 Die Tafel wandert unter die angetippte Zeile und bei Desktopbreite
+  //   wieder an ihren Platz.
+  var tafel, heim, marke;
+  function tafelSetzen(){
+    var ab = document.querySelector('#checkup [role="tablist"]');
+    tafel = tafel || document.querySelector('#checkup [role="tabpanel"]');
+    if (!ab || !tafel) return;
+    if (!heim){ heim = tafel.parentNode; marke = document.createComment('tv-tafel'); heim.insertBefore(marke, tafel); }
+    if (!MOBIL.matches){
+      if (tafel.parentNode !== heim) heim.insertBefore(tafel, marke);
+      tafel.classList.remove('tv-inline');
+      return;
+    }
+    var aktiv = ab.querySelector('[role="tab"][aria-selected="true"]') || ab.firstElementChild;
+    if (!aktiv) return;
+    tafel.classList.add('tv-inline');
+    if (aktiv.nextSibling !== tafel) aktiv.parentNode.insertBefore(tafel, aktiv.nextSibling);
+  }
+
+  // 3 Jeder Strich bekommt die Hoehe bis knapp unter den Textblock.
+  function stiele(){
+    var punkte = document.querySelectorAll('[data-wp]');
+    if (!punkte.length) return;
+    var text = document.querySelector('[data-screen-label="Journey Punta Tersiva"] h3');
+    text = text && text.parentNode;
+    punkte.forEach(function(p){
+      var s = p.querySelector('.tv-stiel') || (function(){
+        // der Strich ist das Kind mit 1 px Breite
+        var k = [].slice.call(p.children).filter(function(c){
+          return Math.round(c.getBoundingClientRect().width) <= 2 && c.offsetHeight > 0; })[0];
+        if (k) k.className = (k.className ? k.className + ' ' : '') + 'tv-stiel';
+        return k;
+      })();
+      if (!s) return;
+      if (!MOBIL.matches){ p.style.removeProperty('--tv-stiel'); return; }
+      var unten = p.getBoundingClientRect().top;                 // der Punkt selbst
+      var oben  = text ? text.getBoundingClientRect().bottom : 0;
+      var h = Math.max(22, Math.round(unten - oben - 18));
+      p.style.setProperty('--tv-stiel', h + 'px');
+    });
+  }
+
+  function alles(){ band(); tafelSetzen(); stiele(); }
+
+  // Der Entwurf zeichnet sich selbst, deshalb erst nach dem ersten Rendern
+  // und danach bei jeder Aenderung an der Auswahl.
+  function start(){
+    alles();
+    var ab = document.querySelector('#checkup [role="tablist"]');
+    if (ab) new MutationObserver(tafelSetzen).observe(ab, {attributes:true, subtree:true, attributeFilter:['aria-selected']});
+    addEventListener('resize', function(){ clearTimeout(start._t); start._t = setTimeout(alles, 150); });
+    addEventListener('scroll', function(){ clearTimeout(start._s); start._s = setTimeout(stiele, 200); }, {passive:true});
+  }
+  var warte = setInterval(function(){
+    if (document.querySelector('#checkup [role="tablist"] [role="tab"]')){ clearInterval(warte); start(); }
+  }, 120);
+  setTimeout(function(){ clearInterval(warte); }, 8000);
+})();
+</script>
 </body></html>
